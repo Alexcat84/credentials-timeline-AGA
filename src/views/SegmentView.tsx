@@ -283,12 +283,13 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
   const hasFittedPage = useRef(false);
   const scaleLayoutToFitRef = useRef<(() => void) | null>(null);
 
-  /** When page changes, sync nodes and edges to current page. */
+  /** When page changes, sync nodes and edges to current page and request fit after React commits. */
   useEffect(() => {
     setNodes(initialNodes);
     setEdges(initialEdges);
     setCurrentNodeIndex(0);
     hasFittedPage.current = false;
+    setPendingFitForPage(currentPage);
   }, [currentPage, initialNodes, initialEdges, setNodes, setEdges]);
 
   /** When segment positions file loads, apply positions for nodes that don't have localStorage overrides. */
