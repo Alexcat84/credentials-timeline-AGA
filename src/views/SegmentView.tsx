@@ -278,6 +278,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
   const reactFlowInstance = useReactFlow();
   const fitViewTimeout = useRef<ReturnType<typeof setTimeout>>(0);
   const hasFittedPage = useRef(false);
+  const scaleLayoutToFitRef = useRef<(() => void) | null>(null);
 
   /** When page changes, sync nodes and edges to current page. */
   useEffect(() => {
@@ -298,6 +299,9 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
         return { ...n, position: fromFile };
       })
     );
+    hasFittedPage.current = false;
+    const t = setTimeout(() => scaleLayoutToFitRef.current?.(), 180);
+    return () => clearTimeout(t);
   }, [defaultPositionsFromFile, setNodes, savedPositions]);
 
   /** Ajustar layout al área de pantalla: escalar posiciones para que la página quepa con zoom fijo 1. */
@@ -331,6 +335,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
     );
     reactFlowInstance.setViewport({ x: 0, y: 0, zoom: STANDARD_ZOOM }, { duration: 0 });
   }, [reactFlowInstance, nodes, setNodes]);
+  scaleLayoutToFitRef.current = scaleLayoutToFit;
 
   const fitPageInView = useCallback(
     (duration = 0) => {

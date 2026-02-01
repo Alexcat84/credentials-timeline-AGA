@@ -183,21 +183,10 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     );
   }, [theme, gokuConfig, setNodes]);
 
-  useEffect(() => {
-    if (!defaultPositionsFromFile || Object.keys(defaultPositionsFromFile).length === 0) return;
-    setNodes((nds) =>
-      nds.map((n) => {
-        if (savedPositions[n.id]) return n;
-        const fromFile = defaultPositionsFromFile[n.id];
-        if (!fromFile) return n;
-        return { ...n, position: fromFile };
-      })
-    );
-  }, [defaultPositionsFromFile, setNodes, savedPositions]);
-
   const reactFlowInstance = useReactFlow();
   const fitViewTimeout = useRef<ReturnType<typeof setTimeout>>(0);
   const hasFittedAll = useRef(false);
+  const fitAllInViewRef = useRef<((duration?: number) => void) | null>(null);
 
   /** Ajustar layout al área de pantalla: escalar posiciones para que todo quepa con zoom fijo 1. */
   const scaleLayoutToFit = useCallback(() => {
@@ -239,6 +228,21 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     },
     [reactFlowInstance, milestones.length, scaleLayoutToFit]
   );
+  fitAllInViewRef.current = fitAllInView;
+
+  useEffect(() => {
+    if (!defaultPositionsFromFile || Object.keys(defaultPositionsFromFile).length === 0) return;
+    setNodes((nds) =>
+      nds.map((n) => {
+        if (savedPositions[n.id]) return n;
+        const fromFile = defaultPositionsFromFile[n.id];
+        if (!fromFile) return n;
+        return { ...n, position: fromFile };
+      })
+    );
+    const t = setTimeout(() => fitAllInViewRef.current?.(150), 180);
+    return () => clearTimeout(t);
+  }, [defaultPositionsFromFile, setNodes, savedPositions]);
 
   const onNodeClick = useCallback(
     (_: unknown, node: Node) => {
