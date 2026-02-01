@@ -1,0 +1,12 @@
+{
+  "description": "Ubicación y tamaño de la imagen de Goku por hito (m0=milestone index 0, etc.). position: above | below | left | right. size: ancho máximo en px.",
+  "milestones": {
+    "m0": { "position": "below", "size": 120 },
+    "m1": { "position": "below", "size": 115 },
+    "m2": { "position": "below", "size": 115 },
+    "m3": { "position": "above", "size": 120 },
+    "m4": { "position": "above", "size": 120 },
+    "m5": { "position": "above", "size": 120 },
+    "m6": { "position": "above", "size": 120 }
+  }
+}
