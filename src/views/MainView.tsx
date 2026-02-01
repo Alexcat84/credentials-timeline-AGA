@@ -31,19 +31,12 @@ const STANDARD_ZOOM = 1;
 /** Tamaño aproximado del nodo (círculo) para calcular bbox al escalar. */
 const NODE_SIZE = 100;
 
-/** Snake layout: zigzag (row 0 left→right, row 1 right→left). Used when no saved positions. */
-const NODES_PER_ROW = 3;
+/** Default layout: single row left→right so timeline is clean and lines don't cross. */
 const SPACING_X = 220;
-const ROW_Y_START = 100;
-const ROW_GAP = 180;
+const ROW_Y_START = 120;
 
-function getSnakePosition(index: number): { x: number; y: number } {
-  const row = Math.floor(index / NODES_PER_ROW);
-  const col = index % NODES_PER_ROW;
-  const y = ROW_Y_START + row * ROW_GAP;
-  const isReversed = row % 2 === 1;
-  const x = isReversed ? (NODES_PER_ROW - 1 - col) * SPACING_X : col * SPACING_X;
-  return { x, y };
+function getLinearPosition(index: number): { x: number; y: number } {
+  return { x: index * SPACING_X, y: ROW_Y_START };
 }
 
 function loadSavedPositions(): Record<string, { x: number; y: number }> {
@@ -110,7 +103,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
   const initialNodes: Node[] = useMemo(
     () =>
       milestones.map((m, i) => {
-        const pos = savedPositions[m.id] ?? getSnakePosition(i);
+        const pos = savedPositions[m.id] ?? getLinearPosition(i);
         return {
           id: m.id,
           type: 'circleMilestone',
