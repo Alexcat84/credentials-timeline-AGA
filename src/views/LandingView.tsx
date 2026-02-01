@@ -126,7 +126,6 @@ export default function LandingView({ theme, profile, onEnter, onChangeExperienc
   useEffect(() => {
     if (!dragState || !containerRef.current) return;
     const container = containerRef.current;
-    const sizePx = BALL_SIZES[dragState.stars] ?? 400;
     const onMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const w = rect.width;
@@ -255,7 +254,7 @@ export default function LandingView({ theme, profile, onEnter, onChangeExperienc
 
     function progressToS(progress: number): number {
       const map = gravityMapRef.current;
-      if (!map || map.tNorm.length === 0) return progress * pathLength;
+      if (!map || map.tNorm.length === 0) return progress * (pathLength ?? 0);
       const { tNorm, s } = map;
       let i = 0;
       while (i < tNorm.length - 1 && tNorm[i + 1] < progress) i++;

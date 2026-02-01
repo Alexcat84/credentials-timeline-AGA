@@ -94,7 +94,7 @@ export default function KamehamehaCursor() {
       right.push({ x: p.x + perp.x * halfW, y: p.y + perp.y * halfW });
     }
     const leftStr = left.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
-    const rightStr = right.reverse().map((p, i) => `L ${p.x} ${p.y}`).join(' ');
+    const rightStr = right.reverse().map((p) => `L ${p.x} ${p.y}`).join(' ');
     ribbonPath = `${leftStr} ${rightStr} Z`;
   }
 

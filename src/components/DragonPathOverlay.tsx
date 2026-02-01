@@ -7,6 +7,8 @@ const NODE_CENTER = 50;
 const BBOX_PADDING = 30;
 const MASK_ID = 'shenlong-full-path-mask';
 
+type BBox = { x: number; y: number; width: number; height: number };
+
 type DragonPathOverlayProps = {
   /** Orden de los nodos (ids de milestones) para construir el path de cola a cabeza */
   milestoneIds: string[];
@@ -20,7 +22,7 @@ export default function DragonPathOverlay({ milestoneIds }: DragonPathOverlayPro
   const nodes = useNodes();
   const viewport = useViewport();
   const pathRef = useRef<SVGPathElement>(null);
-  const [bbox, setBbox] = useState<SVGRect | null>(null);
+  const [bbox, setBbox] = useState<BBox | null>(null);
 
   const orderedNodes = useMemo(() => {
     return milestoneIds

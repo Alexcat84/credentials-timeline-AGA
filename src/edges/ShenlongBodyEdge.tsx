@@ -5,6 +5,8 @@ const SHENLONG_STRIP_URL = '/images/dragon-balls/shenlong-body-strip.svg';
 const BODY_STROKE_WIDTH = 56;
 const BBOX_PADDING = 30;
 
+type BBox = { x: number; y: number; width: number; height: number };
+
 /**
  * Edge que pinta el cuerpo de Shen Long (tira cola→cabeza) a lo largo del path entre nodos.
  * Usa máscara SVG para que la imagen se vea solo sobre el trazo (el patrón en stroke falla en muchos navegadores).
@@ -35,7 +37,7 @@ function ShenlongBodyEdge({
   });
 
   const pathRef = useRef<SVGPathElement>(null);
-  const [bbox, setBbox] = useState<SVGRect | null>(null);
+  const [bbox, setBbox] = useState<BBox | null>(null);
 
   useLayoutEffect(() => {
     const el = pathRef.current;
