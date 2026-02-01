@@ -75,14 +75,27 @@ export type MainViewProps = {
   theme?: LandingTheme | null;
 };
 
+const TIMELINE_POSITIONS_URL = '/data/timeline-positions.json';
+
 function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick, theme }: MainViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [layoutLocked, setLayoutLocked] = useState(true);
   const [savedPositions, setSavedPositions] = useState<Record<string, { x: number; y: number }>>(loadSavedPositions);
+  const [defaultPositionsFromFile, setDefaultPositionsFromFile] = useState<Record<string, { x: number; y: number }> | null>(null);
   const hasScaledToFit = useRef(false);
   const showEditControls = useShowEditControls();
   const [panEnabled, setPanEnabled] = useState(false);
   const [gokuConfig, setGokuConfig] = useState<GokuTimelineConfig | null>(null);
+
+  useEffect(() => {
+    fetch(TIMELINE_POSITIONS_URL)
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((data) => {
+        const map = typeof data === 'object' && data !== null ? (data as Record<string, { x: number; y: number }>) : {};
+        setDefaultPositionsFromFile(map);
+      })
+      .catch(() => setDefaultPositionsFromFile({}));
+  }, []);
 
   useEffect(() => {
     if (theme !== 'dragonball') {
@@ -112,7 +125,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
           draggable: !layoutLocked,
         };
       }),
-    [milestones, savedPositions, layoutLocked]
+    [milestones, savedPositions, defaultPositionsFromFile, layoutLocked]
   );
 
   const initialEdges: Edge[] = useMemo(
@@ -169,6 +182,19 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
       })
     );
   }, [theme, gokuConfig, setNodes]);
+
+  useEffect(() => {
+    if (!defaultPositionsFromFile || Object.keys(defaultPositionsFromFile).length === 0) return;
+    setNodes((nds) =>
+      nds.map((n) => {
+        if (savedPositions[n.id]) return n;
+        const fromFile = defaultPositionsFromFile[n.id];
+        if (!fromFile) return n;
+        return { ...n, position: fromFile };
+      })
+    );
+  }, [defaultPositionsFromFile, setNodes, savedPositions]);
+
   const reactFlowInstance = useReactFlow();
   const fitViewTimeout = useRef<ReturnType<typeof setTimeout>>(0);
   const hasFittedAll = useRef(false);

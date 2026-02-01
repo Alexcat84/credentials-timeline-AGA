@@ -61,6 +61,10 @@ function getSegmentPositionsKey(segment: Segment): string {
   return `timeline-segment-positions-${segment.fromYear}-${segment.toYear}`;
 }
 
+function getSegmentPositionsFileUrl(segment: Segment): string {
+  return `/data/segment-positions-${segment.fromYear}-${segment.toYear}.json`;
+}
+
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
@@ -149,9 +153,18 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
   const [savedPositions, setSavedPositions] = useState<Record<string, { x: number; y: number }>>(() =>
     loadSavedPositionsForSegment(segment)
   );
+  const [defaultPositionsFromFile, setDefaultPositionsFromFile] = useState<Record<string, { x: number; y: number }> | null>(null);
 
   useEffect(() => {
     setSavedPositions(loadSavedPositionsForSegment(segment));
+    setDefaultPositionsFromFile(null);
+    fetch(getSegmentPositionsFileUrl(segment))
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((data) => {
+        const map = typeof data === 'object' && data !== null ? (data as Record<string, { x: number; y: number }>) : {};
+        setDefaultPositionsFromFile(map);
+      })
+      .catch(() => setDefaultPositionsFromFile({}));
   }, [segment.fromYear, segment.toYear]);
 
   /** Per-credential circle label: "Mon YYYY" from date when parseable; "YYYY-YYYY" for primary; otherwise year. */
@@ -171,7 +184,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
   const credentialNodes: Node[] = useMemo(
     () =>
       sortedPage.map((c, i) => {
-        const pos = savedPositions[c.id] ?? getSnakePosition(i);
+        const pos = savedPositions[c.id] ?? defaultPositionsFromFile?.[c.id] ?? getSnakePosition(i);
         return {
           id: c.id,
           type: 'credentialCircle',
@@ -201,11 +214,11 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
       },
       draggable: !layoutLocked,
     };
-  }, [hasPreviousPage, currentPage, totalPages, savedPositions, layoutLocked]);
+  }, [hasPreviousPage, currentPage, totalPages, savedPositions, defaultPositionsFromFile, layoutLocked]);
 
   const continueNode: Node | null = useMemo(() => {
     if (!hasNextPage || sortedPage.length === 0) return null;
-    const pos = savedPositions[CONTINUE_NODE_ID] ?? getContinuePosition(sortedPage.length);
+    const pos = savedPositions[CONTINUE_NODE_ID] ?? defaultPositionsFromFile?.[CONTINUE_NODE_ID] ?? getContinuePosition(sortedPage.length);
     return {
       id: CONTINUE_NODE_ID,
       type: 'continueNode',
@@ -216,7 +229,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
       },
       draggable: !layoutLocked,
     };
-  }, [hasNextPage, sortedPage.length, currentPage, totalPages, savedPositions, layoutLocked]);
+  }, [hasNextPage, sortedPage.length, currentPage, totalPages, savedPositions, defaultPositionsFromFile, layoutLocked]);
 
   const initialNodes: Node[] = useMemo(() => {
     const list = previousSectionNode
@@ -273,6 +286,19 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
     setCurrentNodeIndex(0);
     hasFittedPage.current = false;
   }, [currentPage, initialNodes, initialEdges, setNodes, setEdges]);
+
+  /** When segment positions file loads, apply positions for nodes that don't have localStorage overrides. */
+  useEffect(() => {
+    if (!defaultPositionsFromFile || Object.keys(defaultPositionsFromFile).length === 0) return;
+    setNodes((nds) =>
+      nds.map((n) => {
+        if (savedPositions[n.id]) return n;
+        const fromFile = defaultPositionsFromFile[n.id];
+        if (!fromFile) return n;
+        return { ...n, position: fromFile };
+      })
+    );
+  }, [defaultPositionsFromFile, setNodes, savedPositions]);
 
   /** Ajustar layout al área de pantalla: escalar posiciones para que la página quepa con zoom fijo 1. */
   const scaleLayoutToFit = useCallback(() => {
