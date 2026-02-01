@@ -155,6 +155,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
   );
   const [defaultPositionsFromFile, setDefaultPositionsFromFile] = useState<Record<string, { x: number; y: number }> | null>(null);
   const [pendingRefitAfterFile, setPendingRefitAfterFile] = useState(false);
+  const [pendingFitForPage, setPendingFitForPage] = useState<number | null>(null);
 
   useEffect(() => {
     setSavedPositions(loadSavedPositionsForSegment(segment));
@@ -474,7 +475,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
     return () => window.removeEventListener('keydown', handleKey);
   }, [goNext, goPrev]);
 
-  /** On mount/segment: scale layout to predefined area at zoom 1. */
+  /** On mount/segment: scale layout to predefined area at zoom 1 (first page only). */
   useEffect(() => {
     if (!reactFlowInstance || sortedPage.length === 0 || hasFittedPage.current) return;
     hasFittedPage.current = true;
@@ -485,17 +486,29 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
     };
   }, [reactFlowInstance, segment.fromYear, segment.toYear, sortedPage.length, scaleLayoutToFit]);
 
-  /** On page change: scale new page to fit. */
+  /** After page change: run fit once nodes have been updated to the new page (Section 2 of 2, etc.). */
   useEffect(() => {
-    hasFittedPage.current = false;
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (!reactFlowInstance || sortedPage.length === 0 || hasFittedPage.current) return;
-    hasFittedPage.current = true;
-    const t = setTimeout(() => scaleLayoutToFit(), 80);
-    return () => clearTimeout(t);
-  }, [currentPage, reactFlowInstance, sortedPage.length, scaleLayoutToFit]);
+    if (pendingFitForPage === null || pendingFitForPage !== currentPage || nodes.length === 0) return;
+    if (!reactFlowInstance) return;
+    let cancelled = false;
+    const runFit = () => {
+      if (cancelled) return;
+      scaleLayoutToFitRef.current?.();
+    };
+    const raf1 = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(runFit, 60);
+        if (cancelled) return;
+        setTimeout(runFit, 200);
+      });
+    });
+    const t = setTimeout(() => setPendingFitForPage(null), 280);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf1);
+      clearTimeout(t);
+    };
+  }, [pendingFitForPage, currentPage, nodes.length, reactFlowInstance]);
 
   const progressPct =
     totalPages > 0 ? ((currentPage * CREDENTIALS_PER_PAGE + currentNodeIndex + 1) / totalCredentials) * 100 : 0;
