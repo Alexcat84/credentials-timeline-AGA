@@ -244,14 +244,29 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     setPendingRefitAfterFile(true);
   }, [defaultPositionsFromFile, setNodes, savedPositions]);
 
-  /** Re-fit viewport after file positions applied (runs once React has committed the node update). */
+  /** Re-fit viewport after file positions applied (wait for paint then fit, and retry once for late layout). */
   useEffect(() => {
     if (!pendingRefitAfterFile || nodes.length === 0) return;
-    const t = setTimeout(() => {
+    let cancelled = false;
+    const runFit = () => {
+      if (cancelled) return;
       fitAllInViewRef.current?.(150);
+    };
+    const raf1 = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(runFit, 50);
+        if (cancelled) return;
+        setTimeout(runFit, 220);
+      });
+    });
+    const t = setTimeout(() => {
       setPendingRefitAfterFile(false);
-    }, 80);
-    return () => clearTimeout(t);
+    }, 300);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf1);
+      clearTimeout(t);
+    };
   }, [pendingRefitAfterFile, nodes.length]);
 
   const onNodeClick = useCallback(
