@@ -154,10 +154,12 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
     loadSavedPositionsForSegment(segment)
   );
   const [defaultPositionsFromFile, setDefaultPositionsFromFile] = useState<Record<string, { x: number; y: number }> | null>(null);
+  const [pendingRefitAfterFile, setPendingRefitAfterFile] = useState(false);
 
   useEffect(() => {
     setSavedPositions(loadSavedPositionsForSegment(segment));
     setDefaultPositionsFromFile(null);
+    setPendingRefitAfterFile(false);
     fetch(getSegmentPositionsFileUrl(segment))
       .then((r) => (r.ok ? r.json() : {}))
       .then((data) => {
@@ -300,9 +302,18 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
       })
     );
     hasFittedPage.current = false;
-    const t = setTimeout(() => scaleLayoutToFitRef.current?.(), 180);
-    return () => clearTimeout(t);
+    setPendingRefitAfterFile(true);
   }, [defaultPositionsFromFile, setNodes, savedPositions]);
+
+  /** Re-fit viewport after file positions applied (runs once React has committed the node update). */
+  useEffect(() => {
+    if (!pendingRefitAfterFile || nodes.length === 0) return;
+    const t = setTimeout(() => {
+      scaleLayoutToFitRef.current?.();
+      setPendingRefitAfterFile(false);
+    }, 80);
+    return () => clearTimeout(t);
+  }, [pendingRefitAfterFile, nodes.length]);
 
   /** Ajustar layout al área de pantalla: escalar posiciones para que la página quepa con zoom fijo 1. */
   const scaleLayoutToFit = useCallback(() => {

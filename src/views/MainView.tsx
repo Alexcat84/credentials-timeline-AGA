@@ -82,6 +82,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
   const [layoutLocked, setLayoutLocked] = useState(true);
   const [savedPositions, setSavedPositions] = useState<Record<string, { x: number; y: number }>>(loadSavedPositions);
   const [defaultPositionsFromFile, setDefaultPositionsFromFile] = useState<Record<string, { x: number; y: number }> | null>(null);
+  const [pendingRefitAfterFile, setPendingRefitAfterFile] = useState(false);
   const hasScaledToFit = useRef(false);
   const showEditControls = useShowEditControls();
   const [panEnabled, setPanEnabled] = useState(false);
@@ -240,9 +241,18 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
         return { ...n, position: fromFile };
       })
     );
-    const t = setTimeout(() => fitAllInViewRef.current?.(150), 180);
-    return () => clearTimeout(t);
+    setPendingRefitAfterFile(true);
   }, [defaultPositionsFromFile, setNodes, savedPositions]);
+
+  /** Re-fit viewport after file positions applied (runs once React has committed the node update). */
+  useEffect(() => {
+    if (!pendingRefitAfterFile || nodes.length === 0) return;
+    const t = setTimeout(() => {
+      fitAllInViewRef.current?.(150);
+      setPendingRefitAfterFile(false);
+    }, 80);
+    return () => clearTimeout(t);
+  }, [pendingRefitAfterFile, nodes.length]);
 
   const onNodeClick = useCallback(
     (_: unknown, node: Node) => {
