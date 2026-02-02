@@ -30,6 +30,9 @@ const POSITIONS_STORAGE_KEY = 'timeline-main-positions';
 const STANDARD_ZOOM = 1;
 /** Tamaño aproximado del nodo (círculo) para calcular bbox al escalar. */
 const NODE_SIZE = 100;
+/** En fun mode el nodo incluye imagen de Goku (arriba/abajo): más alto para el bbox. */
+const NODE_HEIGHT_DRAGONBALL = 280;
+const NODE_WIDTH_DRAGONBALL = 120;
 
 /** Default layout: single row left→right so timeline is clean and lines don't cross. */
 const SPACING_X = 220;
@@ -219,7 +222,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
       }))
     );
     reactFlowInstance.setViewport({ x: 0, y: 0, zoom: STANDARD_ZOOM }, { duration: 0 });
-  }, [reactFlowInstance, nodes, setNodes]);
+  }, [reactFlowInstance, nodes, setNodes, theme]);
 
   const fitAllInView = useCallback(
     (duration = 0) => {
@@ -362,6 +365,13 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
       clearTimeout(fitViewTimeout.current);
     };
   }, [reactFlowInstance, milestones.length, scaleLayoutToFit]);
+
+  /** When switching to fun mode, re-fit with larger bbox (Goku images) so timeline doesn't shift down. */
+  useEffect(() => {
+    if (theme !== 'dragonball' || !reactFlowInstance || nodes.length === 0) return;
+    const t = setTimeout(() => scaleLayoutToFit(), 200);
+    return () => clearTimeout(t);
+  }, [theme, reactFlowInstance, nodes.length, scaleLayoutToFit]);
 
   const goNext = useCallback(() => {
     if (currentNodeIndex >= milestones.length - 1) return;
