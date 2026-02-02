@@ -201,12 +201,12 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
           draggable: !layoutLocked,
         };
       }),
-    [sortedPage, savedPositions, layoutLocked, circleLabelsById]
+    [sortedPage, savedPositions, defaultPositionsFromFile, layoutLocked, circleLabelsById]
   );
 
   const previousSectionNode: Node | null = useMemo(() => {
     if (!hasPreviousPage) return null;
-    const pos = savedPositions[PREVIOUS_SECTION_NODE_ID] ?? getPreviousSectionPosition();
+    const pos = savedPositions[PREVIOUS_SECTION_NODE_ID] ?? defaultPositionsFromFile?.[PREVIOUS_SECTION_NODE_ID] ?? getPreviousSectionPosition();
     return {
       id: PREVIOUS_SECTION_NODE_ID,
       type: 'previousSectionNode',
