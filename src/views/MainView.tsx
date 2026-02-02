@@ -50,6 +50,18 @@ function loadSavedPositions(): Record<string, { x: number; y: number }> {
     return {};
   }
 }
+/** Restore viewport when returning to main timeline so we don't show (0,0,1) then jump. */
+function loadSavedViewport(): { x: number; y: number; zoom: number } | null {
+  try {
+    const s = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(VIEWPORT_STORAGE_KEY) : null;
+    if (!s) return null;
+    const v = JSON.parse(s);
+    if (v && typeof v.x === 'number' && typeof v.y === 'number' && typeof v.zoom === 'number') return v;
+  } catch {
+    // ignore
+  }
+  return null;
+}
 
 /**
  * Build segments with exact year limits; each credential in exactly one segment.
@@ -80,10 +92,13 @@ export type MainViewProps = {
 
 const TIMELINE_POSITIONS_URL = '/data/timeline-positions.json';
 
+const DEFAULT_VIEWPORT = { x: 0, y: 0, zoom: 1 };
+
 function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick, theme }: MainViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [layoutLocked, setLayoutLocked] = useState(true);
   const [savedPositions, setSavedPositions] = useState<Record<string, { x: number; y: number }>>(loadSavedPositions);
+  const initialViewport = useMemo(() => loadSavedViewport() ?? DEFAULT_VIEWPORT, []);
   const [defaultPositionsFromFile, setDefaultPositionsFromFile] = useState<Record<string, { x: number; y: number }> | null>(null);
   const [pendingRefitAfterFile, setPendingRefitAfterFile] = useState(false);
   const hasScaledToFit = useRef(false);
@@ -449,6 +464,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
         onEdgeClick={onEdgeClick}
         nodeTypes={nodeTypes}
         nodesDraggable={!layoutLocked}
+        defaultViewport={initialViewport}
         fitView={false}
         minZoom={STANDARD_ZOOM}
         maxZoom={STANDARD_ZOOM}
