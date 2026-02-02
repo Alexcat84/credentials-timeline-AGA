@@ -21,7 +21,8 @@ const THEME_STORAGE_KEY = 'timeline-landing-theme';
 
 function loadTheme(): LandingTheme | null {
   try {
-    const s = typeof localStorage !== 'undefined' ? localStorage.getItem(THEME_STORAGE_KEY) : null;
+    const storage = typeof sessionStorage !== 'undefined' ? sessionStorage : null;
+    const s = storage?.getItem(THEME_STORAGE_KEY) ?? null;
     if (s === 'formal' || s === 'dragonball') return s;
     return null;
   } catch {
@@ -171,7 +172,7 @@ function App() {
         onSelect={(t) => {
           setTheme(t);
           try {
-            localStorage.setItem(THEME_STORAGE_KEY, t);
+            sessionStorage.setItem(THEME_STORAGE_KEY, t);
           } catch {
             // ignore
           }
@@ -189,7 +190,7 @@ function App() {
         onChangeExperience={() => {
           setTheme(null);
           try {
-            localStorage.removeItem(THEME_STORAGE_KEY);
+            sessionStorage.removeItem(THEME_STORAGE_KEY);
           } catch {
             // ignore
           }
@@ -238,7 +239,7 @@ function App() {
                 setTheme(null);
                 setHasEntered(false);
                 try {
-                  localStorage.removeItem(THEME_STORAGE_KEY);
+                  sessionStorage.removeItem(THEME_STORAGE_KEY);
                 } catch {
                   // ignore
                 }
