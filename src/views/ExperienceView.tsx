@@ -106,7 +106,7 @@ export default function ExperienceView({ positions }: ExperienceViewProps) {
       <p className="text-sm text-slate-500 mb-4">Chronological order (oldest at bottom, most recent at top).</p>
       <div className="mb-8 rounded-xl border-2 border-cyan-200/80 bg-gradient-to-r from-cyan-50 via-teal-50/90 to-cyan-50 px-5 py-4 shadow-sm">
         <p className="text-center text-slate-800 font-semibold leading-relaxed">
-          Your company could be the next chapter in my professional journey—and I&apos;m excited to make it happen.
+          Your company could be the next chapter in my professional journey, and I&apos;m excited to make it happen. 🎉
         </p>
       </div>
       <div className="flex flex-col-reverse">
