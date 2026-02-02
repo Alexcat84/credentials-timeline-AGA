@@ -136,7 +136,7 @@ function QuickStartPanel({ open, onClose }: QuickStartPanelProps) {
           ))}
           <section className="mt-6 pt-4 border-t border-slate-200">
             <p className="text-slate-600 text-xs leading-relaxed">
-              All information on this platform is my property. Any use of this content outside this platform requires my prior authorization and consent.
+              All information and the design of this platform are my property. Any use of this content or design outside this platform requires my prior authorization and consent.
             </p>
             <p className="text-slate-700 text-sm font-medium mt-3">
               Thank you for viewing my professional profile.
