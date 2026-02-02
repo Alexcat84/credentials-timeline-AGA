@@ -18,6 +18,11 @@ let initialized = false;
 function initGA(): void {
   if (!MEASUREMENT_ID || typeof document === 'undefined') return;
   if (initialized) return;
+  // Tag may already be in index.html (injected at build time); reuse it
+  if (typeof window.gtag === 'function' && Array.isArray(window.dataLayer)) {
+    initialized = true;
+    return;
+  }
   initialized = true;
 
   window.dataLayer = window.dataLayer ?? [];
