@@ -71,6 +71,24 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  const currentTimeline = timelineStack[timelineStack.length - 1];
+
+  // GA4: virtual page view per section. Must run before any early return so hook count is stable.
+  useEffect(() => {
+    if (!credentialsData) return;
+    const section =
+      view === 'experience'
+        ? { name: 'Professional experience', path: '/experience' }
+        : view === 'filter'
+          ? { name: 'Diplomas by category', path: '/filter' }
+          : currentTimeline.view === 'detail'
+            ? { name: 'Timeline – Diploma detail', path: '/timeline/detail' }
+            : currentTimeline.view === 'segment'
+              ? { name: 'Timeline – Segment', path: '/timeline/segment' }
+              : { name: 'Timeline', path: '/timeline' };
+    trackPageView(section.name, section.path);
+  }, [view, currentTimeline.view, credentialsData]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-100">
@@ -90,25 +108,8 @@ function App() {
     );
   }
 
-  const currentTimeline = timelineStack[timelineStack.length - 1];
   const showTimelineBack = timelineStack.length > 1;
   const showBackFromDetail = view === 'timeline' && currentTimeline.view === 'detail' && (showTimelineBack || returnToView === 'filter');
-
-  // GA4: virtual page view per section (Timeline, Diplomas, Experience, etc.)
-  useEffect(() => {
-    if (!credentialsData) return;
-    const section =
-      view === 'experience'
-        ? { name: 'Professional experience', path: '/experience' }
-        : view === 'filter'
-          ? { name: 'Diplomas by category', path: '/filter' }
-          : currentTimeline.view === 'detail'
-            ? { name: 'Timeline – Diploma detail', path: '/timeline/detail' }
-            : currentTimeline.view === 'segment'
-              ? { name: 'Timeline – Segment', path: '/timeline/segment' }
-              : { name: 'Timeline', path: '/timeline' };
-    trackPageView(section.name, section.path);
-  }, [view, currentTimeline.view, credentialsData]);
 
   const handleSegmentSelect = (segment: Segment) => {
     setTimelineStack((s) => [...s, { view: 'segment', segment, initialPage: 0 }]);
