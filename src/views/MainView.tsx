@@ -136,15 +136,33 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     () =>
       milestones.map((m, i) => {
         const pos = savedPositions[m.id] ?? defaultPositionsFromFile?.[m.id] ?? getLinearPosition(i);
+        const baseData = { milestone: m, isCurrent: i === 0 };
+        if (theme === 'dragonball' && gokuConfig) {
+          const c = gokuConfig.milestones[m.id];
+          if (c) {
+            return {
+              id: m.id,
+              type: 'circleMilestone',
+              position: pos,
+              data: {
+                ...baseData,
+                gokuImageUrl: `/images/goku/goku-${i}.png`,
+                gokuPosition: c.position,
+                gokuSize: c.size,
+              },
+              draggable: !layoutLocked,
+            };
+          }
+        }
         return {
           id: m.id,
           type: 'circleMilestone',
           position: pos,
-          data: { milestone: m, isCurrent: i === 0 },
+          data: baseData,
           draggable: !layoutLocked,
         };
       }),
-    [milestones, savedPositions, defaultPositionsFromFile, layoutLocked]
+    [milestones, savedPositions, defaultPositionsFromFile, layoutLocked, theme, gokuConfig]
   );
 
   const initialEdges: Edge[] = useMemo(
@@ -441,6 +459,41 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [goNext, goPrev]);
+
+  /** En fun mode no montar ReactFlow hasta tener gokuConfig: así la primera pintura ya tiene nodos con Goku y no hay transición que mueva la vista. */
+  const showFlow = theme !== 'dragonball' || gokuConfig !== null;
+
+  /** Al pasar de placeholder a flow en fun mode (una sola vez), sincronizar nodos con initialNodes (ya llevan Goku). */
+  const didShowFlowRef = useRef(false);
+  useEffect(() => {
+    if (!showFlow) {
+      didShowFlowRef.current = false;
+      return;
+    }
+    if (!didShowFlowRef.current) {
+      didShowFlowRef.current = true;
+      setNodes(initialNodes);
+      setEdges(initialEdges);
+    }
+  }, [showFlow, initialNodes, initialEdges, setNodes, setEdges]);
+
+  if (!showFlow) {
+    return (
+      <div ref={containerRef} className="relative w-full h-full min-h-0 rounded-2xl overflow-hidden bg-slate-950">
+        <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl pointer-events-none" aria-hidden>
+          <img
+            src="/images/wallpapers/main-milestones.jpg"
+            alt=""
+            className="w-full h-full object-cover"
+            style={{ opacity: 0.18 }}
+          />
+        </div>
+        <div className="relative z-10 flex items-center justify-center w-full h-full min-h-0">
+          <div className="text-slate-400 text-sm font-medium animate-pulse">Loading timeline…</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="relative w-full h-full min-h-0 rounded-2xl overflow-hidden bg-slate-950">
