@@ -199,10 +199,12 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     const w = rect.width;
     const h = rect.height;
     if (w <= 0 || h <= 0) return;
+    const nodeW = theme === 'dragonball' ? NODE_WIDTH_DRAGONBALL : NODE_SIZE;
+    const nodeH = theme === 'dragonball' ? NODE_HEIGHT_DRAGONBALL : NODE_SIZE;
     const minX = Math.min(...nodes.map((n) => n.position.x));
     const minY = Math.min(...nodes.map((n) => n.position.y));
-    const maxX = Math.max(...nodes.map((n) => n.position.x + NODE_SIZE));
-    const maxY = Math.max(...nodes.map((n) => n.position.y + NODE_SIZE));
+    const maxX = Math.max(...nodes.map((n) => n.position.x + nodeW));
+    const maxY = Math.max(...nodes.map((n) => n.position.y + nodeH));
     const bboxW = maxX - minX;
     const bboxH = maxY - minY;
     if (bboxW <= 0 || bboxH <= 0) return;
