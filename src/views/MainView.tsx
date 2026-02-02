@@ -522,6 +522,11 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
       >
         <Background color="#334155" gap={24} size={1} className={theme === 'dragonball' ? 'opacity-20' : 'opacity-40'} />
 
+        <Panel position="top-center" className="mt-3 flex flex-col items-center pointer-events-none">
+          <h2 className="text-lg font-semibold text-white drop-shadow-md">Educational journey</h2>
+          <p className="text-xs text-slate-300 mt-0.5 drop-shadow">Key years and credentials along the timeline.</p>
+        </Panel>
+
         <Panel position="top-right" className="mt-3 mr-3 flex items-center gap-2">
           {showEditControls && (
             <>

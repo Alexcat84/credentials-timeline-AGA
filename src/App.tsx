@@ -6,14 +6,16 @@ import MainView from './views/MainView';
 import SegmentView from './views/SegmentView';
 import DetailView from './views/DetailView';
 import FilterView from './views/FilterView';
+import ExperienceView from './views/ExperienceView';
 import KamehamehaCursor from './components/KamehamehaCursor';
 import QuickStartPanel from './components/QuickStartPanel';
 import ContactFloating from './components/ContactFloating';
-import type { CredentialsData, CategoriesData, MilestonesData, Segment, Credential, Milestone } from './types';
+import type { CredentialsData, CategoriesData, MilestonesData, ExperienceData, Segment, Credential, Milestone } from './types';
 
 const CREDENTIALS_URL = '/data/credentials.json';
 const CATEGORIES_URL = '/data/categories.json';
 const MILESTONES_URL = '/data/milestones.json';
+const EXPERIENCE_URL = '/data/experience.json';
 const THEME_STORAGE_KEY = 'timeline-landing-theme';
 
 function loadTheme(): LandingTheme | null {
@@ -26,7 +28,7 @@ function loadTheme(): LandingTheme | null {
   }
 }
 
-type View = 'timeline' | 'filter';
+type View = 'timeline' | 'filter' | 'experience';
 
 type TimelineStackItem =
   | { view: 'main' }
@@ -40,10 +42,11 @@ function App() {
   const [credentialsData, setCredentialsData] = useState<CredentialsData | null>(null);
   const [categoriesData, setCategoriesData] = useState<CategoriesData | null>(null);
   const [milestonesData, setMilestonesData] = useState<MilestonesData | null>(null);
+  const [experienceData, setExperienceData] = useState<ExperienceData | null>(null);
   const [timelineStack, setTimelineStack] = useState<TimelineStackItem[]>([{ view: 'main' }]);
-  /** When opening detail from Filter by category, back returns to filter instead of timeline stack. */
+  /** When opening detail from Diplomas by category, back returns to filter instead of timeline stack. */
   const [returnToView, setReturnToView] = useState<View | null>(null);
-  /** Filter by category: state lifted so it persists when navigating to detail and back. Same filter for both presentation modes (formal and dragonball). */
+  /** Diplomas by category: state lifted so it persists when navigating to detail and back. Same filter for both presentation modes (formal and dragonball). */
   const [filterCategoryId, setFilterCategoryId] = useState<string>('');
   const [filterLocationId, setFilterLocationId] = useState<string>('');
   const [quickStartOpen, setQuickStartOpen] = useState(false);
@@ -55,11 +58,13 @@ function App() {
       fetch(CREDENTIALS_URL).then((r) => (r.ok ? r.json() : Promise.reject(new Error('Failed to load credentials')))),
       fetch(CATEGORIES_URL).then((r) => (r.ok ? r.json() : Promise.reject(new Error('Failed to load categories')))),
       fetch(MILESTONES_URL).then((r) => (r.ok ? r.json() : Promise.reject(new Error('Failed to load milestones')))),
+      fetch(EXPERIENCE_URL).then((r) => (r.ok ? r.json() : { positions: [] })).catch(() => ({ positions: [] })),
     ])
-      .then(([creds, cats, milestones]) => {
+      .then(([creds, cats, milestones, experience]) => {
         setCredentialsData(creds);
         setCategoriesData(cats);
         setMilestonesData(milestones);
+        setExperienceData(experience);
       })
       .catch((e) => setError(e?.message ?? 'Error loading data'))
       .finally(() => setLoading(false));
@@ -186,7 +191,8 @@ function App() {
 
   const isDetailView = view === 'timeline' && currentTimeline.view === 'detail';
   const isFilterView = view === 'filter';
-  const showKamehamehaCursor = theme === 'dragonball' && !isDetailView && !isFilterView;
+  const isExperienceView = view === 'experience';
+  const showKamehamehaCursor = theme === 'dragonball' && !isDetailView && !isFilterView && !isExperienceView;
 
   return (
     <div className={`h-screen flex flex-col bg-slate-50 overflow-hidden ${showKamehamehaCursor ? 'cursor-none' : ''}`}>
@@ -207,24 +213,7 @@ function App() {
               {credentialsData.profile.shortName ?? credentialsData.profile.name}
             </h1>
           </div>
-          <div className="absolute left-1/2 top-0 bottom-0 flex items-center -translate-x-1/2 pointer-events-none">
-            <div className="pointer-events-auto">
-              <button
-                type="button"
-                onClick={() => setQuickStartOpen(true)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-emerald-700 bg-emerald-50/90 border border-emerald-200/80 hover:bg-emerald-100/90 hover:border-emerald-300 transition-colors"
-                title="How to use this page"
-                aria-label="Quick Start – How to use"
-              >
-                <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4M12 8h.01" />
-                </svg>
-                Quick Start
-              </button>
-            </div>
-          </div>
-          <nav className="flex items-center gap-3 flex-shrink-0">
+          <nav className="flex items-center gap-3 flex-shrink-0 flex-wrap justify-end">
             <button
               type="button"
               onClick={() => {
@@ -239,6 +228,19 @@ function App() {
               className="text-slate-500 text-sm hover:text-slate-700 underline underline-offset-2"
             >
               Change presentation mode
+            </button>
+            <button
+              type="button"
+              onClick={() => setQuickStartOpen(true)}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-emerald-700 bg-emerald-50/90 border border-emerald-200/80 hover:bg-emerald-100/90 hover:border-emerald-300 transition-colors"
+              title="How to use this page"
+              aria-label="Quick Start – How to use"
+            >
+              <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 16v-4M12 8h.01" />
+              </svg>
+              Quick Start
             </button>
             <button
               type="button"
@@ -269,8 +271,25 @@ function App() {
               <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
               </svg>
-              Filter by category
+              Diplomas by category
             </button>
+            {experienceData?.positions?.length && (
+              <button
+                type="button"
+                onClick={() => setView('experience')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  view === 'experience'
+                    ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-md shadow-cyan-500/25 border border-cyan-400/40 hover:from-cyan-600 hover:to-teal-600'
+                    : 'bg-white/80 text-slate-600 border border-slate-200 hover:border-cyan-300 hover:text-cyan-700 hover:bg-cyan-50/80'
+                }`}
+              >
+                <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                </svg>
+                Professional experience
+              </button>
+            )}
           </nav>
         </div>
       </header>
@@ -310,6 +329,11 @@ function App() {
             backLabel={returnToView === 'filter' ? 'Back to filter' : 'Back to segment'}
             theme={theme}
           />
+        )}
+        {view === 'experience' && experienceData?.positions?.length && (
+          <div className="flex-1 min-h-0 overflow-auto bg-gradient-to-b from-cyan-50/30 to-teal-50/30">
+            <ExperienceView positions={experienceData.positions} />
+          </div>
         )}
         {view === 'filter' && (
           <div className="max-w-7xl w-full mx-auto px-4 py-4 flex-1 min-h-0 overflow-auto">

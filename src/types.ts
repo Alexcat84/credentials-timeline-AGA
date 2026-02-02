@@ -63,3 +63,19 @@ export interface Segment {
   toYear: number;
   credentialIds: string[];
 }
+
+/** One professional position for the experience timeline (oldest first in array). */
+export interface ExperiencePosition {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  responsibilities: string[];
+  achievements: string[];
+}
+
+export interface ExperienceData {
+  positions: ExperiencePosition[];
+}

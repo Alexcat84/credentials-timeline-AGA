@@ -17,9 +17,14 @@ const QUICK_START_CONTENT = [
     visual: 'timeline',
   },
   {
-    title: 'Filter by category',
-    body: 'Open **Filter by category** to browse credentials by topic or location. Select a category or location from the dropdowns, then **click a card** to expand it. Use **View diploma** to see the full credential.',
+    title: 'Diplomas by category',
+    body: 'Open **Diplomas by category** to browse credentials by topic or location. Select a category or location from the dropdowns, then **click a card** to expand it. Use **View diploma** to see the full credential.',
     visual: 'filter',
+  },
+  {
+    title: 'Professional experience',
+    body: 'Use **Professional experience** to see a chronological timeline of work positions. Each card shows responsibilities and achievements; use **Show all** / **Show less** to expand or collapse long lists. Available in both presentation modes.',
+    visual: 'experience',
   },
 ];
 
@@ -66,7 +71,24 @@ function MiniVisual({ type }: { type: string }) {
             </div>
           ))}
         </div>
-        <p className="text-[10px] text-slate-500 mt-1 text-center">Cards by category</p>
+        <p className="text-[10px] text-slate-500 mt-1 text-center">Diplomas by category</p>
+      </div>
+    );
+  }
+  if (type === 'experience') {
+    return (
+      <div className="mt-2 p-2 rounded-lg bg-slate-100/80 border border-slate-200/80" aria-hidden>
+        <div className="flex gap-2">
+          <div className="flex flex-col items-center">
+            <div className="w-2 h-2 rounded-full bg-cyan-500" />
+            <div className="w-0.5 flex-1 min-h-[12px] bg-cyan-300/60" />
+          </div>
+          <div className="flex-1 min-w-0 space-y-1">
+            <div className="h-4 rounded bg-white border border-cyan-200/80" />
+            <div className="h-3 rounded bg-cyan-50 border border-cyan-200/60 w-3/4" />
+          </div>
+        </div>
+        <p className="text-[10px] text-slate-500 mt-1 text-center">Positions · responsibilities · achievements</p>
       </div>
     );
   }

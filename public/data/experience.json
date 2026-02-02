@@ -1,0 +1,127 @@
+{
+  "positions": [
+    {
+      "id": "rasa-assistant",
+      "title": "Engineering and Equipment Inspection Assistant",
+      "company": "Refinería Petrolera Acajutla (RASA)",
+      "location": "Sonsonate, El Salvador",
+      "startDate": "Jun 2010",
+      "endDate": "Jun 2013",
+      "responsibilities": [
+        "Developed and executed the plan for updating plant lines and equipment at the refinery",
+        "Read, interpreted and developed new projects reflected in electrical, flow, P&ID, isometric and structural drawings using AutoCAD",
+        "Prepared project drawings and bills of materials in accordance with API, ASME, ASTM, NFPA and ExxonMobil internal guides (Global Practices, GEMS)",
+        "Inspected lines and equipment using non-destructive (NDT) methods: liquid penetrants, magnetic particles and industrial infrared thermography",
+        "Updated and created P&ID, isometric, flow, electrical and instrumentation drawings for implementation at RASA using AutoCAD"
+      ],
+      "achievements": [
+        "Achieved 100% compliance with international standards (API, ASME, ASTM, NFPA)",
+        "Improved equipment reliability by 20% by the end of each year",
+        "Industrial safety trainings: confined space entry and watch; radiological safety watch during industrial radiography; coordinator of industrial radiography inside and outside RASA; height work safety; work permit system and Safe Work Analysis; task observation reports for incident prevention",
+        "Supervised construction of 3 furnace coils for product heating, including inspection, new construction drawings developed in AutoCAD, material lists per API standards, and registration and storage of information"
+      ]
+    },
+    {
+      "id": "cotecna-operator",
+      "title": "System Operator and Maintenance",
+      "company": "COTECNA de El Salvador",
+      "location": "Sonsonate, El Salvador",
+      "startDate": "Aug 2013",
+      "endDate": "Sep 2015",
+      "responsibilities": [
+        "Operated non-intrusive inspection equipment safely, following established procedures",
+        "Performed basic (level I) maintenance and regular inspections of facilities, peripheral systems and inspection equipment",
+        "Collaborated on major maintenance (levels II and III) when required",
+        "Maintained constant written and verbal communication with all site personnel during operations",
+        "Reported incidents, failures, anomalies and situations in applicable reports, records and logs",
+        "Informed supervision and internal/external scanner maintenance personnel of any failures or anomalies",
+        "Supervised operations at all work stations in the absence of the Site Supervisor/Site Manager",
+        "Ensured radiological protection standards during the scanning process"
+      ],
+      "achievements": [
+        "Achieved >95% system uptime with zero critical failures during operation times",
+        "Maintained 100% compliance with safety and operational standards",
+        "Reduced resource usage by 75% through implementation of digital documentation systems"
+      ]
+    },
+    {
+      "id": "cotecna-supervisor",
+      "title": "Site Supervisor",
+      "company": "COTECNA de El Salvador",
+      "location": "Sonsonate, El Salvador",
+      "startDate": "Oct 2015",
+      "endDate": "Apr 2017",
+      "responsibilities": [
+        "Executed operational and safety decisions and instructions from the Site Manager and ensured procedures were followed by operational staff",
+        "Maintained a high level of ethics and a positive work environment",
+        "Maintained discipline and a culture of good practice at the site",
+        "Scheduled shifts and distributed work according to Site Manager instructions",
+        "Coordinated container flow in the scanning process",
+        "Collected data and reports at end of day and transmitted them to the Site Manager",
+        "Handed over information about shift activity to the next supervisor",
+        "Remained alert to any technical irregularities in the scanning process and reported immediately to the Site Manager or Operations Manager",
+        "Remained fully alert to emergency response plan aspects and executed when necessary"
+      ],
+      "achievements": [
+        "Maintained perfect safety record through enhanced protocol adherence",
+        "Achieved >95% uptime for high-energy X-ray systems according to key indicators",
+        "Achieved 100% certification success rate for new operator training"
+      ]
+    },
+    {
+      "id": "cotecna-site-manager",
+      "title": "Site Manager",
+      "company": "COTECNA de El Salvador",
+      "location": "Sonsonate, El Salvador",
+      "startDate": "Apr 2017",
+      "endDate": "Jan 2024",
+      "responsibilities": [
+        "Executed operational and safety decisions and instructions from General Management and ensured exact compliance with procedures by operational staff",
+        "Maintained a high sense of discipline and culture of good practice at the site",
+        "Maintained a high level of ethics and work environment",
+        "Scheduled shifts and distributed work according to Operations Manager instructions",
+        "Evaluated and identified improvement opportunities in existing work flow and continuous site development",
+        "Applied safety, hygiene and health standards",
+        "Remained fully alert to emergency response plan aspects as Designated Radiation Protection Officer (PCR); ensured all radiological standards were applied",
+        "Ensured rotation of personal dosimeters and daily collection of active dosimeter data",
+        "Collected data and reports at end of day; drafted and transmitted operational, radiological safety and other reports to the Operations Manager as required",
+        "Kept Maintenance Technician and Operations Manager informed of every technical problem",
+        "Remained alert to any technical irregularity in the scanning process and took immediate corrective action",
+        "Reported any problem to the Operations Manager in real time",
+        "Controlled stock of spare parts and other consumables",
+        "Evaluated site employee efficiency",
+        "Communicated with entities involved in the process"
+      ],
+      "achievements": [
+        "Achieved >95% compliance with corporate KPIs in container scanning operations",
+        "Maintained full operational continuity during COVID-19 pandemic while meeting all performance targets",
+        "Launched COTECNA Guatemala operations within 3-week deadline"
+      ]
+    },
+    {
+      "id": "cotecna-qms",
+      "title": "Quality Management System Administrator",
+      "company": "COTECNA de El Salvador",
+      "location": "Sonsonate, El Salvador",
+      "startDate": "Jan 2021",
+      "endDate": "Jan 2024",
+      "responsibilities": [
+        "Executed Quality decisions and instructions from Headquarters (Geneva) and ensured exact compliance with procedures across the organization, ensuring the quality management system meets ISO 9001:2015 requirements",
+        "Prepared and delivered training on general knowledge of ISO 9001:2015 for the organization",
+        "Prepared and delivered internal auditor training based on ISO 9001:2015",
+        "Coordinated and executed the annual internal audit process for COTES; coordinated timing, prepared required documents and presented audit results to auditees and senior management",
+        "Coordinated and executed annually the management review process and supplier evaluation",
+        "Coordinated and executed annually the process for closing nonconformities, corrective actions and improvement opportunities",
+        "Updated and tracked mandatory documents on the international QMS Network Workspace platform",
+        "Reviewed, updated and safeguarded formats required by ISO 9001:2015 from headquarters: operational/maintenance/quality/occupational safety reports and formats and any QMS documentation",
+        "Eliminated rework and duplicate functions in procedures, evaluating their efficiency and correct application by users",
+        "Fostered a culture of objective evidence, record keeping and supporting documentation for management results"
+      ],
+      "achievements": [
+        "Achieved ISO 9001:2015 re-certification with zero non-conformities",
+        "Improved operational efficiency by modernizing 43 key organizational procedures",
+        "Maintained 100% compliance with Geneva headquarters documentation standards"
+      ]
+    }
+  ]
+}

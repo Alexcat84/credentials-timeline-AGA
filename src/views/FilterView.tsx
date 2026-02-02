@@ -51,6 +51,10 @@ export default function FilterView({
 
   return (
     <div className="flex flex-col gap-4 h-[calc(100vh-80px)] bg-gradient-to-b from-cyan-50/50 to-teal-50/50 rounded-2xl p-4">
+      <div className="flex-shrink-0">
+        <h2 className="text-xl font-semibold text-slate-800">Diplomas by category</h2>
+        <p className="text-sm text-slate-500 mt-0.5">Browse credentials by topic or location.</p>
+      </div>
       {/* Dropdowns: celestito style */}
       <div className="flex flex-wrap items-end gap-4 flex-shrink-0">
         <div className="flex flex-col gap-1.5 min-w-[200px]">
