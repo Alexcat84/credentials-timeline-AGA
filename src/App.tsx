@@ -7,6 +7,8 @@ import SegmentView from './views/SegmentView';
 import DetailView from './views/DetailView';
 import FilterView from './views/FilterView';
 import KamehamehaCursor from './components/KamehamehaCursor';
+import QuickStartPanel from './components/QuickStartPanel';
+import ContactFloating from './components/ContactFloating';
 import type { CredentialsData, CategoriesData, MilestonesData, Segment, Credential, Milestone } from './types';
 
 const CREDENTIALS_URL = '/data/credentials.json';
@@ -44,6 +46,7 @@ function App() {
   /** Filter by category: state lifted so it persists when navigating to detail and back. Same filter for both presentation modes (formal and dragonball). */
   const [filterCategoryId, setFilterCategoryId] = useState<string>('');
   const [filterLocationId, setFilterLocationId] = useState<string>('');
+  const [quickStartOpen, setQuickStartOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -64,10 +67,10 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-100">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-600 text-sm">Loading journey…</p>
+          <div className="w-10 h-10 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-slate-700 text-sm font-medium">Loading journey…</p>
         </div>
       </div>
     );
@@ -75,8 +78,8 @@ function App() {
 
   if (error || !credentialsData || !categoriesData || !milestonesData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <p className="text-red-600">{error ?? 'Missing data'}</p>
+      <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
+        <p className="text-red-600 text-center font-medium">{error ?? 'Missing data'}</p>
       </div>
     );
   }
@@ -188,7 +191,7 @@ function App() {
   return (
     <div className={`h-screen flex flex-col bg-slate-50 overflow-hidden ${showKamehamehaCursor ? 'cursor-none' : ''}`}>
       {showKamehamehaCursor && <KamehamehaCursor />}
-      <header className="flex-shrink-0 border-b border-slate-200 bg-white/95 backdrop-blur shadow-sm z-10">
+      <header className="relative flex-shrink-0 border-b border-slate-200 bg-white/95 backdrop-blur shadow-sm z-10">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             {showBackFromDetail && (
@@ -203,6 +206,23 @@ function App() {
             <h1 className="text-base font-semibold text-slate-800 truncate">
               {credentialsData.profile.shortName ?? credentialsData.profile.name}
             </h1>
+          </div>
+          <div className="absolute left-1/2 top-0 bottom-0 flex items-center -translate-x-1/2 pointer-events-none">
+            <div className="pointer-events-auto">
+              <button
+                type="button"
+                onClick={() => setQuickStartOpen(true)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-emerald-700 bg-emerald-50/90 border border-emerald-200/80 hover:bg-emerald-100/90 hover:border-emerald-300 transition-colors"
+                title="How to use this page"
+                aria-label="Quick Start – How to use"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 16v-4M12 8h.01" />
+                </svg>
+                Quick Start
+              </button>
+            </div>
           </div>
           <nav className="flex items-center gap-3 flex-shrink-0">
             <button
@@ -254,6 +274,9 @@ function App() {
           </nav>
         </div>
       </header>
+
+      <QuickStartPanel open={quickStartOpen} onClose={() => setQuickStartOpen(false)} />
+      <ContactFloating profile={credentialsData.profile} />
 
       <main
         className="w-full flex flex-col overflow-hidden flex-1 min-h-0"

@@ -19,12 +19,21 @@ export interface Category {
   type: 'topic' | 'geographic';
 }
 
+/** Optional contact for floating CTA (call / email / LinkedIn). */
+export interface ProfileContact {
+  phone?: string;
+  email?: string;
+  linkedIn?: string;
+}
+
 export interface Profile {
   name: string;
   /** Short name for headers/titles (e.g. "Alexis Garcia"). Falls back to name if not set. */
   shortName?: string;
   title: string;
   recordPeriod: string;
+  /** Optional: shown in floating contact bar so visitors can call or email. */
+  contact?: ProfileContact;
 }
 
 export interface CredentialsData {
