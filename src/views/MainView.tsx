@@ -365,25 +365,27 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     },
   });
 
-  /** On mount: request one fit (debounced with theme/file so we only run once). */
+  /** On mount: request fit only when we don't have saved layout (first load). When returning we keep saved positions, no fit = no jump. */
   useEffect(() => {
     if (!reactFlowInstance || milestones.length === 0 || hasFittedAll.current || hasScaledToFit.current) return;
     hasFittedAll.current = true;
-    requestFit();
+    const hasSavedLayout = Object.keys(savedPositions).length > 0;
+    if (!hasSavedLayout) requestFit();
     return () => {
       if (fitScheduleRef.current) clearTimeout(fitScheduleRef.current);
       clearTimeout(fitViewTimeout.current);
     };
-  }, [reactFlowInstance, milestones.length, requestFit]);
+  }, [reactFlowInstance, milestones.length, requestFit, savedPositions]);
 
-  /** When switching to fun mode, request fit with larger bbox (debounced). */
+  /** When switching to fun mode, request fit only if no saved layout (otherwise we'd re-scale and cause a jump). */
   useEffect(() => {
     if (theme !== 'dragonball' || !reactFlowInstance || nodes.length === 0) return;
-    requestFit();
+    const hasSavedLayout = Object.keys(savedPositions).length > 0;
+    if (!hasSavedLayout) requestFit();
     return () => {
       if (fitScheduleRef.current) clearTimeout(fitScheduleRef.current);
     };
-  }, [theme, reactFlowInstance, nodes.length, requestFit]);
+  }, [theme, reactFlowInstance, nodes.length, requestFit, savedPositions]);
 
   const goNext = useCallback(() => {
     if (currentNodeIndex >= milestones.length - 1) return;
