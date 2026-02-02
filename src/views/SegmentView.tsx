@@ -161,13 +161,25 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
     setSavedPositions(loadSavedPositionsForSegment(segment));
     setDefaultPositionsFromFile(null);
     setPendingRefitAfterFile(false);
+    let cancelled = false;
     fetch(getSegmentPositionsFileUrl(segment))
       .then((r) => (r.ok ? r.json() : {}))
       .then((data) => {
+        if (cancelled) return;
         const map = typeof data === 'object' && data !== null ? (data as Record<string, { x: number; y: number }>) : {};
         setDefaultPositionsFromFile(map);
       })
-      .catch(() => setDefaultPositionsFromFile({}));
+      .catch(() => {
+        if (!cancelled) setDefaultPositionsFromFile({});
+      });
+    const fallback = setTimeout(() => {
+      if (cancelled) return;
+      setDefaultPositionsFromFile((prev) => (prev === null ? {} : prev));
+    }, 800);
+    return () => {
+      cancelled = true;
+      clearTimeout(fallback);
+    };
   }, [segment.fromYear, segment.toYear]);
 
   /** Per-credential circle label: "Mon YYYY" from date when parseable; "YYYY-YYYY" for primary; otherwise year. */
@@ -476,20 +488,22 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
     return () => window.removeEventListener('keydown', handleKey);
   }, [goNext, goPrev]);
 
-  /** On mount/segment: scale layout to predefined area at zoom 1 (first page only). */
+  /** On mount/segment: scale layout once segment positions file has loaded, so we don't scale snake. */
   useEffect(() => {
     if (!reactFlowInstance || sortedPage.length === 0 || hasFittedPage.current) return;
+    if (defaultPositionsFromFile === null) return; // wait for fetch so we scale the correct layout
     hasFittedPage.current = true;
     const t = setTimeout(() => scaleLayoutToFit(), 120);
     return () => {
       clearTimeout(t);
       clearTimeout(fitViewTimeout.current);
     };
-  }, [reactFlowInstance, segment.fromYear, segment.toYear, sortedPage.length, scaleLayoutToFit]);
+  }, [reactFlowInstance, segment.fromYear, segment.toYear, sortedPage.length, scaleLayoutToFit, defaultPositionsFromFile]);
 
-  /** After page change: run fit once nodes have been updated to the new page (Section 2 of 2, etc.). */
+  /** After page change: run fit only once segment positions file has loaded, so we scale the correct layout (not snake). */
   useEffect(() => {
     if (pendingFitForPage === null || pendingFitForPage !== currentPage || nodes.length === 0) return;
+    if (defaultPositionsFromFile === null) return; // wait for fetch (success or empty) so we don't scale snake
     if (!reactFlowInstance) return;
     let cancelled = false;
     const runFit = () => {
@@ -509,7 +523,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
       cancelAnimationFrame(raf1);
       clearTimeout(t);
     };
-  }, [pendingFitForPage, currentPage, nodes.length, reactFlowInstance]);
+  }, [pendingFitForPage, currentPage, nodes.length, reactFlowInstance, defaultPositionsFromFile]);
 
   const progressPct =
     totalPages > 0 ? ((currentPage * CREDENTIALS_PER_PAGE + currentNodeIndex + 1) / totalCredentials) * 100 : 0;
