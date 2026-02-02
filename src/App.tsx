@@ -11,6 +11,7 @@ import KamehamehaCursor from './components/KamehamehaCursor';
 import QuickStartPanel from './components/QuickStartPanel';
 import ContactFloating from './components/ContactFloating';
 import type { CredentialsData, CategoriesData, MilestonesData, ExperienceData, Segment, Credential, Milestone } from './types';
+import { trackPageView } from './analytics';
 
 const CREDENTIALS_URL = '/data/credentials.json';
 const CATEGORIES_URL = '/data/categories.json';
@@ -92,6 +93,22 @@ function App() {
   const currentTimeline = timelineStack[timelineStack.length - 1];
   const showTimelineBack = timelineStack.length > 1;
   const showBackFromDetail = view === 'timeline' && currentTimeline.view === 'detail' && (showTimelineBack || returnToView === 'filter');
+
+  // GA4: virtual page view per section (Timeline, Diplomas, Experience, etc.)
+  useEffect(() => {
+    if (!credentialsData) return;
+    const section =
+      view === 'experience'
+        ? { name: 'Professional experience', path: '/experience' }
+        : view === 'filter'
+          ? { name: 'Diplomas by category', path: '/filter' }
+          : currentTimeline.view === 'detail'
+            ? { name: 'Timeline – Diploma detail', path: '/timeline/detail' }
+            : currentTimeline.view === 'segment'
+              ? { name: 'Timeline – Segment', path: '/timeline/segment' }
+              : { name: 'Timeline', path: '/timeline' };
+    trackPageView(section.name, section.path);
+  }, [view, currentTimeline.view, credentialsData]);
 
   const handleSegmentSelect = (segment: Segment) => {
     setTimelineStack((s) => [...s, { view: 'segment', segment, initialPage: 0 }]);
