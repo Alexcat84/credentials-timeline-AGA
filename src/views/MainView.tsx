@@ -117,7 +117,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
   const initialNodes: Node[] = useMemo(
     () =>
       milestones.map((m, i) => {
-        const pos = savedPositions[m.id] ?? getLinearPosition(i);
+        const pos = savedPositions[m.id] ?? defaultPositionsFromFile?.[m.id] ?? getLinearPosition(i);
         return {
           id: m.id,
           type: 'circleMilestone',
@@ -233,6 +233,9 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
 
   useEffect(() => {
     if (!defaultPositionsFromFile || Object.keys(defaultPositionsFromFile).length === 0) return;
+    const willApplyFromFile = milestones.some(
+      (m) => !savedPositions[m.id] && defaultPositionsFromFile[m.id]
+    );
     setNodes((nds) =>
       nds.map((n) => {
         if (savedPositions[n.id]) return n;
@@ -241,8 +244,8 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
         return { ...n, position: fromFile };
       })
     );
-    setPendingRefitAfterFile(true);
-  }, [defaultPositionsFromFile, setNodes, savedPositions]);
+    if (willApplyFromFile) setPendingRefitAfterFile(true);
+  }, [defaultPositionsFromFile, setNodes, savedPositions, milestones]);
 
   /** Re-fit viewport after file positions applied (wait for paint then fit, and retry once for late layout). */
   useEffect(() => {
@@ -305,6 +308,25 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     setLayoutLocked(false);
     setNodes((nds) => nds.map((n) => ({ ...n, draggable: true })));
   }, [setNodes]);
+
+  const handleResetLayout = useCallback(() => {
+    try {
+      localStorage.removeItem(POSITIONS_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    setSavedPositions({});
+    if (defaultPositionsFromFile && Object.keys(defaultPositionsFromFile).length > 0) {
+      setNodes((nds) =>
+        nds.map((n) => {
+          const idx = milestones.findIndex((m) => m.id === n.id);
+          const pos = defaultPositionsFromFile[n.id] ?? getLinearPosition(Math.max(0, idx));
+          return { ...n, position: pos };
+        })
+      );
+      setPendingRefitAfterFile(true);
+    }
+  }, [defaultPositionsFromFile, milestones, setNodes]);
 
   const onEdgeClick = useCallback(
     (_: React.MouseEvent, edge: Edge) => {
@@ -449,6 +471,14 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
                   Lock layout
                 </button>
               )}
+              <button
+                type="button"
+                onClick={handleResetLayout}
+                className="px-3 py-2 rounded-xl text-sm font-medium bg-slate-600/80 text-slate-200 border border-slate-500/50 hover:bg-slate-500/80 shadow-lg"
+                title="Restore layout from file (positions moved up)"
+              >
+                Reset layout
+              </button>
             </>
           )}
         </Panel>

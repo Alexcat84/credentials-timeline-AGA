@@ -307,6 +307,14 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
   /** When segment positions file loads, apply positions for nodes that don't have localStorage overrides. */
   useEffect(() => {
     if (!defaultPositionsFromFile || Object.keys(defaultPositionsFromFile).length === 0) return;
+    const currentPageNodeIds = [
+      ...(hasPreviousPage ? [PREVIOUS_SECTION_NODE_ID] : []),
+      ...sortedPage.map((c) => c.id),
+      ...(hasNextPage ? [CONTINUE_NODE_ID] : []),
+    ];
+    const willApplyFromFile = currentPageNodeIds.some(
+      (id) => !savedPositions[id] && defaultPositionsFromFile[id]
+    );
     setNodes((nds) =>
       nds.map((n) => {
         if (savedPositions[n.id]) return n;
@@ -316,8 +324,8 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
       })
     );
     hasFittedPage.current = false;
-    setPendingRefitAfterFile(true);
-  }, [defaultPositionsFromFile, setNodes, savedPositions]);
+    if (willApplyFromFile) setPendingRefitAfterFile(true);
+  }, [defaultPositionsFromFile, setNodes, savedPositions, hasPreviousPage, hasNextPage, sortedPage]);
 
   /** Re-fit viewport after file positions applied (wait for paint then fit, and retry once for late layout). */
   useEffect(() => {
