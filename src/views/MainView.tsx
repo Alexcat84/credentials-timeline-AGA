@@ -189,6 +189,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
 
   const reactFlowInstance = useReactFlow();
   const fitViewTimeout = useRef<ReturnType<typeof setTimeout>>(0);
+  const fitScheduleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasFittedAll = useRef(false);
   const fitAllInViewRef = useRef<((duration?: number) => void) | null>(null);
 
@@ -225,6 +226,16 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     );
     reactFlowInstance.setViewport({ x: 0, y: 0, zoom: STANDARD_ZOOM }, { duration: 0 });
   }, [reactFlowInstance, nodes, setNodes, theme]);
+
+  /** Request a single fit; debounced so multiple triggers (mount, theme, file) result in one run. */
+  const requestFit = useCallback(() => {
+    if (fitScheduleRef.current) clearTimeout(fitScheduleRef.current);
+    fitScheduleRef.current = setTimeout(() => {
+      fitScheduleRef.current = null;
+      scaleLayoutToFit();
+      hasScaledToFit.current = true;
+    }, 280);
+  }, [scaleLayoutToFit]);
 
   const fitAllInView = useCallback(
     (duration = 0) => {
@@ -354,26 +365,25 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     },
   });
 
-  /** On mount: scale layout to predefined area so everything fits at zoom 1 (standardized). */
+  /** On mount: request one fit (debounced with theme/file so we only run once). */
   useEffect(() => {
     if (!reactFlowInstance || milestones.length === 0 || hasFittedAll.current || hasScaledToFit.current) return;
     hasFittedAll.current = true;
-    const t = setTimeout(() => {
-      scaleLayoutToFit();
-      hasScaledToFit.current = true;
-    }, 150);
+    requestFit();
     return () => {
-      clearTimeout(t);
+      if (fitScheduleRef.current) clearTimeout(fitScheduleRef.current);
       clearTimeout(fitViewTimeout.current);
     };
-  }, [reactFlowInstance, milestones.length, scaleLayoutToFit]);
+  }, [reactFlowInstance, milestones.length, requestFit]);
 
-  /** When switching to fun mode, re-fit with larger bbox (Goku images) so timeline doesn't shift down. */
+  /** When switching to fun mode, request fit with larger bbox (debounced). */
   useEffect(() => {
     if (theme !== 'dragonball' || !reactFlowInstance || nodes.length === 0) return;
-    const t = setTimeout(() => scaleLayoutToFit(), 200);
-    return () => clearTimeout(t);
-  }, [theme, reactFlowInstance, nodes.length, scaleLayoutToFit]);
+    requestFit();
+    return () => {
+      if (fitScheduleRef.current) clearTimeout(fitScheduleRef.current);
+    };
+  }, [theme, reactFlowInstance, nodes.length, requestFit]);
 
   const goNext = useCallback(() => {
     if (currentNodeIndex >= milestones.length - 1) return;
