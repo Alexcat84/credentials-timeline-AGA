@@ -191,7 +191,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
   );
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [currentNodeIndex, setCurrentNodeIndex] = useState(0);
 
   useEffect(() => {
