@@ -27,9 +27,7 @@ const nodeTypes = {
 const CREDENTIALS_PER_PAGE = 7;
 const CONTINUE_NODE_ID = 'segment-continue';
 const PREVIOUS_SECTION_NODE_ID = 'segment-previous-section';
-/** Zoom fijo: el usuario no manipula zoom; elementos mismo tamaño para todos. */
-const STANDARD_ZOOM = 1;
-/** Tamaño aproximado del nodo para calcular bbox al escalar. */
+/** Tamaño aproximado del nodo para calcular bbox al encuadrar. */
 const NODE_SIZE = 100;
 
 /** Snake layout: row 0 left→right (4 nodes), row 1 right→left (3 nodes). */
@@ -352,7 +350,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
     };
   }, [pendingRefitAfterFile, nodes.length]);
 
-  /** Ajustar layout al área de pantalla: escalar posiciones para que la página quepa con zoom fijo 1. */
+  /** Ajustar vista al área de pantalla: solo mueve el viewport (pan+zoom). No toca posiciones de nodos. */
   const scaleLayoutToFit = useCallback(() => {
     if (!containerRef.current || !reactFlowInstance || nodes.length === 0) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -367,22 +365,13 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
     const bboxH = maxY - minY;
     if (bboxW <= 0 || bboxH <= 0) return;
     const padding = 0.85;
-    const scale = Math.min((w / bboxW) * padding, (h / bboxH) * padding);
-    const scaledW = bboxW * scale;
-    const scaledH = bboxH * scale;
-    const offsetX = (w - scaledW) / 2;
-    const offsetY = (h - scaledH) / 2;
-    setNodes((nds) =>
-      nds.map((n) => ({
-        ...n,
-        position: {
-          x: (n.position.x - minX) * scale + offsetX,
-          y: (n.position.y - minY) * scale + offsetY,
-        },
-      }))
-    );
-    reactFlowInstance.setViewport({ x: 0, y: 0, zoom: STANDARD_ZOOM }, { duration: 0 });
-  }, [reactFlowInstance, nodes, setNodes]);
+    const zoom = Math.min((w / bboxW) * padding, (h / bboxH) * padding);
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
+    const viewportX = w / 2 - centerX * zoom;
+    const viewportY = h / 2 - centerY * zoom;
+    reactFlowInstance.setViewport({ x: viewportX, y: viewportY, zoom }, { duration: 0 });
+  }, [reactFlowInstance, nodes]);
   scaleLayoutToFitRef.current = scaleLayoutToFit;
 
   const fitPageInView = useCallback(
@@ -554,8 +543,8 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
         nodeTypes={nodeTypes}
         nodesDraggable={!layoutLocked}
         fitView={false}
-        minZoom={STANDARD_ZOOM}
-        maxZoom={STANDARD_ZOOM}
+        minZoom={0.2}
+        maxZoom={1.5}
         zoomOnScroll={false}
         zoomOnPinch={false}
         zoomOnDoubleClick={false}

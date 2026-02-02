@@ -26,9 +26,7 @@ const nodeTypes = { circleMilestone: CircleMilestoneNode as ComponentType<any> }
 
 const VIEWPORT_STORAGE_KEY = 'timeline-main-viewport';
 const POSITIONS_STORAGE_KEY = 'timeline-main-positions';
-/** Zoom fijo: el usuario no manipula zoom; elementos mismo tamaño para todos. */
-const STANDARD_ZOOM = 1;
-/** Tamaño aproximado del nodo (círculo) para calcular bbox al escalar. */
+/** Tamaño aproximado del nodo (círculo) para calcular bbox al encuadrar. */
 const NODE_SIZE = 100;
 /** En fun mode el nodo incluye imagen de Goku (arriba/abajo): más alto para el bbox. */
 const NODE_HEIGHT_DRAGONBALL = 280;
@@ -226,7 +224,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
   const hasFittedAll = useRef(false);
   const fitAllInViewRef = useRef<((duration?: number) => void) | null>(null);
 
-  /** Ajustar layout al área de pantalla: escalar posiciones para que todo quepa con zoom fijo 1. */
+  /** Ajustar vista al área de pantalla: solo mueve el viewport (pan+zoom). No toca posiciones de nodos. */
   const scaleLayoutToFit = useCallback(() => {
     if (!containerRef.current || !reactFlowInstance || nodes.length === 0) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -243,22 +241,13 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
     const bboxH = maxY - minY;
     if (bboxW <= 0 || bboxH <= 0) return;
     const padding = 0.85;
-    const scale = Math.min((w / bboxW) * padding, (h / bboxH) * padding);
-    const scaledW = bboxW * scale;
-    const scaledH = bboxH * scale;
-    const offsetX = (w - scaledW) / 2;
-    const offsetY = (h - scaledH) / 2;
-    setNodes((nds) =>
-      nds.map((n) => ({
-        ...n,
-        position: {
-          x: (n.position.x - minX) * scale + offsetX,
-          y: (n.position.y - minY) * scale + offsetY,
-        },
-      }))
-    );
-    reactFlowInstance.setViewport({ x: 0, y: 0, zoom: STANDARD_ZOOM }, { duration: 0 });
-  }, [reactFlowInstance, nodes, setNodes, theme]);
+    const zoom = Math.min((w / bboxW) * padding, (h / bboxH) * padding);
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
+    const viewportX = w / 2 - centerX * zoom;
+    const viewportY = h / 2 - centerY * zoom;
+    reactFlowInstance.setViewport({ x: viewportX, y: viewportY, zoom }, { duration: 0 });
+  }, [reactFlowInstance, nodes, theme]);
 
   /** Request a single fit; debounced so multiple triggers (mount, theme, file) result in one run. */
   const requestFit = useCallback(() => {
@@ -519,8 +508,8 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
         nodesDraggable={!layoutLocked}
         defaultViewport={initialViewport}
         fitView={false}
-        minZoom={STANDARD_ZOOM}
-        maxZoom={STANDARD_ZOOM}
+        minZoom={0.2}
+        maxZoom={1.5}
         zoomOnScroll={false}
         zoomOnPinch={false}
         zoomOnDoubleClick={false}
