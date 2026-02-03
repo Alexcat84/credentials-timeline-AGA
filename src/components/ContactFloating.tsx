@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Profile } from '../types';
 
 type ContactFloatingProps = {
@@ -5,6 +6,7 @@ type ContactFloatingProps = {
 };
 
 export default function ContactFloating({ profile }: ContactFloatingProps) {
+  const [open, setOpen] = useState(false);
   const contact = profile.contact;
   const hasPhone = contact?.phone?.trim();
   const hasEmail = contact?.email?.trim();
@@ -21,21 +23,30 @@ export default function ContactFloating({ profile }: ContactFloatingProps) {
 
   return (
     <div
-      className="group fixed bottom-0 right-4 z-30 w-[min(100vw-2rem,300px)] flex flex-col-reverse overflow-hidden"
+      className={`group fixed bottom-0 right-0 z-30 flex flex-col-reverse overflow-hidden rounded-tl-xl shadow-lg
+        w-[min(100vw-1rem,140px)] sm:w-[min(100vw-2rem,300px)]
+        ${open ? '!w-[min(92vw,280px)] max-h-[min(55vh,320px)]' : 'max-h-[52px]'} sm:max-h-none
+        bottom-2 right-2 sm:bottom-0 sm:right-4`}
       aria-label="Contact"
     >
-      {/* Pestaña: visible solo cuando el panel está cerrado; al hacer hover se oculta y se muestra solo el panel */}
-      <div className="flex-shrink-0 max-h-20 overflow-hidden transition-all duration-300 ease-out group-hover:max-h-0 group-hover:opacity-0 px-4 py-2.5 rounded-t-lg bg-gradient-to-r from-cyan-500/25 to-teal-500/25 border border-b-0 border-cyan-400/30 shadow-md cursor-default">
-        <span className="text-xs font-semibold text-cyan-800 uppercase tracking-wider">Contact me</span>
-      </div>
-      {/* Panel que se desliza: arriba "Contact me", abajo los datos */}
-      <div className="translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0 flex flex-col rounded-t-xl bg-white/95 backdrop-blur border border-b-0 border-slate-200/80 shadow-xl overflow-hidden">
-        {/* Arriba: título Contact me */}
-        <div className="flex-shrink-0 px-4 py-2.5 rounded-t-xl bg-gradient-to-r from-cyan-500/20 to-teal-500/20 border-b border-slate-200/60">
-          <span className="text-xs font-semibold text-cyan-800 uppercase tracking-wider">Contact me</span>
+      {/* Pestaña: tap en móvil; hover en desktop */}
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex-shrink-0 px-3 py-2 sm:px-4 sm:py-2.5 rounded-t-xl bg-gradient-to-r from-cyan-500/25 to-teal-500/25 border border-b-0 border-cyan-400/30 shadow-md text-left touch-manipulation min-h-[44px] w-full sm:max-h-20 overflow-hidden transition-all duration-300 ease-out sm:group-hover:max-h-0 sm:group-hover:opacity-0"
+        aria-expanded={open}
+        aria-label={open ? 'Cerrar contacto' : 'Ver contacto'}
+      >
+        <span className="text-[10px] sm:text-xs font-semibold text-cyan-800 uppercase tracking-wider">Contact me</span>
+      </button>
+      {/* Panel: abierto por estado en móvil, por hover en desktop */}
+      <div
+        className={`flex flex-col rounded-t-xl bg-white/95 backdrop-blur border border-b-0 border-slate-200/80 shadow-xl overflow-hidden transition-transform duration-300 ease-out flex-1 min-h-0 translate-y-full sm:group-hover:translate-y-0 ${open ? '!translate-y-0' : ''}`}
+      >
+        <div className="flex-shrink-0 px-3 py-2 sm:px-4 sm:py-2.5 rounded-t-xl bg-gradient-to-r from-cyan-500/20 to-teal-500/20 border-b border-slate-200/60">
+          <span className="text-[10px] sm:text-xs font-semibold text-cyan-800 uppercase tracking-wider">Contact me</span>
         </div>
-        {/* Abajo: teléfono, email, LinkedIn */}
-        <div className="px-3 py-3 space-y-2 text-sm">
+        <div className="px-2 py-2 sm:px-3 sm:py-3 space-y-1.5 sm:space-y-2 text-xs sm:text-sm overflow-y-auto flex-1 min-h-0">
           {hasPhone && (
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4 flex-shrink-0 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

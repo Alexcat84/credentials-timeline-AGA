@@ -267,54 +267,65 @@ function App() {
               </button>
             )}
           </nav>
-          {/* Mobile: hamburger */}
+          {/* Mobile: hamburger — muy visible */}
           <button
             type="button"
             onClick={() => setMobileNavOpen(true)}
-            className="md:hidden flex-shrink-0 p-2.5 rounded-lg text-slate-600 hover:bg-slate-100 border border-slate-200 min-h-[44px] min-w-[44px] flex items-center justify-center"
-            aria-label="Open menu"
+            className="md:hidden flex-shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-cyan-500 text-white shadow-md border border-cyan-400/50 active:bg-cyan-600 touch-manipulation"
+            aria-label="Abrir menú"
           >
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12h18M3 6h18M3 18h18" /></svg>
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12h18M3 6h18M3 18h18" /></svg>
           </button>
         </div>
-        {/* Mobile nav drawer */}
-        {mobileNavOpen && (
-          <>
-            <div className="md:hidden fixed inset-0 bg-slate-900/50 z-40" onClick={closeMobileNav} aria-hidden />
-            <div className="md:hidden fixed top-0 right-0 bottom-0 w-full max-w-sm bg-white shadow-xl z-50 flex flex-col p-4 pt-6">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-sm font-medium text-slate-500">Menu</span>
-                <button type="button" onClick={closeMobileNav} className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 min-h-[44px] min-w-[44px] flex items-center justify-center" aria-label="Close menu">
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
-                </button>
-              </div>
-              <nav className="flex flex-col gap-1">
-                <button type="button" onClick={() => { closeMobileNav(); setTheme(null); setHasEntered(false); try { sessionStorage.removeItem(THEME_STORAGE_KEY); } catch { /* ignore */ } }} className="flex items-center gap-3 px-4 py-3 rounded-xl text-left text-slate-600 hover:bg-slate-100 text-sm font-medium min-h-[48px]">
-                  Change presentation mode
-                </button>
-                <button type="button" onClick={() => { closeMobileNav(); setQuickStartOpen(true); }} className="flex items-center gap-3 px-4 py-3 rounded-xl text-left text-emerald-700 hover:bg-emerald-50 text-sm font-medium min-h-[48px]">
-                  <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
-                  Quick Start
-                </button>
-                <button type="button" onClick={() => { closeMobileNav(); setView('timeline'); }} className={`flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-semibold min-h-[48px] ${view === 'timeline' ? 'bg-cyan-500 text-white' : 'text-slate-700 hover:bg-slate-100'}`}>
-                  <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h10M4 18h6" /><circle cx="18" cy="6" r="2" /><circle cx="14" cy="12" r="2" /><circle cx="10" cy="18" r="2" /></svg>
-                  Timeline
-                </button>
-                <button type="button" onClick={() => { closeMobileNav(); setView('filter'); }} className={`flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-semibold min-h-[48px] ${view === 'filter' ? 'bg-cyan-500 text-white' : 'text-slate-700 hover:bg-slate-100'}`}>
-                  <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
-                  Diplomas by category
-                </button>
-                {experienceData?.positions?.length && (
-                  <button type="button" onClick={() => { closeMobileNav(); setView('experience'); }} className={`flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-semibold min-h-[48px] ${view === 'experience' ? 'bg-cyan-500 text-white' : 'text-slate-700 hover:bg-slate-100'}`}>
-                    <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
-                    Professional experience
-                  </button>
-                )}
-              </nav>
-            </div>
-          </>
-        )}
       </header>
+      {/* Mobile nav drawer: fuera del header para z-index correcto y taps fiables */}
+      {mobileNavOpen && (
+        <>
+          <div
+            className="md:hidden fixed inset-0 bg-slate-900/60 z-[90]"
+            onClick={closeMobileNav}
+            aria-hidden
+          />
+          <div
+            className="md:hidden fixed top-0 right-0 bottom-0 w-full max-w-[280px] bg-white shadow-2xl z-[100] flex flex-col p-4 pt-6 overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menú de navegación"
+            onClick={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-base font-semibold text-slate-800">Menú</span>
+              <button type="button" onClick={closeMobileNav} className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl bg-slate-100 text-slate-600 active:bg-slate-200 touch-manipulation" aria-label="Cerrar menú">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <nav className="flex flex-col gap-2">
+              <button type="button" onClick={() => { setTheme(null); setHasEntered(false); try { sessionStorage.removeItem(THEME_STORAGE_KEY); } catch { /* ignore */ } closeMobileNav(); }} className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-slate-700 bg-slate-50 border border-slate-200 text-sm font-medium min-h-[48px] active:bg-slate-100 touch-manipulation w-full">
+                Change presentation mode
+              </button>
+              <button type="button" onClick={() => { setQuickStartOpen(true); closeMobileNav(); }} className="flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-emerald-700 bg-emerald-50/80 border border-emerald-200/60 text-sm font-medium min-h-[48px] active:bg-emerald-100 touch-manipulation w-full">
+                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
+                Quick Start
+              </button>
+              <button type="button" onClick={() => { setView('timeline'); closeMobileNav(); }} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold min-h-[48px] touch-manipulation w-full ${view === 'timeline' ? 'bg-cyan-500 text-white border border-cyan-400' : 'text-slate-700 bg-slate-50 border border-slate-200 active:bg-slate-100'}`}>
+                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h10M4 18h6" /><circle cx="18" cy="6" r="2" /><circle cx="14" cy="12" r="2" /><circle cx="10" cy="18" r="2" /></svg>
+                Timeline
+              </button>
+              <button type="button" onClick={() => { setView('filter'); closeMobileNav(); }} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold min-h-[48px] touch-manipulation w-full ${view === 'filter' ? 'bg-cyan-500 text-white border border-cyan-400' : 'text-slate-700 bg-slate-50 border border-slate-200 active:bg-slate-100'}`}>
+                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
+                Diplomas by category
+              </button>
+              {experienceData?.positions?.length && (
+                <button type="button" onClick={() => { setView('experience'); closeMobileNav(); }} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold min-h-[48px] touch-manipulation w-full ${view === 'experience' ? 'bg-cyan-500 text-white border border-cyan-400' : 'text-slate-700 bg-slate-50 border border-slate-200 active:bg-slate-100'}`}>
+                  <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
+                  Professional experience
+                </button>
+              )}
+            </nav>
+          </div>
+        </>
+      )}
 
       <QuickStartPanel open={quickStartOpen} onClose={() => setQuickStartOpen(false)} />
       <ContactFloating profile={credentialsData.profile} />
