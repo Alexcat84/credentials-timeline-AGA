@@ -64,167 +64,144 @@ export default function DetailView({ credential, credentialIndex, categories, on
   return (
     <div className="relative flex-1 w-full min-h-0 flex flex-col overflow-hidden">
       {theme === 'dragonball' && <CredentialWallpaper credentialIndex={credentialIndex >= 0 ? credentialIndex : 0} />}
-      <div className="relative z-10 flex-1 w-full min-h-0 flex flex-col md:flex-row gap-0 overflow-hidden bg-gradient-to-br from-cyan-50/90 via-white to-teal-50/80">
-      {/* Center: diploma image(s) */}
-      <div className="flex-1 min-h-0 flex flex-col rounded-2xl overflow-hidden border border-cyan-200/60 bg-white/80 shadow-inner">
-        <div className="p-3 border-b border-cyan-200/60 bg-gradient-to-r from-cyan-100/80 to-teal-100/80">
-          <h2 className="text-sm font-semibold text-cyan-900">Diploma / Certificate</h2>
-        </div>
-        <div className="flex-1 min-h-0 flex flex-col p-3 sm:p-4 overflow-hidden min-h-[200px]">
-          {hasImages ? (
-            <>
-              {/* En móvil altura fija para que el % del img resuelva; en desktop flex normal */}
-              <div ref={containerRef} className="flex-1 w-full flex flex-col min-h-0 h-[50vh] sm:h-auto sm:min-h-0" style={{ minHeight: 0 }}>
-                <div className="flex-1 w-full min-h-0 overflow-auto sm:overflow-hidden flex items-center justify-center h-[50vh] sm:h-full">
-                  {readyForZoom ? (
-                    <TransformWrapper
-                      key={currentImageSrc}
-                      ref={transformRef}
-                      initialScale={fitScale}
-                      minScale={fitScale}
-                      maxScale={Math.max(4, fitScale * 4)}
-                      centerOnInit
-                      limitToBounds
-                      panning={{ velocityDisabled: true }}
-                      doubleClick={{ disabled: true }}
-                      wheel={{ step: 0.2 }}
-                    >
-                      <TransformComponent
-                        wrapperStyle={{
-                          width: '100%',
-                          height: '100%',
-                          minHeight: 0,
-                        }}
-                        contentStyle={{
-                          width: imageNaturalSize!.w,
-                          height: imageNaturalSize!.h,
-                        }}
-                      >
-                        <img
-                          src={currentImageSrc}
-                          alt={`${credential.title} – image ${imageIndex + 1}`}
-                          onLoad={handleImageLoad}
-                          draggable={false}
-                          style={{
-                            display: 'block',
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'contain',
-                          }}
-                          className="rounded-xl shadow-lg border border-cyan-200/50 select-none"
-                        />
-                      </TransformComponent>
-                    </TransformWrapper>
-                  ) : (
+      {/* Móvil: scroll; orden: info arriba (order-1), imágenes abajo en contenedor dedicado (order-2). Desktop: lado a lado, imagen izq (order-1), info der (order-2) */}
+      <div className="relative z-10 flex-1 w-full min-h-0 flex flex-col md:flex-row gap-0 overflow-y-auto md:overflow-hidden bg-gradient-to-br from-cyan-50/90 via-white to-teal-50/80">
+        {/* 1) Área de imágenes: en móvil abajo (order-2) como contenedor exclusivo; en desktop a la izquierda (order-1) */}
+        <section
+          className="order-2 md:order-1 flex-1 min-h-0 flex flex-col w-full md:min-w-0 border-t md:border-t-0 md:border-r border-cyan-200/60 bg-white/80"
+          aria-label="Diploma images"
+        >
+          <div className="px-4 py-2.5 border-b border-cyan-200/60 bg-cyan-100/80 md:bg-cyan-50/80">
+            <h2 className="text-sm font-semibold text-cyan-800">Diploma / Certificate</h2>
+          </div>
+          {/* Contenedor exclusivo para imágenes: en móvil altura mínima para que al hacer scroll se vean bien */}
+          <div
+            ref={containerRef}
+            className="flex-1 min-h-[60vh] md:min-h-0 w-full flex flex-col items-center justify-center p-4 overflow-hidden bg-slate-100/50"
+          >
+            {hasImages ? (
+              readyForZoom ? (
+                <TransformWrapper
+                  initialScale={fitScale}
+                  minScale={fitScale * 0.5}
+                  maxScale={fitScale * 4}
+                  centerOnInit
+                  ref={transformRef}
+                >
+                  <TransformComponent
+                    wrapperStyle={{ width: '100%', height: '100%', minHeight: 'min(60vh, 400px)' }}
+                    contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
                     <img
                       src={currentImageSrc}
-                      alt={`${credential.title} – image ${imageIndex + 1}`}
-                      onLoad={handleImageLoad}
+                      alt={`Diploma ${imageIndex + 1} of ${images.length}`}
+                      className="max-w-full max-h-[min(60vh,70vw)] md:max-h-full object-contain select-none"
                       draggable={false}
-                      className="rounded-xl shadow-lg border border-cyan-200/50 select-none max-w-full w-auto h-auto max-h-[50vh] sm:max-h-full object-contain"
+                      onLoad={handleImageLoad}
                     />
-                  )}
-                </div>
-              </div>
-              {images.length > 1 && (
-                <div className="flex-shrink-0 flex items-center gap-2 flex-wrap justify-center pt-3 group/controls">
-                  <button
-                    type="button"
-                    onClick={() => setImageIndex((i) => Math.max(0, i - 1))}
-                    disabled={imageIndex === 0}
-                    className="px-3 py-1.5 rounded-lg text-sm font-medium bg-cyan-500/0 text-cyan-800/70 hover:bg-cyan-500 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-cyan-500/0"
-                  >
-                    ← Prev
-                  </button>
-                  <span className="text-cyan-800/70 text-sm font-medium group-hover/controls:text-cyan-800 transition-colors">
-                    {imageIndex + 1} / {images.length}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setImageIndex((i) => Math.min(images.length - 1, i + 1))}
-                    disabled={imageIndex === images.length - 1}
-                    className="px-3 py-1.5 rounded-lg text-sm font-medium bg-cyan-500/0 text-cyan-800/70 hover:bg-cyan-500 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-cyan-500/0"
-                  >
-                    Next →
-                  </button>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="text-center text-cyan-700/80 text-sm max-w-md px-4">
-              <p className="font-medium">Image(s) of this diploma or certificate will appear here.</p>
-              <p className="mt-2 text-cyan-600/70">
-                You can add <code className="bg-cyan-100/60 px-1 rounded">imageUrls</code> to the credential in the data; multiple images are supported.
-              </p>
+                  </TransformComponent>
+                </TransformWrapper>
+              ) : (
+                <img
+                  src={currentImageSrc}
+                  alt={`Diploma ${imageIndex + 1} of ${images.length}`}
+                  className="max-w-full max-h-[min(60vh,70vw)] md:max-h-full object-contain"
+                  onLoad={handleImageLoad}
+                />
+              )
+            ) : (
+              <p className="text-slate-500 text-sm">No image available</p>
+            )}
+          </div>
+          {hasImages && images.length > 1 && (
+            <div className="flex items-center justify-center gap-2 py-2 border-t border-cyan-200/60 bg-white/80">
+              <button
+                type="button"
+                onClick={() => setImageIndex((i) => (i <= 0 ? images.length - 1 : i - 1))}
+                className="px-3 py-1.5 rounded-lg bg-cyan-100 text-cyan-800 text-sm font-medium hover:bg-cyan-200"
+                aria-label="Previous image"
+              >
+                ← Prev
+              </button>
+              <span className="text-xs text-slate-600">
+                {imageIndex + 1} / {images.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => setImageIndex((i) => (i >= images.length - 1 ? 0 : i + 1))}
+                className="px-3 py-1.5 rounded-lg bg-cyan-100 text-cyan-800 text-sm font-medium hover:bg-cyan-200"
+                aria-label="Next image"
+              >
+                Next →
+              </button>
             </div>
           )}
-        </div>
-      </div>
+        </section>
 
-      {/* Right: credential detail */}
-      <aside className="w-full md:w-[380px] flex-shrink-0 flex flex-col border-l border-cyan-200/60 bg-gradient-to-b from-white to-cyan-50/50 shadow-xl overflow-hidden max-h-[calc(100vh-56px)]">
-        <div className="p-4 border-b border-cyan-200/60 bg-gradient-to-r from-cyan-500 to-teal-500 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-white">Credential detail</h2>
-          <button
-            type="button"
-            onClick={onBack}
-            className="px-4 py-2.5 rounded-xl text-sm font-semibold bg-white text-cyan-700 shadow-md hover:bg-cyan-50 hover:shadow-lg border border-white/80 transition-all flex items-center gap-2"
-          >
-            ← {backLabel}
-          </button>
-        </div>
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          <div>
-            <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Year</span>
-            <p className="text-lg font-bold text-slate-800 mt-0.5">{credential.year}</p>
+        {/* 2) Credential detail: en móvil arriba, en desktop a la derecha */}
+        <aside className="order-1 md:order-2 w-full md:w-[380px] flex-shrink-0 flex flex-col border-b md:border-b-0 md:border-l border-cyan-200/60 bg-gradient-to-b from-white to-cyan-50/50 shadow-xl overflow-hidden">
+          <div className="p-4 border-b border-cyan-200/60 bg-gradient-to-r from-cyan-500 to-teal-500 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-white">Credential detail</h2>
+            <button
+              type="button"
+              onClick={onBack}
+              className="px-4 py-2.5 rounded-xl text-sm font-semibold bg-white text-cyan-700 shadow-md hover:bg-cyan-50 hover:shadow-lg border border-white/80 transition-all flex items-center gap-2"
+            >
+              ← {backLabel}
+            </button>
           </div>
-          <div>
-            <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Title</span>
-            <p className="text-slate-800 font-medium mt-0.5">{credential.title}</p>
-          </div>
-          <div>
-            <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Institution</span>
-            <p className="text-slate-600 text-sm mt-0.5">{credential.institution}</p>
-          </div>
-          <div>
-            <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Location</span>
-            <p className="text-slate-600 text-sm mt-0.5">{credential.location}</p>
-          </div>
-          {credential.date && (
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
             <div>
-              <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Date</span>
-              <p className="text-slate-600 text-sm mt-0.5">{credential.date}</p>
+              <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Year</span>
+              <p className="text-lg font-bold text-slate-800 mt-0.5">{credential.year}</p>
             </div>
-          )}
-          {credential.duration && (
             <div>
-              <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Duration</span>
-              <p className="text-slate-600 text-sm mt-0.5">{credential.duration}</p>
+              <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Title</span>
+              <p className="text-slate-800 font-medium mt-0.5">{credential.title}</p>
             </div>
-          )}
-          {credential.notes && (
             <div>
-              <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Notes</span>
-              <p className="text-slate-600 text-sm mt-0.5 whitespace-pre-wrap">{credential.notes}</p>
+              <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Institution</span>
+              <p className="text-slate-600 text-sm mt-0.5">{credential.institution}</p>
             </div>
-          )}
-          {categoryLabels.length > 0 && (
             <div>
-              <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Categories</span>
-              <div className="flex flex-wrap gap-1.5 mt-1.5">
-                {categoryLabels.map((label) => (
-                  <span
-                    key={label}
-                    className="px-2.5 py-1 rounded-lg bg-cyan-100 text-cyan-800 text-xs font-medium border border-cyan-200/60"
-                  >
-                    {label}
-                  </span>
-                ))}
+              <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Location</span>
+              <p className="text-slate-600 text-sm mt-0.5">{credential.location}</p>
+            </div>
+            {credential.date && (
+              <div>
+                <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Date</span>
+                <p className="text-slate-600 text-sm mt-0.5">{credential.date}</p>
               </div>
-            </div>
-          )}
-        </div>
-      </aside>
+            )}
+            {credential.duration && (
+              <div>
+                <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Duration</span>
+                <p className="text-slate-600 text-sm mt-0.5">{credential.duration}</p>
+              </div>
+            )}
+            {credential.notes && (
+              <div>
+                <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Notes</span>
+                <p className="text-slate-600 text-sm mt-0.5 whitespace-pre-wrap">{credential.notes}</p>
+              </div>
+            )}
+            {categoryLabels.length > 0 && (
+              <div>
+                <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Categories</span>
+                <div className="flex flex-wrap gap-1.5 mt-1.5">
+                  {categoryLabels.map((label) => (
+                    <span
+                      key={label}
+                      className="px-2.5 py-1 rounded-lg bg-cyan-100 text-cyan-800 text-xs font-medium border border-cyan-200/60"
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </aside>
       </div>
     </div>
   );
