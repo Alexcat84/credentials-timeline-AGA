@@ -48,10 +48,10 @@ export default function DetailView({ credential, credentialIndex, categories, on
     setImageNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
   }, []);
 
-  // Fit scale: image fits exactly in container (like Windows photo viewer)
-  const fitScale =
+  // Escala inicial: que la imagen LLENE el área (cover), no que quepa dentro (contain)
+  const fillScale =
     containerSize && imageNaturalSize && imageNaturalSize.w > 0 && imageNaturalSize.h > 0
-      ? Math.min(containerSize.w / imageNaturalSize.w, containerSize.h / imageNaturalSize.h)
+      ? Math.max(containerSize.w / imageNaturalSize.w, containerSize.h / imageNaturalSize.h)
       : 1;
 
   // Only mount zoom when we have image dimensions so initialScale is correct from first frame
@@ -82,9 +82,9 @@ export default function DetailView({ credential, credentialIndex, categories, on
             {hasImages ? (
               readyForZoom ? (
                 <TransformWrapper
-                  initialScale={fitScale}
-                  minScale={fitScale * 0.5}
-                  maxScale={fitScale * 4}
+                  initialScale={fillScale}
+                  minScale={fillScale * 0.5}
+                  maxScale={fillScale * 4}
                   centerOnInit
                   ref={transformRef}
                 >
@@ -92,10 +92,14 @@ export default function DetailView({ credential, credentialIndex, categories, on
                     wrapperStyle={{ width: '100%', height: '100%', minHeight: 'min(60vh, 400px)' }}
                     contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   >
+                    {/* Imagen a tamaño natural para que el transform la escale correctamente y llene el área */}
                     <img
                       src={currentImageSrc}
                       alt={`Diploma ${imageIndex + 1} of ${images.length}`}
-                      className="max-w-full max-h-[min(60vh,70vw)] md:max-h-full object-contain select-none"
+                      width={imageNaturalSize?.w}
+                      height={imageNaturalSize?.h}
+                      className="block select-none object-cover"
+                      style={{ maxWidth: 'none', maxHeight: 'none' }}
                       draggable={false}
                       onLoad={handleImageLoad}
                     />
@@ -105,7 +109,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
                 <img
                   src={currentImageSrc}
                   alt={`Diploma ${imageIndex + 1} of ${images.length}`}
-                  className="max-w-full max-h-[min(60vh,70vw)] md:max-h-full object-contain"
+                  className="max-w-full max-h-[70vh] w-auto h-auto object-contain"
                   onLoad={handleImageLoad}
                 />
               )
