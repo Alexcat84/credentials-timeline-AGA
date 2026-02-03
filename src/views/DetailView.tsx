@@ -73,8 +73,9 @@ export default function DetailView({ credential, credentialIndex, categories, on
         <div className="flex-1 min-h-0 flex flex-col p-3 sm:p-4 overflow-hidden min-h-[200px]">
           {hasImages ? (
             <>
-              <div ref={containerRef} className="flex-1 min-h-[min(40vh,280px)] sm:min-h-0 w-full flex flex-col" style={{ minHeight: 0 }}>
-                <div className="flex-1 min-h-[min(40vh,260px)] sm:min-h-0 w-full overflow-hidden flex items-center justify-center">
+              {/* En móvil altura fija para que el % del img resuelva; en desktop flex normal */}
+              <div ref={containerRef} className="flex-1 w-full flex flex-col min-h-0 h-[50vh] sm:h-auto sm:min-h-0" style={{ minHeight: 0 }}>
+                <div className="flex-1 w-full min-h-0 overflow-auto sm:overflow-hidden flex items-center justify-center h-[50vh] sm:h-full">
                   {readyForZoom ? (
                     <TransformWrapper
                       key={currentImageSrc}
@@ -120,12 +121,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
                       alt={`${credential.title} – image ${imageIndex + 1}`}
                       onLoad={handleImageLoad}
                       draggable={false}
-                      style={{
-                        maxWidth: '100%',
-                        maxHeight: '100%',
-                        objectFit: 'contain',
-                      }}
-                      className="rounded-xl shadow-lg border border-cyan-200/50 select-none"
+                      className="rounded-xl shadow-lg border border-cyan-200/50 select-none max-w-full w-auto h-auto max-h-[50vh] sm:max-h-full object-contain"
                     />
                   )}
                 </div>
