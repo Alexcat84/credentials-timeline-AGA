@@ -81,7 +81,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
           {/* Contenedor exclusivo para imágenes: en móvil altura mínima para que al hacer scroll se vean bien */}
           <div
             ref={containerRef}
-            className="flex-1 min-h-[60vh] md:min-h-0 w-full flex flex-col items-center justify-center p-4 overflow-hidden bg-slate-100/50"
+            className="flex-1 min-h-[60vh] md:min-h-0 w-full flex flex-col items-center justify-center p-4 overflow-visible bg-slate-100/50"
           >
             {hasImages ? (
               readyForZoom ? (
@@ -91,8 +91,12 @@ export default function DetailView({ credential, credentialIndex, categories, on
                   minScale={scaleToUse * 0.5}
                   maxScale={scaleToUse * 4}
                   centerOnInit
+                  limitToBounds={false}
                   doubleClick={{ disabled: true }}
+                  panning={{ disabled: false }}
                   ref={transformRef}
+                  wrapperClass="!touch-none overflow-visible"
+                  contentClass="!touch-none"
                 >
                   <TransformComponent
                     wrapperStyle={{ width: '100%', height: '100%', minHeight: 'min(60vh, 400px)' }}
