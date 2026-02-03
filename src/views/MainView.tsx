@@ -522,9 +522,9 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
       >
         <Background color="#334155" gap={24} size={1} className={theme === 'dragonball' ? 'opacity-20' : 'opacity-40'} />
 
-        <Panel position="top-center" className="mt-3 flex flex-col items-center pointer-events-none">
-          <h2 className="text-lg font-semibold text-white drop-shadow-md">Educational journey</h2>
-          <p className="text-xs text-slate-300 mt-0.5 drop-shadow">Key years and credentials along the timeline.</p>
+        <Panel position="top-center" className="mt-2 sm:mt-3 px-2 flex flex-col items-center pointer-events-none">
+          <h2 className="text-sm sm:text-lg font-semibold text-white drop-shadow-md text-center">Educational journey</h2>
+          <p className="text-[10px] sm:text-xs text-slate-300 mt-0.5 drop-shadow text-center">Key years and credentials along the timeline.</p>
         </Panel>
 
         <Panel position="top-right" className="mt-3 mr-3 flex items-center gap-2">
@@ -570,10 +570,10 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
           )}
         </Panel>
 
-        <Panel position="bottom-center" className="mb-3 flex flex-col items-center gap-2">
-          <p className="text-slate-500 text-xs font-medium">
+        <Panel position="bottom-center" className="mb-2 sm:mb-3 flex flex-col items-center gap-2">
+          <p className="text-slate-500 text-[10px] sm:text-xs font-medium text-center max-w-[90vw]">
             {!showEditControls || layoutLocked
-              ? 'Click a circle for milestone detail · Click a segment label to explore credentials'
+              ? 'Tap a circle for milestone · Tap a segment label to explore credentials'
               : 'Drag nodes to arrange the timeline, then click Lock layout to save'}
           </p>
           <div className="flex items-center gap-2">
@@ -581,7 +581,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
               type="button"
               onClick={goPrev}
               disabled={currentNodeIndex === 0}
-              className="px-4 py-2 rounded-lg text-sm font-medium bg-white/10 text-white border border-slate-500/50 hover:bg-white/20 disabled:opacity-40 disabled:pointer-events-none transition-all"
+              className="min-h-[44px] min-w-[44px] px-4 py-2 rounded-lg text-sm font-medium bg-white/10 text-white border border-slate-500/50 hover:bg-white/20 disabled:opacity-40 disabled:pointer-events-none transition-all touch-manipulation"
             >
               ← Prev
             </button>
@@ -592,7 +592,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
               type="button"
               onClick={goNext}
               disabled={currentNodeIndex === milestones.length - 1}
-              className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-900 hover:from-cyan-400 hover:to-teal-400 transition-all"
+              className="min-h-[44px] min-w-[44px] px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-900 hover:from-cyan-400 hover:to-teal-400 transition-all touch-manipulation"
             >
               Next →
             </button>

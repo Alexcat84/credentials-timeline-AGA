@@ -101,9 +101,9 @@ function PositionCard({ position, isLast }: { position: ExperiencePosition; isFi
 
 export default function ExperienceView({ positions }: ExperienceViewProps) {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6">
-      <h2 className="text-xl font-semibold text-slate-800 mb-1">Professional experience</h2>
-      <p className="text-sm text-slate-500 mb-4">Chronological order (oldest at bottom, most recent at top).</p>
+    <div className="max-w-3xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+      <h2 className="text-lg sm:text-xl font-semibold text-slate-800 mb-1">Professional experience</h2>
+      <p className="text-xs sm:text-sm text-slate-500 mb-4">Chronological order (oldest at bottom, most recent at top).</p>
       <div className="mb-8 rounded-xl border-2 border-cyan-200/80 bg-gradient-to-r from-cyan-50 via-teal-50/90 to-cyan-50 px-5 py-4 shadow-sm">
         <p className="text-center text-slate-800 font-semibold leading-relaxed">
           Your company could be the next chapter in my professional journey, and I&apos;m excited to make it happen. 🎉

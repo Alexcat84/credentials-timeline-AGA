@@ -9,7 +9,7 @@ type ThemeChoiceViewProps = {
 
 export default function ThemeChoiceView({ profile, onSelect }: ThemeChoiceViewProps) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-slate-900 px-4">
+    <div className="min-h-screen min-h-[100dvh] flex flex-col items-center justify-center relative overflow-hidden bg-slate-900 px-3 sm:px-4 py-6">
       {/* Subtle gradient */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl" />
@@ -17,16 +17,16 @@ export default function ThemeChoiceView({ profile, onSelect }: ThemeChoiceViewPr
       </div>
 
       <div className="relative z-10 text-center w-full max-w-3xl">
-        <h1 className="text-xl font-semibold text-white mb-8">
+        <h1 className="text-lg sm:text-xl font-semibold text-white mb-6 sm:mb-8">
           How do you want to see this presentation?
         </h1>
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
           {/* Formal presentation — preview: pantalla principal en pequeño */}
           <button
             type="button"
             onClick={() => onSelect('formal')}
-            className="group relative flex flex-col rounded-2xl font-semibold text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900 overflow-hidden border border-slate-600/50 hover:border-slate-500 shadow-xl aspect-[4/3] min-h-[280px]"
+            className="group relative flex flex-col rounded-2xl font-semibold text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900 overflow-hidden border border-slate-600/50 hover:border-slate-500 shadow-xl aspect-[4/3] min-h-[200px] sm:min-h-[280px] touch-manipulation"
           >
             <div className="absolute inset-0 bg-slate-900 group-hover:bg-slate-800 transition-colors" />
             {/* Gradient orbs like formal landing */}
@@ -65,7 +65,7 @@ export default function ThemeChoiceView({ profile, onSelect }: ThemeChoiceViewPr
           <button
             type="button"
             onClick={() => onSelect('dragonball')}
-            className="group relative flex flex-col rounded-2xl font-semibold text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-900 overflow-hidden border border-amber-500/40 hover:border-amber-400/60 shadow-xl aspect-[4/3] min-h-[280px]"
+            className="group relative flex flex-col rounded-2xl font-semibold text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-900 overflow-hidden border border-amber-500/40 hover:border-amber-400/60 shadow-xl aspect-[4/3] min-h-[200px] sm:min-h-[280px] touch-manipulation"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-slate-800/95 to-amber-950/30 group-hover:from-slate-700/95 group-hover:to-amber-900/40 transition-colors" />
             <img
