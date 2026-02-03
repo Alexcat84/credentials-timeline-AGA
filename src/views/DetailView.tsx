@@ -85,23 +85,22 @@ export default function DetailView({ credential, credentialIndex, categories, on
           >
             {hasImages ? (
               readyForZoom ? (
-                <TransformWrapper
-                  key={currentImageSrc}
-                  initialScale={scaleToUse}
-                  minScale={scaleToUse * 0.5}
-                  maxScale={scaleToUse * 4}
-                  centerOnInit
-                  limitToBounds={false}
-                  doubleClick={{ disabled: true }}
-                  panning={{ disabled: false }}
-                  ref={transformRef}
-                  wrapperClass="!touch-none overflow-visible"
-                  contentClass="!touch-none"
-                >
-                  <TransformComponent
-                    wrapperStyle={{ width: '100%', height: '100%', minHeight: 'min(60vh, 400px)' }}
-                    contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                <div className="touch-none w-full h-full min-h-[min(60vh,400px)]" style={{ touchAction: 'none' }}>
+                  <TransformWrapper
+                    key={currentImageSrc}
+                    initialScale={scaleToUse}
+                    minScale={scaleToUse * 0.5}
+                    maxScale={scaleToUse * 4}
+                    centerOnInit
+                    limitToBounds={false}
+                    doubleClick={{ disabled: true }}
+                    panning={{ disabled: false }}
+                    ref={transformRef}
                   >
+                    <TransformComponent
+                      wrapperStyle={{ width: '100%', height: '100%', minHeight: 'min(60vh, 400px)' }}
+                      contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
                     {/* Imagen a tamaño natural para que el transform la escale correctamente y se vea completa */}
                     <img
                       src={currentImageSrc}
@@ -113,8 +112,9 @@ export default function DetailView({ credential, credentialIndex, categories, on
                       draggable={false}
                       onLoad={handleImageLoad}
                     />
-                  </TransformComponent>
-                </TransformWrapper>
+                    </TransformComponent>
+                  </TransformWrapper>
+                </div>
               ) : (
                 <img
                   src={currentImageSrc}
