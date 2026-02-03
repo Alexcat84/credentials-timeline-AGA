@@ -131,8 +131,9 @@ export default function DetailView({ credential, credentialIndex, categories, on
             <div className="flex items-center justify-center gap-2 py-3 px-4 border-t border-cyan-200/60 bg-white/80 shrink-0 touch-manipulation">
               <button
                 type="button"
-                onClick={() => setImageIndex((i) => (i <= 0 ? images.length - 1 : i - 1))}
-                className="px-3 py-1.5 rounded-lg bg-cyan-100 text-cyan-800 text-sm font-medium hover:bg-cyan-200"
+                onClick={() => setImageIndex((i) => (i <= 0 ? i : i - 1))}
+                disabled={imageIndex === 0}
+                className="px-3 py-1.5 rounded-lg bg-cyan-100 text-cyan-800 text-sm font-medium hover:bg-cyan-200 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed"
                 aria-label="Previous image"
               >
                 ← Prev
@@ -142,8 +143,9 @@ export default function DetailView({ credential, credentialIndex, categories, on
               </span>
               <button
                 type="button"
-                onClick={() => setImageIndex((i) => (i >= images.length - 1 ? 0 : i + 1))}
-                className="px-3 py-1.5 rounded-lg bg-cyan-100 text-cyan-800 text-sm font-medium hover:bg-cyan-200"
+                onClick={() => setImageIndex((i) => (i >= images.length - 1 ? i : i + 1))}
+                disabled={imageIndex === images.length - 1}
+                className="px-3 py-1.5 rounded-lg bg-cyan-100 text-cyan-800 text-sm font-medium hover:bg-cyan-200 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed"
                 aria-label="Next image"
               >
                 Next →
