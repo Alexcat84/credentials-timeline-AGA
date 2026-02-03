@@ -5,13 +5,14 @@ import type { Credential, Category } from '../types';
 import type { LandingTheme } from './ThemeChoiceView';
 import CredentialWallpaper from '../components/CredentialWallpaper';
 
-/** md = 768px; móvil = viewport < 768 */
+/** md = 768px; móvil = viewport < 768. Inicializar con viewport actual para evitar flash PC en móvil. */
 function useIsMobile(): boolean {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+  );
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 767px)');
     const update = () => setIsMobile(mql.matches);
-    update();
     mql.addEventListener('change', update);
     return () => mql.removeEventListener('change', update);
   }, []);
@@ -46,6 +47,12 @@ export default function DetailView({ credential, credentialIndex, categories, on
     initialScaleRef.current = null;
   }, [imageIndex, currentImageSrc]);
 
+  // Al cambiar a móvil, recalcular escala con el contenedor correcto
+  useEffect(() => {
+    if (isMobile) initialScaleRef.current = null;
+  }, [isMobile]);
+
+  // Re-observe when layout changes (PC vs móvil) para que containerSize sea del contenedor correcto
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -55,7 +62,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [isMobile]);
 
   const handleImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
@@ -305,18 +312,18 @@ export default function DetailView({ credential, credentialIndex, categories, on
           </div>
         </aside>
 
-        {/* Imágenes abajo (order-2), contenedor dedicado */}
-        <section className="order-2 flex-1 min-h-0 flex flex-col w-full border-t border-cyan-200/60 bg-white/80 pb-20" aria-label="Diploma images">
-          <div className="px-4 py-2.5 border-b border-cyan-200/60 bg-cyan-100/80">
+        {/* Imágenes abajo (order-2), contenedor dedicado; min-h para que siempre ocupe espacio al hacer scroll */}
+        <section className="order-2 flex-1 min-h-[65vh] flex flex-col w-full border-t border-cyan-200/60 bg-white/80 pb-20 shrink-0" aria-label="Diploma images">
+          <div className="px-4 py-2.5 border-b border-cyan-200/60 bg-cyan-100/80 shrink-0">
             <h2 className="text-sm font-semibold text-cyan-800">Diploma / Certificate</h2>
           </div>
           <div
             ref={containerRef}
-            className="flex-1 min-h-[60vh] w-full flex flex-col items-center justify-center p-4 overflow-visible bg-slate-100/50"
+            className="flex-1 min-h-[55vh] w-full flex flex-col items-center justify-center p-4 overflow-visible bg-slate-100/50"
           >
             {hasImages ? (
               readyForZoom ? (
-                <div className="touch-none w-full h-full min-h-[min(60vh,400px)]" style={{ touchAction: 'none' }}>
+                <div className="touch-none w-full flex-1 min-h-[50vh]" style={{ touchAction: 'none' }}>
                   <TransformWrapper
                     key={currentImageSrc}
                     initialScale={scaleToUse}
@@ -329,7 +336,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
                     ref={transformRef}
                   >
                     <TransformComponent
-                      wrapperStyle={{ width: '100%', height: '100%', minHeight: 'min(60vh, 400px)' }}
+                      wrapperStyle={{ width: '100%', height: '100%', minHeight: '50vh' }}
                       contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
                       <img
@@ -346,12 +353,14 @@ export default function DetailView({ credential, credentialIndex, categories, on
                   </TransformWrapper>
                 </div>
               ) : (
-                <img
-                  src={currentImageSrc}
-                  alt={`Diploma ${imageIndex + 1} of ${images.length}`}
-                  className="max-w-full max-h-[70vh] w-auto h-auto object-contain"
-                  onLoad={handleImageLoad}
-                />
+                <div className="w-full min-h-[50vh] flex items-center justify-center">
+                  <img
+                    src={currentImageSrc}
+                    alt={`Diploma ${imageIndex + 1} of ${images.length}`}
+                    className="max-w-full max-h-[70vh] w-auto h-auto object-contain"
+                    onLoad={handleImageLoad}
+                  />
+                </div>
               )
             ) : (
               <p className="text-slate-500 text-sm">No image available</p>
