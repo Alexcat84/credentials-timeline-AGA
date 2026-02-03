@@ -21,14 +21,17 @@ export default function DetailView({ credential, credentialIndex, categories, on
   const [imageNaturalSize, setImageNaturalSize] = useState<{ w: number; h: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef<ReactZoomPanPinchContentRef | null>(null);
+  /** Escala inicial congelada por imagen para que el zoom no se resetee al re-renderizar */
+  const initialScaleRef = useRef<number | null>(null);
 
   const images = credential.imageUrls ?? [];
   const hasImages = images.length > 0;
   const currentImageSrc = hasImages ? images[imageIndex] : '';
 
-  // Reset natural size when switching image so we recalc on new load
+  // Reset natural size and frozen scale when switching image
   useEffect(() => {
     setImageNaturalSize(null);
+    initialScaleRef.current = null;
   }, [imageIndex, currentImageSrc]);
 
   // Measure container
@@ -48,14 +51,15 @@ export default function DetailView({ credential, credentialIndex, categories, on
     setImageNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
   }, []);
 
-  // Escala inicial: que la imagen LLENE el área (cover), no que quepa dentro (contain)
-  const fillScale =
+  // Escala inicial: que la imagen se VEA COMPLETA (contain), lo más grande que quepa en el contenedor
+  const fitScale =
     containerSize && imageNaturalSize && imageNaturalSize.w > 0 && imageNaturalSize.h > 0
-      ? Math.max(containerSize.w / imageNaturalSize.w, containerSize.h / imageNaturalSize.h)
+      ? Math.min(containerSize.w / imageNaturalSize.w, containerSize.h / imageNaturalSize.h)
       : 1;
-
-  // Only mount zoom when we have image dimensions so initialScale is correct from first frame
   const readyForZoom = Boolean(imageNaturalSize && containerSize);
+  // Congelar escala por imagen para que el zoom no vuelva a la inicial al re-renderizar
+  if (readyForZoom && initialScaleRef.current === null) initialScaleRef.current = fitScale;
+  const scaleToUse = initialScaleRef.current ?? fitScale;
 
   const categoryLabels = credential.categories
     .map((id) => categories.find((c) => c.id === id)?.label)
@@ -68,7 +72,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
       <div className="relative z-10 flex-1 w-full min-h-0 flex flex-col md:flex-row gap-0 overflow-y-auto md:overflow-hidden bg-gradient-to-br from-cyan-50/90 via-white to-teal-50/80">
         {/* 1) Área de imágenes: en móvil abajo (order-2) como contenedor exclusivo; en desktop a la izquierda (order-1) */}
         <section
-          className="order-2 md:order-1 flex-1 min-h-0 flex flex-col w-full md:min-w-0 border-t md:border-t-0 md:border-r border-cyan-200/60 bg-white/80"
+          className="order-2 md:order-1 flex-1 min-h-0 flex flex-col w-full md:min-w-0 border-t md:border-t-0 md:border-r border-cyan-200/60 bg-white/80 pb-20"
           aria-label="Diploma images"
         >
           <div className="px-4 py-2.5 border-b border-cyan-200/60 bg-cyan-100/80 md:bg-cyan-50/80">
@@ -82,23 +86,25 @@ export default function DetailView({ credential, credentialIndex, categories, on
             {hasImages ? (
               readyForZoom ? (
                 <TransformWrapper
-                  initialScale={fillScale}
-                  minScale={fillScale * 0.5}
-                  maxScale={fillScale * 4}
+                  key={currentImageSrc}
+                  initialScale={scaleToUse}
+                  minScale={scaleToUse * 0.5}
+                  maxScale={scaleToUse * 4}
                   centerOnInit
+                  doubleClick={{ disabled: true }}
                   ref={transformRef}
                 >
                   <TransformComponent
                     wrapperStyle={{ width: '100%', height: '100%', minHeight: 'min(60vh, 400px)' }}
                     contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   >
-                    {/* Imagen a tamaño natural para que el transform la escale correctamente y llene el área */}
+                    {/* Imagen a tamaño natural para que el transform la escale correctamente y se vea completa */}
                     <img
                       src={currentImageSrc}
                       alt={`Diploma ${imageIndex + 1} of ${images.length}`}
                       width={imageNaturalSize?.w}
                       height={imageNaturalSize?.h}
-                      className="block select-none object-cover"
+                      className="block select-none object-contain"
                       style={{ maxWidth: 'none', maxHeight: 'none' }}
                       draggable={false}
                       onLoad={handleImageLoad}
@@ -118,7 +124,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
             )}
           </div>
           {hasImages && images.length > 1 && (
-            <div className="flex items-center justify-center gap-2 py-2 border-t border-cyan-200/60 bg-white/80">
+            <div className="flex items-center justify-center gap-2 py-3 px-4 border-t border-cyan-200/60 bg-white/80 shrink-0 touch-manipulation">
               <button
                 type="button"
                 onClick={() => setImageIndex((i) => (i <= 0 ? images.length - 1 : i - 1))}
