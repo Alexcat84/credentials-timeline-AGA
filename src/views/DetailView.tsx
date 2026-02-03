@@ -5,6 +5,19 @@ import type { Credential, Category } from '../types';
 import type { LandingTheme } from './ThemeChoiceView';
 import CredentialWallpaper from '../components/CredentialWallpaper';
 
+/** md = 768px; móvil = viewport < 768 */
+function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 767px)');
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener('change', update);
+    return () => mql.removeEventListener('change', update);
+  }, []);
+  return isMobile;
+}
+
 export type DetailViewProps = {
   credential: Credential;
   credentialIndex: number;
@@ -16,6 +29,7 @@ export type DetailViewProps = {
 };
 
 export default function DetailView({ credential, credentialIndex, categories, onBack, backLabel = 'Back to segment', theme }: DetailViewProps) {
+  const isMobile = useIsMobile();
   const [imageIndex, setImageIndex] = useState(0);
   const [containerSize, setContainerSize] = useState<{ w: number; h: number } | null>(null);
   const [imageNaturalSize, setImageNaturalSize] = useState<{ w: number; h: number } | null>(null);
@@ -81,19 +95,19 @@ export default function DetailView({ credential, credentialIndex, categories, on
           {/* Contenedor exclusivo para imágenes: en móvil altura mínima para que al hacer scroll se vean bien */}
           <div
             ref={containerRef}
-            className="flex-1 min-h-[60vh] md:min-h-0 w-full flex flex-col items-center justify-center p-4 overflow-visible bg-slate-100/50"
+            className="flex-1 min-h-[60vh] md:min-h-0 w-full flex flex-col items-center justify-center p-4 overflow-visible md:overflow-hidden bg-slate-100/50"
           >
             {hasImages ? (
               readyForZoom ? (
-                <div className="touch-none w-full h-full min-h-[min(60vh,400px)]" style={{ touchAction: 'none' }}>
+                <div className="touch-none md:touch-auto w-full h-full min-h-[min(60vh,400px)]" style={{ touchAction: isMobile ? 'none' : 'auto' }}>
                   <TransformWrapper
                     key={currentImageSrc}
                     initialScale={scaleToUse}
                     minScale={scaleToUse * 0.5}
                     maxScale={scaleToUse * 4}
                     centerOnInit
-                    limitToBounds={false}
-                    doubleClick={{ disabled: true }}
+                    limitToBounds={!isMobile}
+                    doubleClick={{ disabled: isMobile }}
                     panning={{ disabled: false }}
                     ref={transformRef}
                   >
