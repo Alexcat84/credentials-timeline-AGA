@@ -129,8 +129,9 @@ function App() {
     });
   };
 
-  /** Resolve milestone to a credential for the detail panel (credentialId if set, else first for year, or "primary" for 1991). */
+  /** Resolve milestone to a credential for the detail panel (credentialId if set, else first for year, or "primary" for 1991). "My journey continues" (m6) has no link. */
   const handleMilestoneClick = (milestone: Milestone) => {
+    if (milestone.id === 'm6') return;
     const creds = credentialsData.credentials;
     let credential: Credential | undefined;
     if (milestone.credentialId) {
