@@ -14,6 +14,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import CircleMilestoneNode from '../nodes/CircleMilestoneNode';
 import { useShowEditControls } from '../hooks/useShowEditControls';
+import { useI18n } from '../i18n';
 import type { Credential, Milestone, Segment } from '../types';
 import type { LandingTheme } from './ThemeChoiceView';
 import type { GokuPlacement } from '../nodes/CircleMilestoneNode';
@@ -93,6 +94,7 @@ const TIMELINE_POSITIONS_URL = '/data/timeline-positions.json';
 const DEFAULT_VIEWPORT = { x: 0, y: 0, zoom: 1 };
 
 function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick, theme }: MainViewProps) {
+  const { t } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
   const [layoutLocked, setLayoutLocked] = useState(true);
   const [savedPositions, setSavedPositions] = useState<Record<string, { x: number; y: number }>>(loadSavedPositions);
@@ -175,7 +177,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
           type: 'default',
           style: { strokeWidth: 2 },
           ...(count > 0 && {
-            label: `${count} credential${count !== 1 ? 's' : ''}`,
+            label: t('main.credentials', { count }),
             labelStyle: { fill: '#e2e8f0', fontWeight: 600, fontSize: 11 },
             labelShowBg: true,
             labelBgStyle: { fill: '#1e293b', stroke: '#475569', strokeWidth: 1 },
@@ -185,12 +187,17 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
           data: { segment: seg, count },
         };
       }),
-    [milestones, segments]
+    [milestones, segments, t]
   );
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [currentNodeIndex, setCurrentNodeIndex] = useState(0);
+
+  /** Re-apply edge labels when they change (e.g. language switch) without moving node positions. */
+  useEffect(() => {
+    setEdges(initialEdges);
+  }, [initialEdges, setEdges]);
 
   useEffect(() => {
     if (theme !== 'dragonball') {
@@ -478,7 +485,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
           />
         </div>
         <div className="relative z-10 flex items-center justify-center w-full h-full min-h-0">
-          <div className="text-slate-400 text-sm font-medium animate-pulse">Loading timeline…</div>
+          <div className="text-slate-400 text-sm font-medium animate-pulse">{t('main.loading')}</div>
         </div>
       </div>
     );
@@ -523,8 +530,8 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
         <Background color="#334155" gap={24} size={1} className={theme === 'dragonball' ? 'opacity-20' : 'opacity-40'} />
 
         <Panel position="top-center" className="mt-2 sm:mt-3 px-2 flex flex-col items-center pointer-events-none">
-          <h2 className="text-sm sm:text-lg font-semibold text-white drop-shadow-md text-center">Educational journey</h2>
-          <p className="text-[10px] sm:text-xs text-slate-300 mt-0.5 drop-shadow text-center">Key years and credentials along the timeline.</p>
+          <h2 className="text-sm sm:text-lg font-semibold text-white drop-shadow-md text-center">{t('main.title')}</h2>
+          <p className="text-[10px] sm:text-xs text-slate-300 mt-0.5 drop-shadow text-center">{t('main.subtitle')}</p>
         </Panel>
 
         <Panel position="top-right" className="mt-3 mr-3 flex items-center gap-2">
@@ -573,7 +580,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
         <Panel position="bottom-center" className="mb-2 sm:mb-3 flex flex-col items-center gap-2">
           <p className="text-slate-500 text-[10px] sm:text-xs font-medium text-center max-w-[90vw]">
             {!showEditControls || layoutLocked
-              ? 'Tap a circle for milestone · Tap a segment label to explore credentials'
+              ? t('main.tapHint')
               : 'Drag nodes to arrange the timeline, then click Lock layout to save'}
           </p>
           <div className="flex items-center gap-2">
@@ -583,7 +590,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
               disabled={currentNodeIndex === 0}
               className="min-h-[44px] min-w-[44px] px-4 py-2 rounded-lg text-sm font-medium bg-white/10 text-white border border-slate-500/50 hover:bg-white/20 disabled:opacity-40 disabled:pointer-events-none transition-all touch-manipulation"
             >
-              ← Prev
+              ← {t('common.prev')}
             </button>
             <span className="text-slate-400 text-xs font-medium">
               {currentNodeIndex + 1} / {milestones.length}
@@ -594,7 +601,7 @@ function FlowInner({ milestones, credentials, onSegmentSelect, onMilestoneClick,
               disabled={currentNodeIndex === milestones.length - 1}
               className="min-h-[44px] min-w-[44px] px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-900 hover:from-cyan-400 hover:to-teal-400 transition-all touch-manipulation"
             >
-              Next →
+              {t('common.next')} →
             </button>
           </div>
         </Panel>

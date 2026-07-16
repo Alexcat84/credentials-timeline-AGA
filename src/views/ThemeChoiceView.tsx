@@ -1,4 +1,6 @@
 import type { Profile } from '../types';
+import { useI18n } from '../i18n';
+import LanguageSelector from '../components/LanguageSelector';
 
 export type LandingTheme = 'formal' | 'dragonball';
 
@@ -8,6 +10,7 @@ type ThemeChoiceViewProps = {
 };
 
 export default function ThemeChoiceView({ profile, onSelect }: ThemeChoiceViewProps) {
+  const { t } = useI18n();
   return (
     <div className="min-h-screen min-h-[100dvh] flex flex-col items-center justify-center relative overflow-hidden bg-slate-900 px-3 sm:px-4 py-6">
       {/* Subtle gradient */}
@@ -16,9 +19,13 @@ export default function ThemeChoiceView({ profile, onSelect }: ThemeChoiceViewPr
         <div className="absolute bottom-1/4 -right-32 w-96 h-96 rounded-full bg-teal-500/10 blur-3xl" />
       </div>
 
+      <div className="absolute top-4 right-4 z-20">
+        <LanguageSelector />
+      </div>
+
       <div className="relative z-10 text-center w-full max-w-3xl">
         <h1 className="text-lg sm:text-xl font-semibold text-white mb-6 sm:mb-8">
-          How do you want to see this presentation?
+          {t('themeChoice.question')}
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
@@ -48,16 +55,16 @@ export default function ThemeChoiceView({ profile, onSelect }: ThemeChoiceViewPr
             </svg>
             {/* Contenido de la pantalla principal en pequeño */}
             <div className="absolute inset-0 flex flex-col items-center justify-center px-3 py-4 text-center">
-              <p className="text-cyan-400 text-[0.5rem] font-medium uppercase tracking-widest mb-1">Educational & Professional Journey</p>
+              <p className="text-cyan-400 text-[0.5rem] font-medium uppercase tracking-widest mb-1">{t('landing.eyebrow')}</p>
               <h2 className="text-sm md:text-base font-bold text-white mb-0.5 drop-shadow-sm">{profile.shortName ?? profile.name}</h2>
               <p className="text-slate-300 text-[0.5rem] leading-tight max-w-[90%] truncate">{profile.title}</p>
-              <p className="text-slate-400 text-[0.45rem] mb-2">{profile.recordPeriod} · Interactive timeline</p>
+              <p className="text-slate-400 text-[0.45rem] mb-2">{profile.recordPeriod} · {t('landing.interactiveTimeline')}</p>
               <div className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-cyan-400/80 to-teal-400/80 text-slate-900 text-[0.5rem] font-semibold shadow-md">
-                Explore my journey →
+                {t('landing.explore')} →
               </div>
             </div>
             <div className="absolute inset-0 flex items-end justify-center pb-6">
-              <span className="text-lg drop-shadow-md">Formal presentation</span>
+              <span className="text-lg drop-shadow-md">{t('themeChoice.formal')}</span>
             </div>
           </button>
 
@@ -75,7 +82,7 @@ export default function ThemeChoiceView({ profile, onSelect }: ThemeChoiceViewPr
               aria-hidden
             />
             <div className="absolute inset-0 flex items-end justify-center pb-6">
-              <span className="text-lg drop-shadow-md">Fun mode</span>
+              <span className="text-lg drop-shadow-md">{t('themeChoice.fun')}</span>
             </div>
           </button>
         </div>

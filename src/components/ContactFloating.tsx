@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import type { Profile } from '../types';
+import { useI18n } from '../i18n';
 
 type ContactFloatingProps = {
   profile: Profile;
 };
 
 export default function ContactFloating({ profile }: ContactFloatingProps) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const contact = profile.contact;
   const hasPhone = contact?.phone?.trim();
@@ -27,7 +29,7 @@ export default function ContactFloating({ profile }: ContactFloatingProps) {
         w-[min(100vw-1rem,140px)] sm:w-[min(100vw-2rem,300px)]
         ${open ? '!w-[min(92vw,280px)] max-h-[min(55vh,320px)]' : 'max-h-[52px]'} sm:max-h-none
         bottom-2 right-2 sm:bottom-0 sm:right-4`}
-      aria-label="Contact"
+      aria-label={t('contact.aria')}
     >
       {/* Pestaña: tap en móvil; hover en desktop */}
       <button
@@ -35,16 +37,16 @@ export default function ContactFloating({ profile }: ContactFloatingProps) {
         onClick={() => setOpen((o) => !o)}
         className="flex-shrink-0 px-3 py-2 sm:px-4 sm:py-2.5 rounded-t-xl bg-gradient-to-r from-cyan-500/25 to-teal-500/25 border border-b-0 border-cyan-400/30 shadow-md text-left touch-manipulation min-h-[44px] w-full sm:max-h-20 overflow-hidden transition-all duration-300 ease-out sm:group-hover:max-h-0 sm:group-hover:opacity-0"
         aria-expanded={open}
-        aria-label={open ? 'Cerrar contacto' : 'Ver contacto'}
+        aria-label={open ? t('contact.close') : t('contact.open')}
       >
-        <span className="text-[10px] sm:text-xs font-semibold text-cyan-800 uppercase tracking-wider">Contact me</span>
+        <span className="text-[10px] sm:text-xs font-semibold text-cyan-800 dark:text-cyan-200 uppercase tracking-wider">{t('contact.contactMe')}</span>
       </button>
       {/* Panel: abierto por estado en móvil, por hover en desktop */}
       <div
-        className={`flex flex-col rounded-t-xl bg-white/95 backdrop-blur border border-b-0 border-slate-200/80 shadow-xl overflow-hidden transition-transform duration-300 ease-out flex-1 min-h-0 translate-y-full sm:group-hover:translate-y-0 ${open ? '!translate-y-0' : ''}`}
+        className={`flex flex-col rounded-t-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur border border-b-0 border-slate-200/80 dark:border-slate-700 shadow-xl overflow-hidden transition-transform duration-300 ease-out flex-1 min-h-0 translate-y-full sm:group-hover:translate-y-0 ${open ? '!translate-y-0' : ''}`}
       >
-        <div className="flex-shrink-0 px-3 py-2 sm:px-4 sm:py-2.5 rounded-t-xl bg-gradient-to-r from-cyan-500/20 to-teal-500/20 border-b border-slate-200/60">
-          <span className="text-[10px] sm:text-xs font-semibold text-cyan-800 uppercase tracking-wider">Contact me</span>
+        <div className="flex-shrink-0 px-3 py-2 sm:px-4 sm:py-2.5 rounded-t-xl bg-gradient-to-r from-cyan-500/20 to-teal-500/20 border-b border-slate-200/60 dark:border-slate-700">
+          <span className="text-[10px] sm:text-xs font-semibold text-cyan-800 dark:text-cyan-200 uppercase tracking-wider">{t('contact.contactMe')}</span>
         </div>
         <div className="px-2 py-2 sm:px-3 sm:py-3 space-y-1.5 sm:space-y-2 text-xs sm:text-sm overflow-y-auto flex-1 min-h-0">
           {hasPhone && (
@@ -52,7 +54,7 @@ export default function ContactFloating({ profile }: ContactFloatingProps) {
               <svg className="w-4 h-4 flex-shrink-0 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
-              <a href={telHref} className="text-slate-800 hover:text-cyan-700 underline underline-offset-2 break-all">
+              <a href={telHref} className="text-slate-800 dark:text-slate-200 hover:text-cyan-700 dark:hover:text-cyan-300 underline underline-offset-2 break-all">
                 {phoneDisplay}
               </a>
             </div>
@@ -62,7 +64,7 @@ export default function ContactFloating({ profile }: ContactFloatingProps) {
               <svg className="w-4 h-4 flex-shrink-0 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <a href={mailHref} className="text-slate-800 hover:text-cyan-700 underline underline-offset-2 break-all">
+              <a href={mailHref} className="text-slate-800 dark:text-slate-200 hover:text-cyan-700 dark:hover:text-cyan-300 underline underline-offset-2 break-all">
                 {emailDisplay}
               </a>
             </div>
@@ -76,9 +78,9 @@ export default function ContactFloating({ profile }: ContactFloatingProps) {
                 href={linkedInHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-800 hover:text-cyan-700 underline underline-offset-2 break-all"
+                className="text-slate-800 dark:text-slate-200 hover:text-cyan-700 dark:hover:text-cyan-300 underline underline-offset-2 break-all"
               >
-                LinkedIn profile
+                {t('contact.linkedIn')}
               </a>
             </div>
           )}

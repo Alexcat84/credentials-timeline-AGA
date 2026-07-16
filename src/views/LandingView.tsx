@@ -1,11 +1,17 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useShowEditControls } from '../hooks/useShowEditControls';
-import type { Profile } from '../types';
+import type { Profile, Credential, Category } from '../types';
 import type { LandingTheme } from './ThemeChoiceView';
+import { useI18n } from '../i18n';
+import { computeStats } from '../stats';
+import StatsBar from '../components/StatsBar';
+import LanguageSelector from '../components/LanguageSelector';
 
 type LandingViewProps = {
   theme: LandingTheme;
   profile: Profile;
+  credentials: Credential[];
+  categories: Category[];
   onEnter: () => void;
   onChangeExperience?: () => void;
 };
@@ -76,7 +82,9 @@ function loadSavedPositions(): Record<number, { left: number; top: number }> {
   }
 }
 
-export default function LandingView({ theme, profile, onEnter, onChangeExperience }: LandingViewProps) {
+export default function LandingView({ theme, profile, credentials, categories, onEnter, onChangeExperience }: LandingViewProps) {
+  const { t } = useI18n();
+  const stats = useMemo(() => computeStats(credentials, categories, profile.recordPeriod), [credentials, categories, profile.recordPeriod]);
   const showEditControls = useShowEditControls();
   const [layoutLocked, setLayoutLocked] = useState(true);
   const [positions, setPositions] = useState<Record<number, { left: number; top: number }>>(loadSavedPositions);
@@ -492,9 +500,9 @@ export default function LandingView({ theme, profile, onEnter, onChangeExperienc
         </div>
       )}
 
-      <div className="relative z-10 text-center px-6 max-w-2xl">
+      <div className="relative z-10 text-center px-6 max-w-2xl w-full">
         <p className="text-cyan-400 font-medium text-sm uppercase tracking-widest mb-3 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-          Educational & Professional Journey
+          {t('landing.eyebrow')}
         </p>
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
           {profile.shortName ?? profile.name}
@@ -502,16 +510,19 @@ export default function LandingView({ theme, profile, onEnter, onChangeExperienc
         <p className="text-slate-300 text-lg mb-2 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
           {profile.title}
         </p>
-        <p className="text-slate-300 text-sm mb-10 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-          {profile.recordPeriod} · Interactive timeline
+        <p className="text-slate-300 text-sm mb-7 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          {profile.recordPeriod} · {t('landing.interactiveTimeline')}
         </p>
+        <div className="mb-9 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+          <StatsBar stats={stats} />
+        </div>
         <button
           type="button"
           onClick={onEnter}
           className="px-8 py-4 rounded-2xl font-semibold text-slate-900 bg-gradient-to-r from-cyan-400 to-teal-400 shadow-xl shadow-cyan-500/30 hover:from-cyan-300 hover:to-teal-300 hover:shadow-2xl hover:scale-105 transition-all duration-300 opacity-0 animate-fade-in-up focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900"
-          style={{ animationDelay: '0.5s' }}
+          style={{ animationDelay: '0.65s' }}
         >
-          Explore my journey →
+          {t('landing.explore')} →
         </button>
       </div>
 
@@ -521,9 +532,14 @@ export default function LandingView({ theme, profile, onEnter, onChangeExperienc
           onClick={onChangeExperience}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-slate-500 text-sm hover:text-slate-400 underline underline-offset-2 transition-colors"
         >
-          Change presentation mode
+          {t('nav.changeMode')}
         </button>
       )}
+
+      {/* Language selector: top-left so visitors can switch before entering */}
+      <div className="absolute top-4 left-4 z-20">
+        <LanguageSelector />
+      </div>
     </div>
   );
 }

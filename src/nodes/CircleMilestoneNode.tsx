@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import type { Milestone } from '../types';
+import { useDataLabel } from '../i18n';
 
 export type GokuPlacement = 'above' | 'below' | 'left' | 'right';
 
@@ -15,6 +16,8 @@ export type CircleMilestoneNodeData = {
 
 function CircleMilestoneNode({ data, selected }: NodeProps) {
   const { milestone, isCurrent, gokuImageUrl, gokuPosition = 'below', gokuSize = 90 } = (data ?? {}) as CircleMilestoneNodeData;
+  const dataLabel = useDataLabel();
+  const milestoneLabel = dataLabel('milestones', milestone.id, milestone.label);
 
   const imageBlock =
     gokuImageUrl ? (
@@ -55,7 +58,7 @@ function CircleMilestoneNode({ data, selected }: NodeProps) {
           ${isCurrent ? 'text-cyan-300' : 'text-slate-400'}
         `}
       >
-        {milestone.label}
+        {milestoneLabel}
       </span>
       <Handle type="source" position={Position.Right} className="!w-2.5 !h-2.5 !bg-teal-400 !border-2 !border-slate-900" />
     </>

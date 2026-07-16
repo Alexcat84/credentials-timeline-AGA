@@ -4,6 +4,8 @@ import type { ReactZoomPanPinchContentRef } from 'react-zoom-pan-pinch';
 import type { Credential, Category } from '../types';
 import type { LandingTheme } from './ThemeChoiceView';
 import CredentialWallpaper from '../components/CredentialWallpaper';
+import { useI18n, useDataLabel } from '../i18n';
+import { getCategoryMeta } from '../categoryMeta';
 
 /** md = 768px; móvil = viewport < 768. */
 function useIsMobile(): boolean {
@@ -29,6 +31,8 @@ export type DetailViewProps = {
 };
 
 export default function DetailView({ credential, credentialIndex, categories, onBack, backLabel = 'Back to segment', theme }: DetailViewProps) {
+  const { t } = useI18n();
+  const dataLabel = useDataLabel();
   const isMobile = useIsMobile();
   const [imageIndex, setImageIndex] = useState(0);
   const [containerSize, setContainerSize] = useState<{ w: number; h: number } | null>(null);
@@ -72,18 +76,21 @@ export default function DetailView({ credential, credentialIndex, categories, on
       : 1;
   const readyForZoom = Boolean(imageNaturalSize && containerSize);
 
-  const categoryLabels = credential.categories
-    .map((id) => categories.find((c) => c.id === id)?.label)
-    .filter(Boolean) as string[];
+  const categoryChips = credential.categories
+    .map((id) => {
+      const cat = categories.find((c) => c.id === id);
+      return cat ? { id, label: dataLabel('categories', id, cat.label) } : null;
+    })
+    .filter(Boolean) as { id: string; label: string }[];
 
   if (!isMobile) {
     return (
       <div className="relative flex-1 w-full min-h-0 flex flex-col overflow-hidden">
         {theme === 'dragonball' && <CredentialWallpaper credentialIndex={credentialIndex >= 0 ? credentialIndex : 0} />}
-        <div className="relative z-10 flex-1 w-full min-h-0 flex flex-col md:flex-row gap-0 overflow-hidden bg-gradient-to-br from-cyan-50/90 via-white to-teal-50/80">
-          <div className="flex-1 min-h-0 flex flex-col rounded-2xl overflow-hidden border border-cyan-200/60 bg-white/80 shadow-inner">
-            <div className="p-3 border-b border-cyan-200/60 bg-gradient-to-r from-cyan-100/80 to-teal-100/80">
-              <h2 className="text-sm font-semibold text-cyan-900">Diploma / Certificate</h2>
+        <div className="relative z-10 flex-1 w-full min-h-0 flex flex-col md:flex-row gap-0 overflow-hidden bg-gradient-to-br from-cyan-50/90 via-white to-teal-50/80 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
+          <div className="flex-1 min-h-0 flex flex-col rounded-2xl overflow-hidden border border-cyan-200/60 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60 shadow-inner">
+            <div className="p-3 border-b border-cyan-200/60 dark:border-slate-700 bg-gradient-to-r from-cyan-100/80 to-teal-100/80 dark:from-slate-800 dark:to-slate-800">
+              <h2 className="text-sm font-semibold text-cyan-900 dark:text-cyan-200">{t('detail.diplomaCertificate')}</h2>
             </div>
             <div className="flex-1 min-h-0 flex flex-col p-3 sm:p-4 overflow-hidden min-h-[200px]">
               {hasImages ? (
@@ -112,7 +119,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
                           >
                             <img
                               src={currentImageSrc}
-                              alt={`${credential.title} – image ${imageIndex + 1}`}
+                              alt={t('detail.imageAlt', { title: credential.title, n: imageIndex + 1 })}
                               onLoad={handleImageLoad}
                               draggable={false}
                               style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain' }}
@@ -123,7 +130,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
                       ) : (
                         <img
                           src={currentImageSrc}
-                          alt={`${credential.title} – image ${imageIndex + 1}`}
+                          alt={t('detail.imageAlt', { title: credential.title, n: imageIndex + 1 })}
                           onLoad={handleImageLoad}
                           draggable={false}
                           style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
@@ -138,38 +145,38 @@ export default function DetailView({ credential, credentialIndex, categories, on
                         type="button"
                         onClick={() => setImageIndex((i) => Math.max(0, i - 1))}
                         disabled={imageIndex === 0}
-                        className="px-3 py-1.5 rounded-lg text-sm font-medium bg-cyan-500/0 text-cyan-800/70 hover:bg-cyan-500 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-cyan-500/0"
+                        className="px-3 py-1.5 rounded-lg text-sm font-medium bg-cyan-500/0 text-cyan-800/70 dark:text-cyan-300/70 hover:bg-cyan-500 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-cyan-500/0"
                       >
-                        ← Prev
+                        ← {t('common.prev')}
                       </button>
-                      <span className="text-cyan-800/70 text-sm font-medium group-hover/controls:text-cyan-800 transition-colors">
+                      <span className="text-cyan-800/70 dark:text-cyan-300/70 text-sm font-medium group-hover/controls:text-cyan-800 transition-colors">
                         {imageIndex + 1} / {images.length}
                       </span>
                       <button
                         type="button"
                         onClick={() => setImageIndex((i) => Math.min(images.length - 1, i + 1))}
                         disabled={imageIndex === images.length - 1}
-                        className="px-3 py-1.5 rounded-lg text-sm font-medium bg-cyan-500/0 text-cyan-800/70 hover:bg-cyan-500 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-cyan-500/0"
+                        className="px-3 py-1.5 rounded-lg text-sm font-medium bg-cyan-500/0 text-cyan-800/70 dark:text-cyan-300/70 hover:bg-cyan-500 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-cyan-500/0"
                       >
-                        Next →
+                        {t('common.next')} →
                       </button>
                     </div>
                   )}
                 </>
               ) : (
-                <div className="text-center text-cyan-700/80 text-sm max-w-md px-4">
-                  <p className="font-medium">Image(s) of this diploma or certificate will appear here.</p>
-                  <p className="mt-2 text-cyan-600/70">
-                    You can add <code className="bg-cyan-100/60 px-1 rounded">imageUrls</code> to the credential in the data; multiple images are supported.
-                  </p>
+                <div className="flex flex-col items-center justify-center text-center text-cyan-700/80 dark:text-cyan-300/70 text-sm max-w-md px-4 gap-3">
+                  <svg className="w-12 h-12 text-cyan-400/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                  </svg>
+                  <p className="font-medium">{t('detail.emptyState')}</p>
                 </div>
               )}
             </div>
           </div>
 
-          <aside className="w-full md:w-[380px] flex-shrink-0 flex flex-col border-l border-cyan-200/60 bg-gradient-to-b from-white to-cyan-50/50 shadow-xl overflow-hidden max-h-[calc(100vh-56px)]">
-            <div className="p-4 border-b border-cyan-200/60 bg-gradient-to-r from-cyan-500 to-teal-500 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-white">Credential detail</h2>
+          <aside className="w-full md:w-[380px] flex-shrink-0 flex flex-col border-l border-cyan-200/60 dark:border-slate-700 bg-gradient-to-b from-white to-cyan-50/50 dark:from-slate-900 dark:to-slate-950 shadow-xl overflow-hidden max-h-[calc(100vh-56px)]">
+            <div className="p-4 border-b border-cyan-200/60 dark:border-slate-700 bg-gradient-to-r from-cyan-500 to-teal-500 flex items-center justify-between">
+              <h2 className="text-sm font-semibold text-white">{t('detail.credentialDetail')}</h2>
               <button
                 type="button"
                 onClick={onBack}
@@ -180,51 +187,55 @@ export default function DetailView({ credential, credentialIndex, categories, on
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               <div>
-                <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Year</span>
-                <p className="text-lg font-bold text-slate-800 mt-0.5">{credential.year}</p>
+                <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">{t('detail.year')}</span>
+                <p className="text-lg font-bold text-slate-800 dark:text-slate-100 mt-0.5">{credential.year}</p>
               </div>
               <div>
-                <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Title</span>
-                <p className="text-slate-800 mt-0.5 font-medium">{credential.title}</p>
+                <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">{t('detail.title')}</span>
+                <p className="text-slate-800 dark:text-slate-100 mt-0.5 font-medium">{credential.title}</p>
               </div>
               <div>
-                <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Institution</span>
-                <p className="text-slate-700 mt-0.5">{credential.institution}</p>
+                <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">{t('detail.institution')}</span>
+                <p className="text-slate-700 dark:text-slate-300 mt-0.5">{credential.institution}</p>
               </div>
               <div>
-                <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Location</span>
-                <p className="text-slate-700 mt-0.5">{credential.location}</p>
+                <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">{t('detail.location')}</span>
+                <p className="text-slate-700 dark:text-slate-300 mt-0.5">{credential.location}</p>
               </div>
               {credential.date && (
                 <div>
-                  <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Date</span>
-                  <p className="text-slate-700 mt-0.5">{credential.date}</p>
+                  <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">{t('detail.date')}</span>
+                  <p className="text-slate-700 dark:text-slate-300 mt-0.5">{credential.date}</p>
                 </div>
               )}
               {credential.duration && (
                 <div>
-                  <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Duration</span>
-                  <p className="text-slate-700 mt-0.5">{credential.duration}</p>
+                  <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">{t('detail.duration')}</span>
+                  <p className="text-slate-700 dark:text-slate-300 mt-0.5">{credential.duration}</p>
                 </div>
               )}
               {credential.notes && (
                 <div>
-                  <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Notes</span>
-                  <p className="text-slate-700 mt-0.5 text-sm">{credential.notes}</p>
+                  <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">{t('detail.notes')}</span>
+                  <p className="text-slate-700 dark:text-slate-300 mt-0.5 text-sm">{credential.notes}</p>
                 </div>
               )}
-              {categoryLabels.length > 0 && (
+              {categoryChips.length > 0 && (
                 <div>
-                  <span className="text-xs font-medium text-cyan-600 uppercase tracking-wider">Categories</span>
+                  <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">{t('detail.categories')}</span>
                   <div className="flex flex-wrap gap-1.5 mt-1.5">
-                    {categoryLabels.map((label) => (
-                      <span
-                        key={label}
-                        className="px-2 py-1 rounded-lg text-xs font-medium bg-cyan-100 text-cyan-800"
-                      >
-                        {label}
-                      </span>
-                    ))}
+                    {categoryChips.map((chip) => {
+                      const meta = getCategoryMeta(chip.id);
+                      return (
+                        <span
+                          key={chip.id}
+                          className="px-2 py-1 rounded-lg text-xs font-medium border"
+                          style={{ backgroundColor: `${meta.color}1a`, color: meta.color, borderColor: `${meta.color}55` }}
+                        >
+                          {meta.emoji} {chip.label}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -243,9 +254,9 @@ export default function DetailView({ credential, credentialIndex, categories, on
   return (
     <div className="relative flex-1 w-full min-h-0 flex flex-col overflow-hidden">
       {theme === 'dragonball' && <CredentialWallpaper credentialIndex={credentialIndex >= 0 ? credentialIndex : 0} />}
-      <div className="relative z-10 flex-1 w-full min-h-0 flex flex-col overflow-hidden bg-gradient-to-br from-cyan-50/90 via-white to-teal-50/80">
-        <header className="flex-shrink-0 flex items-center justify-between p-3 border-b border-cyan-200/60 bg-gradient-to-r from-cyan-500 to-teal-500">
-          <h2 className="text-sm font-semibold text-white">Credential detail</h2>
+      <div className="relative z-10 flex-1 w-full min-h-0 flex flex-col overflow-hidden bg-gradient-to-br from-cyan-50/90 via-white to-teal-50/80 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
+        <header className="flex-shrink-0 flex items-center justify-between p-3 border-b border-cyan-200/60 dark:border-slate-700 bg-gradient-to-r from-cyan-500 to-teal-500">
+          <h2 className="text-sm font-semibold text-white">{t('detail.credentialDetail')}</h2>
           <button
             type="button"
             onClick={onBack}
@@ -254,15 +265,24 @@ export default function DetailView({ credential, credentialIndex, categories, on
             ← {backLabel}
           </button>
         </header>
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 border-b border-cyan-200/40 bg-white/60">
-          <p className="text-lg font-bold text-slate-800">{credential.title}</p>
-          <p className="text-slate-700 text-sm">{credential.institution} · {credential.year}</p>
-          {credential.date && <p className="text-slate-600 text-xs">{credential.date}</p>}
-          {categoryLabels.length > 0 && (
+        <div className="flex-1 overflow-y-auto p-4 space-y-3 border-b border-cyan-200/40 dark:border-slate-700 bg-white/60 dark:bg-slate-900/60">
+          <p className="text-lg font-bold text-slate-800 dark:text-slate-100">{credential.title}</p>
+          <p className="text-slate-700 dark:text-slate-300 text-sm">{credential.institution} · {credential.year}</p>
+          {credential.date && <p className="text-slate-600 dark:text-slate-400 text-xs">{credential.date}</p>}
+          {categoryChips.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
-              {categoryLabels.map((label) => (
-                <span key={label} className="px-2 py-0.5 rounded text-xs font-medium bg-cyan-100 text-cyan-800">{label}</span>
-              ))}
+              {categoryChips.map((chip) => {
+                const meta = getCategoryMeta(chip.id);
+                return (
+                  <span
+                    key={chip.id}
+                    className="px-2 py-0.5 rounded text-xs font-medium border"
+                    style={{ backgroundColor: `${meta.color}1a`, color: meta.color, borderColor: `${meta.color}55` }}
+                  >
+                    {meta.emoji} {chip.label}
+                  </span>
+                );
+              })}
             </div>
           )}
         </div>
@@ -291,7 +311,7 @@ export default function DetailView({ credential, credentialIndex, categories, on
                     >
                       <img
                         src={currentImageSrc}
-                        alt={`Diploma ${imageIndex + 1} of ${images.length}`}
+                        alt={t('detail.diplomaAlt', { n: imageIndex + 1, total: images.length })}
                         width={imageNaturalSize?.w}
                         height={imageNaturalSize?.h}
                         className="block select-none object-contain"
@@ -306,34 +326,34 @@ export default function DetailView({ credential, credentialIndex, categories, on
                 <div className="w-full min-h-[50vh] flex items-center justify-center">
                   <img
                     src={currentImageSrc}
-                    alt={`Diploma ${imageIndex + 1} of ${images.length}`}
+                    alt={t('detail.diplomaAlt', { n: imageIndex + 1, total: images.length })}
                     className="max-w-full max-h-[70vh] w-auto h-auto object-contain"
                     onLoad={handleImageLoad}
                   />
                 </div>
               )
             ) : (
-              <p className="text-slate-500 text-sm">No image available</p>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">{t('detail.noImage')}</p>
             )}
           </div>
           {hasImages && images.length > 1 && (
-            <div className="flex items-center justify-center gap-2 py-3 px-4 border-t border-cyan-200/60 bg-white/80 shrink-0 touch-manipulation">
+            <div className="flex items-center justify-center gap-2 py-3 px-4 border-t border-cyan-200/60 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 shrink-0 touch-manipulation">
               <button
                 type="button"
                 onClick={() => setImageIndex((i) => (i <= 0 ? i : i - 1))}
                 disabled={imageIndex === 0}
-                className="px-3 py-1.5 rounded-lg bg-cyan-100 text-cyan-800 text-sm font-medium hover:bg-cyan-200 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed"
+                className="px-3 py-1.5 rounded-lg bg-cyan-100 dark:bg-slate-700 text-cyan-800 dark:text-cyan-200 text-sm font-medium hover:bg-cyan-200 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed"
               >
-                ← Prev
+                ← {t('common.prev')}
               </button>
-              <span className="text-xs text-slate-600">{imageIndex + 1} / {images.length}</span>
+              <span className="text-xs text-slate-600 dark:text-slate-400">{imageIndex + 1} / {images.length}</span>
               <button
                 type="button"
                 onClick={() => setImageIndex((i) => (i >= images.length - 1 ? i : i + 1))}
                 disabled={imageIndex === images.length - 1}
-                className="px-3 py-1.5 rounded-lg bg-cyan-100 text-cyan-800 text-sm font-medium hover:bg-cyan-200 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed"
+                className="px-3 py-1.5 rounded-lg bg-cyan-100 dark:bg-slate-700 text-cyan-800 dark:text-cyan-200 text-sm font-medium hover:bg-cyan-200 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed"
               >
-                Next →
+                {t('common.next')} →
               </button>
             </div>
           )}

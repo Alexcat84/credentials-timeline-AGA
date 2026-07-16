@@ -14,6 +14,7 @@ import CredentialCircleNode from '../nodes/CredentialCircleNode';
 import ContinueNode from '../nodes/ContinueNode';
 import PreviousSectionNode from '../nodes/PreviousSectionNode';
 import { useShowEditControls } from '../hooks/useShowEditControls';
+import { useI18n } from '../i18n';
 import type { Credential, Segment } from '../types';
 import type { LandingTheme } from './ThemeChoiceView';
 import CredentialWallpaper from '../components/CredentialWallpaper';
@@ -110,6 +111,7 @@ export type SegmentViewProps = {
 };
 
 function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClick, theme }: SegmentViewProps) {
+  const { t } = useI18n();
   const sorted = useMemo(() => {
     const byId = new Map(credentials.map((c) => [c.id, c]));
     const list = segment.credentialIds
@@ -222,12 +224,12 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
       type: 'previousSectionNode',
       position: pos,
       data: {
-        label: 'Previous section',
+        label: t('segment.previousSection'),
         sectionFraction: `${currentPage + 1}/${totalPages}`,
       },
       draggable: !layoutLocked,
     };
-  }, [hasPreviousPage, currentPage, totalPages, savedPositions, defaultPositionsFromFile, layoutLocked]);
+  }, [hasPreviousPage, currentPage, totalPages, savedPositions, defaultPositionsFromFile, layoutLocked, t]);
 
   const continueNode: Node | null = useMemo(() => {
     if (!hasNextPage || sortedPage.length === 0) return null;
@@ -237,12 +239,12 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
       type: 'continueNode',
       position: pos,
       data: {
-        label: 'Next section',
+        label: t('segment.nextSection'),
         sectionFraction: `${currentPage + 1}/${totalPages}`,
       },
       draggable: !layoutLocked,
     };
-  }, [hasNextPage, sortedPage.length, currentPage, totalPages, savedPositions, defaultPositionsFromFile, layoutLocked]);
+  }, [hasNextPage, sortedPage.length, currentPage, totalPages, savedPositions, defaultPositionsFromFile, layoutLocked, t]);
 
   const initialNodes: Node[] = useMemo(() => {
     const list = previousSectionNode
@@ -563,7 +565,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
             onClick={onBack}
             className="px-4 py-2.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-md hover:from-cyan-600 hover:to-teal-600 hover:shadow-lg border border-cyan-400/30 transition-all flex items-center gap-2"
           >
-            ← Back to milestones
+            ← {t('segment.backToMilestones')}
           </button>
         </Panel>
 
@@ -604,8 +606,8 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
 
         <Panel position="top-center" className="mt-3">
           <p className="text-slate-400 text-sm font-medium">
-            {segment.fromYear} – {segment.toYear} · {totalCredentials} credential{totalCredentials !== 1 ? 's' : ''}
-            {totalPages > 1 && ` · Section ${currentPage + 1} of ${totalPages}`}
+            {segment.fromYear} – {segment.toYear} · {t('segment.credentials', { count: totalCredentials })}
+            {totalPages > 1 && ` · ${t('segment.section', { current: currentPage + 1, total: totalPages })}`}
           </p>
         </Panel>
 
@@ -618,7 +620,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
               />
             </div>
             <p className="text-center text-slate-400 text-xs mt-1.5 font-medium">
-              {currentPage * CREDENTIALS_PER_PAGE + currentNodeIndex + 1} of {totalCredentials}
+              {t('segment.ofTotal', { current: currentPage * CREDENTIALS_PER_PAGE + currentNodeIndex + 1, total: totalCredentials })}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -627,7 +629,7 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
               onClick={goPrev}
               className="px-4 py-2 rounded-xl font-semibold text-sm bg-white/10 text-white border border-slate-500/50 hover:bg-white/20 transition-all backdrop-blur-sm"
             >
-              ← Prev
+              ← {t('common.prev')}
             </button>
             {totalPages > 1 && (
               <span className="text-slate-400 text-xs font-medium px-2">
@@ -639,15 +641,15 @@ function FlowInner({ segment, initialPage, credentials, onBack, onCredentialClic
               onClick={goNext}
               className="px-4 py-2 rounded-xl font-semibold text-sm bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-900 hover:from-cyan-400 hover:to-teal-400 shadow-lg shadow-cyan-500/25 transition-all"
             >
-              Next →
+              {t('common.next')} →
             </button>
           </div>
           <p className="text-slate-500 text-xs font-medium">
             {showEditControls && !layoutLocked
               ? 'Drag circles to arrange, then Lock layout to save'
               : hasNextPage || hasPreviousPage
-                ? 'Use the arrows on the timeline for next/previous section · Click a circle for detail'
-                : 'Click a circle for credential detail'}
+                ? t('segment.navHint')
+                : t('segment.detailHint')}
           </p>
         </Panel>
       </ReactFlow>

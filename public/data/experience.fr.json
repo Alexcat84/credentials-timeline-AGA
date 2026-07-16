@@ -1,0 +1,127 @@
+{
+  "positions": [
+    {
+      "id": "rasa-assistant",
+      "title": "Assistant en ingénierie et inspection des équipements",
+      "company": "Refinería Petrolera Acajutla (RASA)",
+      "location": "Sonsonate, Salvador",
+      "startDate": "juin 2010",
+      "endDate": "juin 2013",
+      "responsibilities": [
+        "J'ai élaboré et exécuté le plan de mise à jour des lignes et des équipements de la raffinerie",
+        "J'ai lu, interprété et développé de nouveaux projets traduits dans des plans électriques, de débit, P&ID, isométriques et structurels à l'aide d'AutoCAD",
+        "J'ai préparé les plans de projet et les nomenclatures conformément aux normes API, ASME, ASTM, NFPA et aux guides internes d'ExxonMobil (Global Practices, GEMS)",
+        "J'ai inspecté les lignes et les équipements au moyen de méthodes non destructives (END) : ressuage, magnétoscopie et thermographie infrarouge industrielle",
+        "J'ai mis à jour et créé des plans P&ID, isométriques, de débit, électriques et d'instrumentation en vue de leur mise en œuvre à RASA à l'aide d'AutoCAD"
+      ],
+      "achievements": [
+        "J'ai atteint 100 % de conformité aux normes internationales (API, ASME, ASTM, NFPA)",
+        "J'ai amélioré la fiabilité des équipements de 20 % à la fin de chaque année",
+        "Formations en sécurité industrielle : entrée et surveillance en espaces confinés ; surveillance de la sécurité radiologique lors de la radiographie industrielle ; coordinateur de la radiographie industrielle à l'intérieur et à l'extérieur de RASA ; sécurité des travaux en hauteur ; système de permis de travail et analyse de travail sécuritaire ; rapports d'observation des tâches pour la prévention des incidents",
+        "J'ai supervisé la construction de 3 serpentins de four pour le chauffage du produit, y compris l'inspection, les plans de construction neuve réalisés sous AutoCAD, les listes de matériaux selon les normes API, ainsi que l'enregistrement et la conservation de l'information"
+      ]
+    },
+    {
+      "id": "cotecna-operator",
+      "title": "Opérateur et maintenance du système",
+      "company": "COTECNA de El Salvador",
+      "location": "Sonsonate, Salvador",
+      "startDate": "août 2013",
+      "endDate": "sept. 2015",
+      "responsibilities": [
+        "J'ai exploité en toute sécurité l'équipement d'inspection non intrusive, en suivant les procédures établies",
+        "J'ai effectué la maintenance de base (niveau I) et des inspections régulières des installations, des systèmes périphériques et de l'équipement d'inspection",
+        "J'ai collaboré à la maintenance majeure (niveaux II et III) lorsque cela était nécessaire",
+        "J'ai maintenu une communication écrite et verbale constante avec l'ensemble du personnel du site pendant les opérations",
+        "J'ai signalé les incidents, pannes, anomalies et situations dans les rapports, registres et journaux applicables",
+        "J'ai informé la supervision et le personnel de maintenance interne/externe du scanner de toute panne ou anomalie",
+        "J'ai supervisé les opérations à tous les postes de travail en l'absence du superviseur/responsable de site",
+        "J'ai garanti les normes de radioprotection pendant le processus de scannage"
+      ],
+      "achievements": [
+        "J'ai atteint une disponibilité du système supérieure à 95 % sans aucune panne critique pendant les périodes d'exploitation",
+        "J'ai maintenu une conformité de 100 % aux normes de sécurité et d'exploitation",
+        "J'ai réduit l'utilisation des ressources de 75 % grâce à la mise en place de systèmes de documentation numérique"
+      ]
+    },
+    {
+      "id": "cotecna-supervisor",
+      "title": "Superviseur de site",
+      "company": "COTECNA de El Salvador",
+      "location": "Sonsonate, Salvador",
+      "startDate": "oct. 2015",
+      "endDate": "avr. 2017",
+      "responsibilities": [
+        "J'ai exécuté les décisions et instructions opérationnelles et de sécurité du responsable de site et veillé à ce que le personnel opérationnel respecte les procédures",
+        "J'ai maintenu un haut niveau d'éthique et un environnement de travail positif",
+        "J'ai maintenu la discipline et une culture de bonnes pratiques sur le site",
+        "J'ai planifié les quarts de travail et réparti le travail selon les instructions du responsable de site",
+        "J'ai coordonné le flux de conteneurs dans le processus de scannage",
+        "J'ai recueilli les données et rapports en fin de journée et les ai transmis au responsable de site",
+        "J'ai transmis les informations sur l'activité du quart au superviseur suivant",
+        "Je suis resté attentif à toute irrégularité technique dans le processus de scannage et j'ai immédiatement informé le responsable de site ou le responsable des opérations",
+        "Je suis resté pleinement attentif aux aspects du plan d'intervention d'urgence et l'ai exécuté au besoin"
+      ],
+      "achievements": [
+        "J'ai maintenu un dossier de sécurité parfait grâce à un meilleur respect des protocoles",
+        "J'ai atteint une disponibilité supérieure à 95 % des systèmes de rayons X à haute énergie selon les indicateurs clés",
+        "J'ai atteint un taux de réussite de 100 % à la certification pour la formation des nouveaux opérateurs"
+      ]
+    },
+    {
+      "id": "cotecna-site-manager",
+      "title": "Responsable de site",
+      "company": "COTECNA de El Salvador",
+      "location": "Sonsonate, Salvador",
+      "startDate": "avr. 2017",
+      "endDate": "janv. 2024",
+      "responsibilities": [
+        "J'ai exécuté les décisions et instructions opérationnelles et de sécurité de la direction générale et assuré le respect exact des procédures par le personnel opérationnel",
+        "J'ai maintenu un fort sens de la discipline et une culture de bonnes pratiques sur le site",
+        "J'ai maintenu un haut niveau d'éthique et un bon environnement de travail",
+        "J'ai planifié les quarts de travail et réparti le travail selon les instructions du responsable des opérations",
+        "J'ai évalué et identifié des opportunités d'amélioration du flux de travail existant et du développement continu du site",
+        "J'ai appliqué les normes de sécurité, d'hygiène et de santé",
+        "Je suis resté pleinement attentif aux aspects du plan d'intervention d'urgence en tant qu'agent de radioprotection désigné (PCR) ; j'ai veillé à l'application de toutes les normes radiologiques",
+        "J'ai assuré la rotation des dosimètres personnels et la collecte quotidienne des données des dosimètres actifs",
+        "J'ai recueilli les données et rapports en fin de journée ; j'ai rédigé et transmis au responsable des opérations les rapports opérationnels, de radioprotection et autres, selon les besoins",
+        "J'ai tenu le technicien de maintenance et le responsable des opérations informés de chaque problème technique",
+        "Je suis resté attentif à toute irrégularité technique dans le processus de scannage et j'ai pris des mesures correctives immédiates",
+        "J'ai signalé tout problème au responsable des opérations en temps réel",
+        "J'ai contrôlé le stock de pièces de rechange et autres consommables",
+        "J'ai évalué l'efficacité des employés du site",
+        "J'ai communiqué avec les entités impliquées dans le processus"
+      ],
+      "achievements": [
+        "J'ai atteint une conformité supérieure à 95 % aux KPI de l'entreprise dans les opérations de scannage de conteneurs",
+        "J'ai assuré une continuité opérationnelle totale pendant la pandémie de COVID-19 tout en atteignant tous les objectifs de performance",
+        "J'ai lancé les opérations de COTECNA Guatemala dans le délai de 3 semaines"
+      ]
+    },
+    {
+      "id": "cotecna-qms",
+      "title": "Administrateur du système de management de la qualité",
+      "company": "COTECNA de El Salvador",
+      "location": "Sonsonate, Salvador",
+      "startDate": "janv. 2021",
+      "endDate": "janv. 2024",
+      "responsibilities": [
+        "J'ai exécuté les décisions et instructions Qualité du siège (Genève) et assuré le respect exact des procédures dans toute l'organisation, en veillant à ce que le système de management de la qualité réponde aux exigences de la norme ISO 9001:2015",
+        "J'ai préparé et dispensé des formations sur les connaissances générales de la norme ISO 9001:2015 pour l'organisation",
+        "J'ai préparé et dispensé la formation d'auditeur interne basée sur la norme ISO 9001:2015",
+        "J'ai coordonné et exécuté le processus annuel d'audit interne de COTES ; j'ai coordonné le calendrier, préparé les documents requis et présenté les résultats de l'audit aux audités et à la haute direction",
+        "J'ai coordonné et exécuté chaque année le processus de revue de direction et l'évaluation des fournisseurs",
+        "J'ai coordonné et exécuté chaque année le processus de clôture des non-conformités, des actions correctives et des opportunités d'amélioration",
+        "J'ai mis à jour et suivi les documents obligatoires sur la plateforme internationale QMS Network Workspace",
+        "J'ai révisé, mis à jour et conservé les formulaires requis par la norme ISO 9001:2015 depuis le siège : rapports et formulaires opérationnels, de maintenance, de qualité et de sécurité au travail, ainsi que toute documentation du SMQ",
+        "J'ai éliminé les reprises et les fonctions dupliquées dans les procédures, en évaluant leur efficacité et leur application correcte par les utilisateurs",
+        "J'ai encouragé une culture de preuve objective, de tenue de registres et de documentation justificative pour les résultats de la gestion"
+      ],
+      "achievements": [
+        "J'ai obtenu la recertification ISO 9001:2015 avec zéro non-conformité",
+        "J'ai amélioré l'efficacité opérationnelle en modernisant 43 procédures organisationnelles clés",
+        "J'ai maintenu une conformité de 100 % aux normes de documentation du siège de Genève"
+      ]
+    }
+  ]
+}
