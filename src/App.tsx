@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import LandingView from './views/LandingView';
 import ThemeChoiceView from './views/ThemeChoiceView';
 import type { LandingTheme } from './views/ThemeChoiceView';
@@ -12,7 +12,7 @@ import QuickStartPanel from './components/QuickStartPanel';
 import ContactFloating from './components/ContactFloating';
 import LanguageSelector from './components/LanguageSelector';
 import ColorSchemeToggle from './components/ColorSchemeToggle';
-import type { CredentialsData, CategoriesData, MilestonesData, ExperienceData, Segment, Credential, Milestone } from './types';
+import type { CredentialsData, CategoriesData, MilestonesData, ExperienceData, Segment, Credential, Milestone, Profile } from './types';
 import { trackPageView } from './analytics';
 import { useI18n } from './i18n';
 
@@ -20,6 +20,26 @@ const CREDENTIALS_URL = '/data/credentials.json';
 const CATEGORIES_URL = '/data/categories.json';
 const MILESTONES_URL = '/data/milestones.json';
 const THEME_STORAGE_KEY = 'timeline-landing-theme';
+
+/** Per-language overlay: only translatable text fields, keyed by credential id. Merged over the English base. */
+type CredentialOverlay = {
+  profile?: Partial<Pick<Profile, 'title'>>;
+  credentials?: Record<string, Partial<Credential>>;
+};
+
+/** Merge translated text fields over the base credentials (same ids, images/years/categories untouched). */
+function mergeCredentials(base: CredentialsData | null, overlay: CredentialOverlay | null): CredentialsData | null {
+  if (!base) return null;
+  if (!overlay) return base;
+  const credOverlay = overlay.credentials ?? {};
+  return {
+    profile: { ...base.profile, ...(overlay.profile ?? {}) },
+    credentials: base.credentials.map((c) => {
+      const o = credOverlay[c.id];
+      return o ? { ...c, ...o } : c;
+    }),
+  };
+}
 
 function loadTheme(): LandingTheme | null {
   try {
@@ -44,7 +64,8 @@ function App() {
   const [theme, setTheme] = useState<LandingTheme | null>(loadTheme);
   const [hasEntered, setHasEntered] = useState(false);
   const [view, setView] = useState<View>('timeline');
-  const [credentialsData, setCredentialsData] = useState<CredentialsData | null>(null);
+  const [baseCredentials, setBaseCredentials] = useState<CredentialsData | null>(null);
+  const [credentialOverlay, setCredentialOverlay] = useState<CredentialOverlay | null>(null);
   const [categoriesData, setCategoriesData] = useState<CategoriesData | null>(null);
   const [milestonesData, setMilestonesData] = useState<MilestonesData | null>(null);
   const [experienceData, setExperienceData] = useState<ExperienceData | null>(null);
@@ -68,13 +89,35 @@ function App() {
       fetch(MILESTONES_URL).then((r) => (r.ok ? r.json() : Promise.reject(new Error('Failed to load milestones')))),
     ])
       .then(([creds, cats, milestones]) => {
-        setCredentialsData(creds);
+        setBaseCredentials(creds);
         setCategoriesData(cats);
         setMilestonesData(milestones);
       })
       .catch((e) => setError(e?.message ?? 'Error loading data'))
       .finally(() => setLoading(false));
   }, []);
+
+  /** Credential text is translated per language via an overlay merged over the English base (images stay original). */
+  useEffect(() => {
+    if (lang === 'en') {
+      setCredentialOverlay(null);
+      return;
+    }
+    let cancelled = false;
+    fetch(`/data/credentials.${lang}.json`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error('no overlay'))))
+      .then((data) => {
+        if (!cancelled) setCredentialOverlay(data);
+      })
+      .catch(() => {
+        if (!cancelled) setCredentialOverlay(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
+
+  const credentialsData = useMemo(() => mergeCredentials(baseCredentials, credentialOverlay), [baseCredentials, credentialOverlay]);
 
   /** Experience is translated per language: load experience.<lang>.json, fall back to the English base. */
   useEffect(() => {
@@ -389,16 +432,20 @@ function App() {
             theme={theme}
           />
         )}
-        {view === 'timeline' && currentTimeline.view === 'detail' && (
-          <DetailView
-            credential={currentTimeline.credential}
-            credentialIndex={credentialsData.credentials.findIndex((c) => c.id === currentTimeline.credential.id)}
-            categories={categoriesData.categories}
-            onBack={handleDetailBack}
-            backLabel={returnToView === 'filter' ? t('detail.backToFilter') : t('detail.backToSegment')}
-            theme={theme}
-          />
-        )}
+        {view === 'timeline' && currentTimeline.view === 'detail' && (() => {
+          // Re-resolve by id from current (possibly re-translated) data so switching language updates the open detail.
+          const resolved = credentialsData.credentials.find((c) => c.id === currentTimeline.credential.id) ?? currentTimeline.credential;
+          return (
+            <DetailView
+              credential={resolved}
+              credentialIndex={credentialsData.credentials.findIndex((c) => c.id === resolved.id)}
+              categories={categoriesData.categories}
+              onBack={handleDetailBack}
+              backLabel={returnToView === 'filter' ? t('detail.backToFilter') : t('detail.backToSegment')}
+              theme={theme}
+            />
+          );
+        })()}
         {view === 'experience' && hasExperience && (
           <div className="flex-1 min-h-0 overflow-auto bg-gradient-to-b from-cyan-50/30 to-teal-50/30 dark:from-slate-900 dark:to-slate-950">
             <ExperienceView positions={experienceData!.positions} />
