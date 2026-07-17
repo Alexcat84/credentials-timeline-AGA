@@ -290,7 +290,7 @@ function App() {
     <div className={`h-screen flex flex-col bg-slate-50 dark:bg-slate-950 overflow-hidden overflow-x-hidden min-h-[100dvh] ${showKamehamehaCursor ? 'cursor-none' : ''}`}>
       {showKamehamehaCursor && <KamehamehaCursor />}
       <header className="relative flex-shrink-0 border-b border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-sm z-10">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
+        <div className="w-full px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             {showBackFromDetail && (
               <button
@@ -306,9 +306,7 @@ function App() {
             </h1>
           </div>
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-2 lg:gap-3 flex-shrink-0">
-            <LanguageSelector />
-            <ColorSchemeToggle />
+          <nav className="hidden lg:flex items-center gap-2 xl:gap-2.5 flex-shrink-0">
             <button
               type="button"
               onClick={() => {
@@ -316,13 +314,15 @@ function App() {
                 setHasEntered(false);
                 try { sessionStorage.removeItem(THEME_STORAGE_KEY); } catch { /* ignore */ }
               }}
-              className="text-slate-500 dark:text-slate-400 text-sm hover:text-slate-700 dark:hover:text-slate-200 underline underline-offset-2"
+              title={t('nav.changeMode')}
+              aria-label={t('nav.changeMode')}
+              className="flex items-center justify-center w-10 h-10 rounded-lg text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-800/80 hover:text-slate-700 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-500 transition-colors"
             >
-              {t('nav.changeMode')}
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3 4 7l4 4" /><path d="M4 7h16" /><path d="m16 21 4-4-4-4" /><path d="M20 17H4" /></svg>
             </button>
             <button type="button" onClick={() => setQuickStartOpen(true)} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-900/30 border border-emerald-200/80 dark:border-emerald-700/50 hover:bg-emerald-100/90 dark:hover:bg-emerald-900/50" title={t('nav.quickStart')} aria-label={t('nav.quickStart')}>
               <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
-              {t('nav.quickStart')}
+              <span className="hidden xl:inline">{t('nav.quickStart')}</span>
             </button>
             <button type="button" onClick={() => setView('timeline')} className={`${navButtonBase} ${view === 'timeline' ? navActive : navInactive}`}>
               <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 6h16M4 12h10M4 18h6" /><circle cx="18" cy="6" r="2" /><circle cx="14" cy="12" r="2" /><circle cx="10" cy="18" r="2" /></svg>
@@ -338,9 +338,13 @@ function App() {
                 {t('nav.experience')}
               </button>
             )}
+            {/* Utilities grouped at the far right, away from the name */}
+            <span className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1" aria-hidden />
+            <LanguageSelector />
+            <ColorSchemeToggle />
           </nav>
-          {/* Mobile: language + theme + hamburger */}
-          <div className="md:hidden flex items-center gap-2 flex-shrink-0">
+          {/* Tablet/mobile: theme + hamburger (nav lives in the drawer) */}
+          <div className="lg:hidden flex items-center gap-2 flex-shrink-0">
             <ColorSchemeToggle />
             <button
               type="button"
@@ -357,12 +361,12 @@ function App() {
       {mobileNavOpen && (
         <>
           <div
-            className="md:hidden fixed inset-0 bg-slate-900/60 z-[90]"
+            className="lg:hidden fixed inset-0 bg-slate-900/60 z-[90]"
             onClick={closeMobileNav}
             aria-hidden
           />
           <div
-            className="md:hidden fixed top-0 right-0 bottom-0 w-full max-w-[280px] bg-white dark:bg-slate-900 shadow-2xl z-[100] flex flex-col p-4 pt-6 overflow-y-auto"
+            className="lg:hidden fixed top-0 right-0 bottom-0 w-full max-w-[280px] bg-white dark:bg-slate-900 shadow-2xl z-[100] flex flex-col p-4 pt-6 overflow-y-auto"
             role="dialog"
             aria-modal="true"
             aria-label={t('nav.navMenu')}
