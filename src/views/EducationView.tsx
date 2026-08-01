@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { Credential, Category, Milestone } from '../types';
 import { useI18n, useDataLabel } from '../i18n';
-import { getCategoryMeta } from '../categoryMeta';
 import DiplomaLightbox from '../components/DiplomaLightbox';
 
 const FORMAL_EDUCATION = 'formal-education';
@@ -49,7 +48,6 @@ function EducationCard({
     })
     .filter(Boolean) as { id: string; label: string }[];
 
-  const meta = getCategoryMeta(FORMAL_EDUCATION);
   const metaLine = [credential.date ?? String(credential.year), credential.location, credential.duration]
     .filter(Boolean)
     .join(' · ');
@@ -57,14 +55,14 @@ function EducationCard({
   return (
     <div className="flex gap-4">
       <div className="flex flex-col items-center flex-shrink-0">
-        <div className="w-4 h-4 rounded-full bg-cyan-500 border-2 border-white dark:border-slate-900 shadow-md" style={{ backgroundColor: meta.color }} />
+        <div className="w-4 h-4 rounded-full bg-cyan-500 border-2 border-white dark:border-slate-900 shadow-md" />
         {!isLast && <div className="w-0.5 flex-1 min-h-[24px] bg-cyan-300/60 dark:bg-slate-700" />}
       </div>
       <div className="flex-1 min-w-0 pb-8">
         <div className="rounded-xl border-2 border-cyan-200/80 dark:border-slate-700 bg-white dark:bg-slate-800/80 shadow-sm overflow-hidden">
           <div className="px-4 py-3 bg-gradient-to-r from-cyan-50 to-teal-50 dark:from-slate-800 dark:to-slate-800 border-b border-cyan-200/60 dark:border-slate-700">
             {levelLabel && (
-              <p className="text-[11px] font-semibold uppercase tracking-wider mb-0.5" style={{ color: meta.color }}>
+              <p className="text-[11px] font-semibold uppercase tracking-wider mb-0.5 text-cyan-700 dark:text-cyan-300">
                 {credential.year} · {levelLabel}
               </p>
             )}
@@ -100,18 +98,14 @@ function EducationCard({
               )}
               {chips.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
-                  {chips.map((chip) => {
-                    const cmeta = getCategoryMeta(chip.id);
-                    return (
-                      <span
-                        key={chip.id}
-                        className="px-2 py-0.5 rounded-lg text-xs font-medium border"
-                        style={{ backgroundColor: `${cmeta.color}1a`, color: cmeta.color, borderColor: `${cmeta.color}55` }}
-                      >
-                        {cmeta.emoji} {chip.label}
-                      </span>
-                    );
-                  })}
+                  {chips.map((chip) => (
+                    <span
+                      key={chip.id}
+                      className="px-2 py-0.5 rounded-lg text-xs font-medium bg-cyan-50 dark:bg-slate-700/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200/70 dark:border-slate-600"
+                    >
+                      {chip.label}
+                    </span>
+                  ))}
                 </div>
               )}
               {hasImages && (

@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { Credential, Category } from '../types';
 import { useI18n, useDataLabel } from '../i18n';
-import { getCategoryMeta } from '../categoryMeta';
 import DiplomaLightbox from '../components/DiplomaLightbox';
 
 const FORMAL_EDUCATION = 'formal-education';
@@ -68,18 +67,14 @@ function CertCard({
         {credential.notes && <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 line-clamp-3">{credential.notes}</p>}
         {chips.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-3 pt-3 border-t border-slate-100 dark:border-slate-700">
-            {chips.map((chip) => {
-              const cmeta = getCategoryMeta(chip.id);
-              return (
-                <span
-                  key={chip.id}
-                  className="px-1.5 py-0.5 rounded text-[10px] font-medium border"
-                  style={{ backgroundColor: `${cmeta.color}1a`, color: cmeta.color, borderColor: `${cmeta.color}55` }}
-                >
-                  {cmeta.emoji} {chip.label}
-                </span>
-              );
-            })}
+            {chips.map((chip) => (
+              <span
+                key={chip.id}
+                className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-cyan-50 dark:bg-slate-700/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200/70 dark:border-slate-600"
+              >
+                {chip.label}
+              </span>
+            ))}
           </div>
         )}
         {hasImages && (
@@ -147,7 +142,6 @@ export default function CertificationsView({ credentials, categories }: Certific
 
       <div className="space-y-3">
         {groups.map((group) => {
-          const meta = getCategoryMeta(group.cat.id);
           const isOpen = expanded.has(group.cat.id);
           const label = dataLabel('categories', group.cat.id, group.cat.label);
           return (
@@ -156,13 +150,11 @@ export default function CertificationsView({ credentials, categories }: Certific
                 type="button"
                 onClick={() => toggle(group.cat.id)}
                 aria-expanded={isOpen}
-                style={{ borderLeftColor: meta.color, borderLeftWidth: 4 }}
-                className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 shadow-sm hover:border-cyan-300 dark:hover:border-slate-600 transition-colors"
+                className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border-2 border-l-4 border-slate-200 border-l-cyan-500 dark:border-slate-700 dark:border-l-cyan-500 bg-white dark:bg-slate-800/80 shadow-sm hover:border-cyan-300 dark:hover:border-slate-600 transition-colors"
               >
                 <span className="flex items-center gap-2.5 min-w-0">
-                  <span className="text-lg flex-shrink-0" aria-hidden>{meta.emoji}</span>
                   <span className="font-semibold text-slate-800 dark:text-slate-100 text-sm sm:text-base truncate">{label}</span>
-                  <span className="flex-shrink-0 px-2 py-0.5 rounded-full text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700">
+                  <span className="flex-shrink-0 px-2 py-0.5 rounded-full text-xs font-medium text-cyan-700 dark:text-cyan-300 bg-cyan-50 dark:bg-slate-700">
                     {group.items.length}
                   </span>
                 </span>
