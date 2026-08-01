@@ -133,7 +133,7 @@ export default function CertificationsView({ credentials, categories }: Certific
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-wrap items-end justify-between gap-3 mb-4">
         <div>
-          <h2 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-slate-100">{t('nav.diplomas')}</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-slate-100">{t('certifications.title')}</h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">{t('certifications.subtitle')}</p>
         </div>
         <button
