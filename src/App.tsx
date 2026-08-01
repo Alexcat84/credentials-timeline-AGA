@@ -7,6 +7,7 @@ import SegmentView from './views/SegmentView';
 import DetailView from './views/DetailView';
 import FilterView from './views/FilterView';
 import ExperienceView from './views/ExperienceView';
+import EducationView from './views/EducationView';
 import KamehamehaCursor from './components/KamehamehaCursor';
 import QuickStartPanel from './components/QuickStartPanel';
 import ContactFloating from './components/ContactFloating';
@@ -52,7 +53,7 @@ function loadTheme(): LandingTheme | null {
   }
 }
 
-type View = 'timeline' | 'filter' | 'experience';
+type View = 'education' | 'timeline' | 'filter' | 'experience';
 
 type TimelineStackItem =
   | { view: 'main' }
@@ -63,7 +64,7 @@ function App() {
   const { t, lang } = useI18n();
   const [theme, setTheme] = useState<LandingTheme | null>(loadTheme);
   const [hasEntered, setHasEntered] = useState(false);
-  const [view, setView] = useState<View>('timeline');
+  const [view, setView] = useState<View>('education');
   const [baseCredentials, setBaseCredentials] = useState<CredentialsData | null>(null);
   const [credentialOverlay, setCredentialOverlay] = useState<CredentialOverlay | null>(null);
   const [categoriesData, setCategoriesData] = useState<CategoriesData | null>(null);
@@ -143,7 +144,9 @@ function App() {
   useEffect(() => {
     if (!credentialsData) return;
     const section =
-      view === 'experience'
+      view === 'education'
+        ? { name: 'Education', path: '/education' }
+        : view === 'experience'
         ? { name: 'Professional experience', path: '/experience' }
         : view === 'filter'
           ? { name: 'Diplomas by category', path: '/filter' }
@@ -279,7 +282,8 @@ function App() {
   const isDetailView = view === 'timeline' && currentTimeline.view === 'detail';
   const isFilterView = view === 'filter';
   const isExperienceView = view === 'experience';
-  const showKamehamehaCursor = theme === 'dragonball' && !isDetailView && !isFilterView && !isExperienceView;
+  const isEducationView = view === 'education';
+  const showKamehamehaCursor = theme === 'dragonball' && !isDetailView && !isFilterView && !isExperienceView && !isEducationView;
 
   const navButtonBase = 'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200';
   const navActive = 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-md border border-cyan-400/40';
@@ -323,6 +327,10 @@ function App() {
             <button type="button" onClick={() => setQuickStartOpen(true)} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-900/30 border border-emerald-200/80 dark:border-emerald-700/50 hover:bg-emerald-100/90 dark:hover:bg-emerald-900/50" title={t('nav.quickStart')} aria-label={t('nav.quickStart')}>
               <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
               <span className="hidden xl:inline">{t('nav.quickStart')}</span>
+            </button>
+            <button type="button" onClick={() => setView('education')} className={`${navButtonBase} ${view === 'education' ? navActive : navInactive}`}>
+              <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z" /><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" /></svg>
+              {t('nav.education')}
             </button>
             <button type="button" onClick={() => setView('timeline')} className={`${navButtonBase} ${view === 'timeline' ? navActive : navInactive}`}>
               <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 6h16M4 12h10M4 18h6" /><circle cx="18" cy="6" r="2" /><circle cx="14" cy="12" r="2" /><circle cx="10" cy="18" r="2" /></svg>
@@ -391,6 +399,10 @@ function App() {
                 <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
                 {t('nav.quickStart')}
               </button>
+              <button type="button" onClick={() => { setView('education'); closeMobileNav(); }} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold min-h-[48px] touch-manipulation w-full ${view === 'education' ? 'bg-cyan-500 text-white border border-cyan-400' : 'text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 active:bg-slate-100'}`}>
+                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 10 12 5 2 10l10 5 10-5Z" /><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" /></svg>
+                {t('nav.education')}
+              </button>
               <button type="button" onClick={() => { setView('timeline'); closeMobileNav(); }} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold min-h-[48px] touch-manipulation w-full ${view === 'timeline' ? 'bg-cyan-500 text-white border border-cyan-400' : 'text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 active:bg-slate-100'}`}>
                 <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h10M4 18h6" /><circle cx="18" cy="6" r="2" /><circle cx="14" cy="12" r="2" /><circle cx="10" cy="18" r="2" /></svg>
                 {t('nav.timeline')}
@@ -450,6 +462,15 @@ function App() {
             />
           );
         })()}
+        {view === 'education' && (
+          <div className="flex-1 min-h-0 overflow-auto bg-gradient-to-b from-cyan-50/30 to-teal-50/30 dark:from-slate-900 dark:to-slate-950">
+            <EducationView
+              credentials={credentialsData.credentials}
+              categories={categoriesData.categories}
+              milestones={milestonesData.milestones}
+            />
+          </div>
+        )}
         {view === 'experience' && hasExperience && (
           <div className="flex-1 min-h-0 overflow-auto bg-gradient-to-b from-cyan-50/30 to-teal-50/30 dark:from-slate-900 dark:to-slate-950">
             <ExperienceView positions={experienceData!.positions} />

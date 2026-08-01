@@ -15,6 +15,7 @@ export const fr: Locale = {
     changeMode: 'Changer de mode de présentation',
     quickStart: 'Guide rapide',
     timeline: 'Chronologie',
+    education: 'Formation',
     diplomas: 'Diplômes par catégorie',
     experience: 'Expérience professionnelle',
     menu: 'Menu',
@@ -81,6 +82,13 @@ export const fr: Locale = {
     showAllResponsibilities: 'Voir les {{count}} responsabilités',
     showAllAchievements: 'Voir les {{count}} réalisations',
     showLess: 'Voir moins',
+  },
+  education: {
+    title: 'Formation',
+    subtitle: 'Mon parcours académique en détail : de l’école primaire aux études supérieures.',
+    enlarge: 'Agrandir le diplôme',
+    viewDiploma: 'Voir le diplôme',
+    pages: { one: '{{count}} page', other: '{{count}} pages' },
   },
   quickStart: {
     title: 'Guide rapide',

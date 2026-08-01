@@ -13,6 +13,7 @@ export const en = {
     changeMode: 'Change presentation mode',
     quickStart: 'Quick Start',
     timeline: 'Timeline',
+    education: 'Education',
     diplomas: 'Diplomas by category',
     experience: 'Professional experience',
     menu: 'Menu',
@@ -79,6 +80,13 @@ export const en = {
     showAllResponsibilities: 'Show all {{count}} responsibilities',
     showAllAchievements: 'Show all {{count}} achievements',
     showLess: 'Show less',
+  },
+  education: {
+    title: 'Education',
+    subtitle: 'My academic journey in detail — from primary school to graduate studies.',
+    enlarge: 'Enlarge diploma',
+    viewDiploma: 'View diploma',
+    pages: { one: '{{count}} page', other: '{{count}} pages' },
   },
   quickStart: {
     title: 'Quick Start',
