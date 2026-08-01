@@ -21,6 +21,8 @@ export const fr: Locale = {
   app: {
     loading: 'Chargement…',
     missingData: 'Données manquantes',
+    errorTitle: 'Une erreur s’est produite.',
+    reload: 'Recharger la page',
   },
   landing: {
     eyebrow: 'Parcours éducatif et professionnel',

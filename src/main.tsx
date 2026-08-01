@@ -8,12 +8,12 @@ import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ErrorBoundary>
-      <ColorSchemeProvider>
-        <I18nProvider>
+    <ColorSchemeProvider>
+      <I18nProvider>
+        <ErrorBoundary>
           <App />
-        </I18nProvider>
-      </ColorSchemeProvider>
-    </ErrorBoundary>
+        </ErrorBoundary>
+      </I18nProvider>
+    </ColorSchemeProvider>
   </StrictMode>
 );

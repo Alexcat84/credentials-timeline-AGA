@@ -21,6 +21,8 @@ export const es: Locale = {
   app: {
     loading: 'Cargando…',
     missingData: 'Faltan datos',
+    errorTitle: 'Algo salió mal.',
+    reload: 'Recargar página',
   },
   landing: {
     eyebrow: 'Trayectoria educativa y profesional',

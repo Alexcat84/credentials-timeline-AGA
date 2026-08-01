@@ -19,6 +19,8 @@ export const en = {
   app: {
     loading: 'Loading…',
     missingData: 'Missing data',
+    errorTitle: 'Something went wrong.',
+    reload: 'Reload page',
   },
   landing: {
     eyebrow: 'Educational & Professional Journey',
