@@ -88,6 +88,11 @@ export const en = {
     viewDiploma: 'View diploma',
     pages: { one: '{{count}} page', other: '{{count}} pages' },
   },
+  certifications: {
+    subtitle: 'Certifications and courses grouped by area of expertise.',
+    expandAll: 'Expand all',
+    collapseAll: 'Collapse all',
+  },
   quickStart: {
     title: 'Quick Start',
     sections: [

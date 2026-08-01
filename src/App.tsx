@@ -5,7 +5,7 @@ import type { LandingTheme } from './views/ThemeChoiceView';
 import MainView from './views/MainView';
 import SegmentView from './views/SegmentView';
 import DetailView from './views/DetailView';
-import FilterView from './views/FilterView';
+import CertificationsView from './views/CertificationsView';
 import ExperienceView from './views/ExperienceView';
 import EducationView from './views/EducationView';
 import KamehamehaCursor from './components/KamehamehaCursor';
@@ -71,11 +71,8 @@ function App() {
   const [milestonesData, setMilestonesData] = useState<MilestonesData | null>(null);
   const [experienceData, setExperienceData] = useState<ExperienceData | null>(null);
   const [timelineStack, setTimelineStack] = useState<TimelineStackItem[]>([{ view: 'main' }]);
-  /** When opening detail from Diplomas by category, back returns to filter instead of timeline stack. */
+  /** When opening detail from another section, back returns there instead of the timeline stack. */
   const [returnToView, setReturnToView] = useState<View | null>(null);
-  /** Diplomas by category: state lifted so it persists when navigating to detail and back. Same filter for both presentation modes (formal and dragonball). */
-  const [filterCategoryId, setFilterCategoryId] = useState<string>('');
-  const [filterLocationId, setFilterLocationId] = useState<string>('');
   const [quickStartOpen, setQuickStartOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -226,12 +223,6 @@ function App() {
     } else {
       handleTimelineBack();
     }
-  };
-
-  const openDetailFromFilter = (credential: Credential) => {
-    setView('timeline');
-    setTimelineStack([{ view: 'detail', credential }]);
-    setReturnToView('filter');
   };
 
   if (theme === null) {
@@ -478,14 +469,9 @@ function App() {
         )}
         {view === 'filter' && (
           <div className="max-w-7xl w-full mx-auto px-3 sm:px-4 py-3 sm:py-4 flex-1 min-h-0 overflow-auto">
-            <FilterView
+            <CertificationsView
               credentials={credentialsData.credentials}
               categories={categoriesData.categories}
-              selectedCategoryId={filterCategoryId}
-              selectedLocationId={filterLocationId}
-              onCategoryChange={setFilterCategoryId}
-              onLocationChange={setFilterLocationId}
-              onCredentialClick={openDetailFromFilter}
             />
           </div>
         )}

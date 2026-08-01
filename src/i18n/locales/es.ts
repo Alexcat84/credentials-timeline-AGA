@@ -90,6 +90,11 @@ export const es: Locale = {
     viewDiploma: 'Ver diploma',
     pages: { one: '{{count}} página', other: '{{count}} páginas' },
   },
+  certifications: {
+    subtitle: 'Certificaciones y cursos agrupados por área de especialización.',
+    expandAll: 'Expandir todo',
+    collapseAll: 'Contraer todo',
+  },
   quickStart: {
     title: 'Guía rápida',
     sections: [
