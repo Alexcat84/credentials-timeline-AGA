@@ -4,8 +4,6 @@ export const en = {
     next: 'Next',
     close: 'Close',
     language: 'Language',
-    darkMode: 'Dark mode',
-    lightMode: 'Light mode',
   },
   nav: {
     education: 'Education',
@@ -60,6 +58,7 @@ export const en = {
     showAllResponsibilities: 'Show all {{count}} responsibilities',
     showAllAchievements: 'Show all {{count}} achievements',
     showLess: 'Show less',
+    viewReferenceLetter: 'View reference letter',
   },
   contact: {
     contactMe: 'Contact me',

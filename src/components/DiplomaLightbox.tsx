@@ -29,7 +29,7 @@ export default function DiplomaLightbox({ images, startIndex = 0, title, onClose
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex flex-col bg-slate-950/95 backdrop-blur-sm"
+      className="fixed inset-0 z-[200] flex flex-col bg-bg0/95 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-label={title}
@@ -104,7 +104,7 @@ export default function DiplomaLightbox({ images, startIndex = 0, title, onClose
               onClick={() => setIndex(i)}
               aria-label={`${i + 1}`}
               aria-current={i === index}
-              className={`flex-shrink-0 w-12 h-12 rounded-md overflow-hidden border-2 transition-colors ${i === index ? 'border-cyan-400' : 'border-white/15 hover:border-white/40'}`}
+              className={`flex-shrink-0 w-12 h-12 rounded-md overflow-hidden border-2 transition-colors ${i === index ? 'border-accent-cyan' : 'border-white/15 hover:border-white/40'}`}
             >
               <img src={src} alt="" className="w-full h-full object-cover" draggable={false} />
             </button>

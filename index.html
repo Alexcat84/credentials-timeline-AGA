@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alexis Garcia — Professional Profile</title>
     <meta name="description" content="Interactive professional profile of Alexis Garcia: educational credentials and professional certifications (1991–2026) — 60+ diplomas across ISO management, NDT, project management, safety and more. Available in English, Spanish and French." />
-    <meta name="theme-color" content="#0ea5e9" />
+    <meta name="theme-color" content="#06080f" />
 
     <!-- Favicon (inline SVG, no external asset) -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%93%3C/text%3E%3C/svg%3E" />
@@ -26,20 +26,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-    <!-- Apply saved color scheme before paint to avoid a light flash for dark-mode users -->
-    <script>
-      (function () {
-        try {
-          var saved = localStorage.getItem('timeline-color-scheme');
-          var dark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          if (dark) {
-            document.documentElement.classList.add('dark');
-            document.documentElement.style.colorScheme = 'dark';
-          }
-        } catch (e) {}
-      })();
-    </script>
   </head>
   <body>
     <div id="root"></div>

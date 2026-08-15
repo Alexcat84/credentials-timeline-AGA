@@ -8,13 +8,13 @@ type State = { hasError: boolean; error: Error | null };
 function ErrorFallback({ error }: { error: Error }) {
   const { t } = useI18n();
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-950 p-6">
-      <p className="text-red-600 dark:text-red-400 font-semibold mb-2">{t('app.errorTitle')}</p>
-      <p className="text-slate-600 dark:text-slate-400 text-sm mb-4 max-w-md text-center">{error.message}</p>
+    <div className="min-h-screen flex flex-col items-center justify-center p-6">
+      <p className="text-danger font-semibold mb-2">{t('app.errorTitle')}</p>
+      <p className="text-ink-secondary text-sm mb-4 max-w-md text-center">{error.message}</p>
       <button
         type="button"
         onClick={() => window.location.reload()}
-        className="px-4 py-2 rounded-lg bg-cyan-500 text-white text-sm font-medium hover:bg-cyan-600"
+        className="px-4 py-2 rounded-lg bg-accent-cyan text-bg0 text-sm font-medium hover:brightness-110"
       >
         {t('app.reload')}
       </button>

@@ -6,19 +6,11 @@
   font-family: Inter, system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: light;
-  color: #0f172a;
-  background-color: #f8fafc;
+  color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-:root.dark {
-  color-scheme: dark;
-  color: #e2e8f0;
-  background-color: #020617;
 }
 
 body {
@@ -27,13 +19,28 @@ body {
   min-height: 100dvh;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+  color: #eef3ff;
+  background:
+    radial-gradient(120% 90% at 95% -10%, rgba(0, 226, 255, 0.2) 0%, transparent 52%),
+    radial-gradient(100% 120% at -10% 110%, rgba(45, 212, 191, 0.16) 0%, transparent 55%),
+    linear-gradient(170deg, #06080f, #0b1220 35%, #101a2d);
+  background-attachment: fixed;
 }
 
-.dark body {
-  background-color: #020617;
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 0.7px, transparent 0.7px);
+  background-size: 3px 3px;
+  opacity: 0.14;
+  z-index: 0;
 }
 
 #root {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   min-height: 100dvh;
 }

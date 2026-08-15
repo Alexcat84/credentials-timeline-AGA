@@ -6,8 +6,6 @@ export const fr: Locale = {
     next: 'Suivant',
     close: 'Fermer',
     language: 'Langue',
-    darkMode: 'Mode sombre',
-    lightMode: 'Mode clair',
   },
   nav: {
     education: 'Formation',
@@ -62,6 +60,7 @@ export const fr: Locale = {
     showAllResponsibilities: 'Voir les {{count}} responsabilités',
     showAllAchievements: 'Voir les {{count}} réalisations',
     showLess: 'Voir moins',
+    viewReferenceLetter: 'Voir la lettre de référence',
   },
   contact: {
     contactMe: 'Me contacter',

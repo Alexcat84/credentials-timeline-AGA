@@ -12,7 +12,7 @@ export default function LanguageSelector({ className = '' }: LanguageSelectorPro
     <div
       role="group"
       aria-label={t('common.language')}
-      className={`inline-flex items-center rounded-xl border border-slate-200 dark:border-slate-600 bg-white/80 dark:bg-slate-800/80 p-0.5 shadow-sm ${className}`}
+      className={`inline-flex items-center rounded-xl border border-stroke bg-surface-elevated p-0.5 shadow-soft ${className}`}
     >
       {LANGS.map((l) => {
         const active = l.code === lang;
@@ -25,8 +25,8 @@ export default function LanguageSelector({ className = '' }: LanguageSelectorPro
             title={l.label}
             className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wide transition-colors min-w-[36px] ${
               active
-                ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow'
-                : 'text-slate-500 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300 hover:bg-cyan-50/70 dark:hover:bg-slate-700/70'
+                ? 'bg-gradient-to-r from-accent-cyan to-accent-teal text-bg0 shadow'
+                : 'text-ink-secondary hover:text-accent-cyan hover:bg-white/5'
             }`}
           >
             {l.code}

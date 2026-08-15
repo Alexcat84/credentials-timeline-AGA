@@ -37,40 +37,40 @@ function CertCard({
     .filter(Boolean) as { id: string; label: string }[];
 
   return (
-    <div className="rounded-xl border-2 border-cyan-200/70 dark:border-slate-700 bg-white dark:bg-slate-800/80 shadow-sm overflow-hidden flex flex-col">
+    <div className="rounded-xl border border-stroke bg-surface backdrop-blur-md shadow-soft overflow-hidden flex flex-col">
       {hasImages && (
         <button
           type="button"
           onClick={() => onOpen(images, credential.title)}
           aria-label={t('education.enlarge')}
           title={t('education.enlarge')}
-          className="group relative w-full h-40 bg-slate-100 dark:bg-slate-900 overflow-hidden flex-shrink-0"
+          className="group relative w-full h-40 bg-bg1 overflow-hidden flex-shrink-0"
         >
           <img src={images[0]} alt="" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" draggable={false} />
-          <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/25 transition-colors flex items-center justify-center">
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity w-10 h-10 rounded-full bg-white/90 text-slate-800 flex items-center justify-center shadow-lg">
+          <div className="absolute inset-0 bg-bg0/0 group-hover:bg-bg0/40 transition-colors flex items-center justify-center">
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity w-10 h-10 rounded-full bg-white/90 text-bg0 flex items-center justify-center shadow-lg">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3M11 8v6M8 11h6" /></svg>
             </span>
           </div>
           {images.length > 1 && (
-            <span className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded-md bg-slate-900/75 text-white text-[10px] font-medium">
+            <span className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded-md bg-bg0/80 text-ink text-[10px] font-medium">
               {t('education.pages', { count: images.length })}
             </span>
           )}
         </button>
       )}
       <div className="p-4 flex-1 flex flex-col">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-cyan-700 dark:text-cyan-300">{credential.year}</p>
-        <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-100 leading-snug mt-0.5">{credential.title}</h4>
-        <p className="text-xs font-medium text-cyan-700 dark:text-cyan-300 mt-0.5">{credential.institution}</p>
-        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{metaLine}</p>
-        {credential.notes && <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 line-clamp-3">{credential.notes}</p>}
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-accent-cyan">{credential.year}</p>
+        <h4 className="text-sm font-semibold text-ink leading-snug mt-0.5">{credential.title}</h4>
+        <p className="text-xs font-medium text-accent-cyan mt-0.5">{credential.institution}</p>
+        <p className="text-[11px] text-ink-muted mt-0.5">{metaLine}</p>
+        {credential.notes && <p className="text-xs text-ink-secondary mt-2 line-clamp-3">{credential.notes}</p>}
         {chips.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-3 pt-3 border-t border-slate-100 dark:border-slate-700">
+          <div className="flex flex-wrap gap-1 mt-3 pt-3 border-t border-stroke">
             {chips.map((chip) => (
               <span
                 key={chip.id}
-                className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-cyan-50 dark:bg-slate-700/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200/70 dark:border-slate-600"
+                className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30"
               >
                 {chip.label}
               </span>
@@ -81,7 +81,7 @@ function CertCard({
           <button
             type="button"
             onClick={() => onOpen(images, credential.title)}
-            className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-700 dark:text-cyan-300 hover:text-cyan-800 dark:hover:text-cyan-200 self-start"
+            className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-accent-cyan hover:text-accent-teal transition-colors self-start"
           >
             {t('education.viewDiploma')}
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
@@ -128,13 +128,13 @@ export default function CertificationsView({ credentials, categories }: Certific
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-wrap items-end justify-between gap-3 mb-4">
         <div>
-          <h2 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-slate-100">{t('certifications.title')}</h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">{t('certifications.subtitle')}</p>
+          <h2 className="text-lg sm:text-xl font-semibold text-ink">{t('certifications.title')}</h2>
+          <p className="text-xs sm:text-sm text-ink-muted mt-0.5">{t('certifications.subtitle')}</p>
         </div>
         <button
           type="button"
           onClick={() => setExpanded(allExpanded ? new Set() : new Set(allIds))}
-          className="px-3 py-1.5 rounded-lg text-xs font-semibold text-cyan-700 dark:text-cyan-300 bg-cyan-50 dark:bg-slate-800 border border-cyan-200/70 dark:border-slate-600 hover:bg-cyan-100 dark:hover:bg-slate-700"
+          className="px-3 py-1.5 rounded-lg text-xs font-semibold text-accent-cyan bg-surface-elevated border border-stroke hover:bg-white/5"
         >
           {allExpanded ? t('certifications.collapseAll') : t('certifications.expandAll')}
         </button>
@@ -150,16 +150,16 @@ export default function CertificationsView({ credentials, categories }: Certific
                 type="button"
                 onClick={() => toggle(group.cat.id)}
                 aria-expanded={isOpen}
-                className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border-2 border-l-4 border-slate-200 border-l-cyan-500 dark:border-slate-700 dark:border-l-cyan-500 bg-white dark:bg-slate-800/80 shadow-sm hover:border-cyan-300 dark:hover:border-slate-600 transition-colors"
+                className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-l-4 border-stroke border-l-accent-cyan bg-surface backdrop-blur-md shadow-soft hover:border-accent-cyan/40 transition-colors"
               >
                 <span className="flex items-center gap-2.5 min-w-0">
-                  <span className="font-semibold text-slate-800 dark:text-slate-100 text-sm sm:text-base truncate">{label}</span>
-                  <span className="flex-shrink-0 px-2 py-0.5 rounded-full text-xs font-medium text-cyan-700 dark:text-cyan-300 bg-cyan-50 dark:bg-slate-700">
+                  <span className="font-semibold text-ink text-sm sm:text-base truncate">{label}</span>
+                  <span className="flex-shrink-0 px-2 py-0.5 rounded-full text-xs font-medium text-accent-cyan bg-accent-cyan/10">
                     {group.items.length}
                   </span>
                 </span>
                 <svg
-                  className={`w-5 h-5 flex-shrink-0 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                  className={`w-5 h-5 flex-shrink-0 text-ink-muted transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                   viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                 >
                   <path d="m6 9 6 6 6-6" />

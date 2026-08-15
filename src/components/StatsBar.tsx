@@ -40,11 +40,11 @@ function useCountUp(target: number, durationMs = 1200, startDelay = 500): number
 function StatItem({ value, label, suffix, delay }: { value: number; label: string; suffix?: string; delay: number }) {
   const display = useCountUp(value, 1200, delay);
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur px-3 py-3 sm:px-4 sm:py-4 shadow-lg">
-      <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-300 to-teal-300 bg-clip-text text-transparent tabular-nums">
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-stroke bg-surface backdrop-blur px-3 py-3 sm:px-4 sm:py-4 shadow-soft">
+      <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-accent-cyan to-accent-teal bg-clip-text text-transparent tabular-nums">
         {display}{suffix}
       </span>
-      <span className="mt-1 text-[10px] sm:text-xs font-medium text-slate-300 text-center leading-tight uppercase tracking-wide">
+      <span className="mt-1 text-[10px] sm:text-xs font-medium text-ink-secondary text-center leading-tight uppercase tracking-wide">
         {label}
       </span>
     </div>

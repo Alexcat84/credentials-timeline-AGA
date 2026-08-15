@@ -76,6 +76,8 @@ export interface ExperiencePosition {
   endDate: string;
   responsibilities: string[];
   achievements: string[];
+  /** Optional: paths to a supporting document image (e.g. an employer reference letter), shown via the lightbox. */
+  referenceLetterUrls?: string[];
 }
 
 export interface ExperienceData {
