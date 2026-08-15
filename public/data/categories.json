@@ -1,12 +1,12 @@
 {
   "categories": [
     { "id": "formal-education", "label": "Formal Education", "type": "topic" },
-    { "id": "standardized-management-systems-iso", "label": "Standardized Management Systems (ISO)", "type": "topic" },
+    { "id": "standardized-management-systems-iso", "label": "Standardization Systems", "type": "topic" },
     { "id": "technology-it", "label": "Technology & IT", "type": "topic" },
     { "id": "non-destructive-testing-ndt", "label": "Non-Destructive Testing (NDT)", "type": "topic" },
     { "id": "first-aid-and-rescue", "label": "First Aid and Rescue", "type": "topic" },
     { "id": "radiological-safety", "label": "Radiological Safety", "type": "topic" },
-    { "id": "safety-management", "label": "Safety Management", "type": "topic" },
+    { "id": "safety-management", "label": "Occupational Health and Safety", "type": "topic" },
     { "id": "project-management", "label": "Project Management", "type": "topic" },
     { "id": "professional-skills-leadership", "label": "Professional Skills & Leadership", "type": "topic" },
     { "id": "construction-management", "label": "Construction Management", "type": "topic" },
