@@ -27,7 +27,8 @@ export default function ContactFloating({ profile }: ContactFloatingProps) {
     <div
       className={`group fixed bottom-0 right-0 z-30 flex flex-col-reverse overflow-hidden rounded-tl-xl shadow-soft
         w-[min(100vw-1rem,140px)] sm:w-[min(100vw-2rem,300px)]
-        ${open ? '!w-[min(92vw,280px)] max-h-[min(55vh,320px)]' : 'max-h-[52px]'} sm:max-h-none
+        max-h-[52px] sm:hover:max-h-[min(55vh,320px)]
+        ${open ? '!w-[min(92vw,280px)] !max-h-[min(55vh,320px)]' : ''}
         bottom-2 right-2 sm:bottom-0 sm:right-4`}
       aria-label={t('contact.aria')}
     >
