@@ -35,7 +35,7 @@
         "J'ai maintenu une communication écrite et verbale constante avec l'ensemble du personnel du site pendant les opérations",
         "J'ai signalé les incidents, pannes, anomalies et situations dans les rapports, registres et journaux applicables",
         "J'ai informé la supervision et le personnel de maintenance interne/externe du scanner de toute panne ou anomalie",
-        "J'ai supervisé les opérations à tous les postes de travail en l'absence du superviseur/responsable de site",
+        "J'ai supervisé les opérations à tous les postes de travail en l'absence du superviseur/gestionnaire de site",
         "J'ai garanti les normes de radioprotection pendant le processus de scannage"
       ],
       "achievements": [
@@ -52,14 +52,14 @@
       "startDate": "oct. 2015",
       "endDate": "avr. 2017",
       "responsibilities": [
-        "J'ai exécuté les décisions et instructions opérationnelles et de sécurité du responsable de site et veillé à ce que le personnel opérationnel respecte les procédures",
+        "J'ai exécuté les décisions et instructions opérationnelles et de sécurité du gestionnaire de site et veillé à ce que le personnel opérationnel respecte les procédures",
         "J'ai maintenu un haut niveau d'éthique et un environnement de travail positif",
         "J'ai maintenu la discipline et une culture de bonnes pratiques sur le site",
-        "J'ai planifié les quarts de travail et réparti le travail selon les instructions du responsable de site",
+        "J'ai planifié les quarts de travail et réparti le travail selon les instructions du gestionnaire de site",
         "J'ai coordonné le flux de conteneurs dans le processus de scannage",
-        "J'ai recueilli les données et rapports en fin de journée et les ai transmis au responsable de site",
+        "J'ai recueilli les données et rapports en fin de journée et les ai transmis au gestionnaire de site",
         "J'ai transmis les informations sur l'activité du quart au superviseur suivant",
-        "Je suis resté attentif à toute irrégularité technique dans le processus de scannage et j'ai immédiatement informé le responsable de site ou le responsable des opérations",
+        "Je suis resté attentif à toute irrégularité technique dans le processus de scannage et j'ai immédiatement informé le gestionnaire de site ou le responsable des opérations",
         "Je suis resté pleinement attentif aux aspects du plan d'intervention d'urgence et l'ai exécuté au besoin"
       ],
       "achievements": [
@@ -70,7 +70,7 @@
     },
     {
       "id": "cotecna-site-manager",
-      "title": "Responsable de site",
+      "title": "Gestionnaire de site",
       "company": "COTECNA de El Salvador",
       "location": "Sonsonate, Salvador",
       "startDate": "avr. 2017",
@@ -100,7 +100,7 @@
     },
     {
       "id": "cotecna-qms",
-      "title": "Administrateur du système de management de la qualité",
+      "title": "Gestionnaire du système de management de la qualité",
       "company": "COTECNA de El Salvador",
       "location": "Sonsonate, Salvador",
       "startDate": "janv. 2021",
