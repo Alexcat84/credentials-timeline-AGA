@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import type { Credential, Category, Milestone } from '../types';
 import { useI18n, useDataLabel } from '../i18n';
 import { getCategoryEmoji } from '../categoryEmoji';
+import { getCountryFlag } from '../components/CountryFlag';
 import DiplomaLightbox from '../components/DiplomaLightbox';
 
 const FORMAL_EDUCATION = 'formal-education';
@@ -113,12 +114,13 @@ function EducationCard({
                 <div className="flex flex-wrap gap-1.5">
                   {chips.map((chip) => {
                     const emoji = getCategoryEmoji(chip.id);
+                    const Flag = getCountryFlag(chip.id);
                     return (
                       <span
                         key={chip.id}
-                        className="px-2 py-0.5 rounded-lg text-xs font-medium bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30"
+                        className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-medium bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30"
                       >
-                        {emoji && <span aria-hidden>{emoji} </span>}
+                        {Flag ? <Flag /> : emoji ? <span aria-hidden>{emoji}</span> : null}
                         {chip.label}
                       </span>
                     );

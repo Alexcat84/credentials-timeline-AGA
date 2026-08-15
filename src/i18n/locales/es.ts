@@ -75,12 +75,12 @@ export const es: Locale = {
   data: {
     categories: {
       'formal-education': 'Educación formal',
-      'standardized-management-systems-iso': 'Sistemas de gestión normalizados (ISO)',
+      'standardized-management-systems-iso': 'Sistemas de estandarización',
       'technology-it': 'Tecnología e informática',
       'non-destructive-testing-ndt': 'Ensayos no destructivos (END)',
       'first-aid-and-rescue': 'Primeros auxilios y rescate',
       'radiological-safety': 'Seguridad radiológica',
-      'safety-management': 'Gestión de la seguridad',
+      'safety-management': 'Seguridad y salud ocupacional',
       'project-management': 'Gestión de proyectos',
       'professional-skills-leadership': 'Habilidades profesionales y liderazgo',
       'construction-management': 'Gestión de la construcción',

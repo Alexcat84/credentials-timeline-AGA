@@ -1,6 +1,7 @@
 /**
  * Emoji identifier per specialization area (topic-type category id), used to classify diplomas.
- * Keys match the ids in public/data/categories.json. Geographic categories are not covered here.
+ * Keys match the ids in public/data/categories.json. Geographic categories use CountryFlag
+ * (flag emoji render as plain "SV"/"CA" text on Windows, so those are drawn as SVG instead).
  */
 const CATEGORY_EMOJI: Record<string, string> = {
   'formal-education': '🎓',
