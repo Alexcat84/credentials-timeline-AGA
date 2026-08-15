@@ -1,47 +1,35 @@
 /**
- * Small inline SVG flags for the geographic categories. Flag emoji (regional indicator
- * sequences) render as plain "SV"/"CO"/"CA" text on Windows/Chromium instead of an actual
- * flag glyph, so we draw them ourselves for reliable cross-platform rendering.
+ * Small flag icons for the geographic categories, served as static SVG files
+ * (public/flags/) sourced from the "flag-icons" project (MIT license, github.com/lipis/flag-icons)
+ * — accurate, official flags including emblems (El Salvador's coat of arms, Canada's maple leaf).
+ *
+ * Flag emoji (regional indicator sequences) render as plain "SV"/"CA" text on
+ * Windows/Chromium instead of an actual flag glyph, so we use these instead for
+ * reliable, correct cross-platform rendering.
  */
 type FlagProps = { className?: string };
 
-const DEFAULT_CLASS = 'inline-block w-4 h-[11px] rounded-[1.5px] align-[-1.5px] flex-shrink-0 ring-1 ring-white/15';
+const DEFAULT_CLASS = 'inline-block w-4 h-[11px] rounded-[1.5px] align-[-1.5px] flex-shrink-0 object-cover ring-1 ring-white/15';
 
-function ElSalvadorFlag({ className = DEFAULT_CLASS }: FlagProps) {
-  return (
-    <svg viewBox="0 0 24 16" className={className} aria-hidden>
-      <rect width="24" height="16" fill="#0047AB" />
-      <rect y="5.33" width="24" height="5.34" fill="#fff" />
-    </svg>
-  );
-}
-
-function ColombiaFlag({ className = DEFAULT_CLASS }: FlagProps) {
-  return (
-    <svg viewBox="0 0 24 16" className={className} aria-hidden>
-      <rect width="24" height="16" fill="#FCD116" />
-      <rect y="8" width="24" height="4" fill="#003893" />
-      <rect y="12" width="24" height="4" fill="#CE1126" />
-    </svg>
-  );
-}
-
-function CanadaFlag({ className = DEFAULT_CLASS }: FlagProps) {
-  return (
-    <svg viewBox="0 0 24 16" className={className} aria-hidden>
-      <rect width="24" height="16" fill="#fff" />
-      <rect width="6" height="16" fill="#FF0000" />
-      <rect x="18" width="6" height="16" fill="#FF0000" />
-    </svg>
-  );
-}
-
-const FLAGS: Record<string, (props: FlagProps) => JSX.Element> = {
-  'el-salvador': ElSalvadorFlag,
-  colombia: ColombiaFlag,
-  'canada-ontario': CanadaFlag,
+const FLAG_SRC: Record<string, string> = {
+  'el-salvador': '/flags/el-salvador.svg',
+  colombia: '/flags/colombia.svg',
+  'canada-ontario': '/flags/canada.svg',
 };
 
+const FLAG_ALT: Record<string, string> = {
+  'el-salvador': 'El Salvador',
+  colombia: 'Colombia',
+  'canada-ontario': 'Canada',
+};
+
+export function CountryFlag({ id, className = DEFAULT_CLASS }: { id: string } & FlagProps) {
+  const src = FLAG_SRC[id];
+  if (!src) return null;
+  return <img src={src} alt="" title={FLAG_ALT[id]} className={className} />;
+}
+
 export function getCountryFlag(id: string): ((props: FlagProps) => JSX.Element) | null {
-  return FLAGS[id] ?? null;
+  if (!FLAG_SRC[id]) return null;
+  return (props: FlagProps) => <CountryFlag id={id} {...props} />;
 }
