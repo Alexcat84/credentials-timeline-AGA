@@ -11,6 +11,8 @@ export interface Credential {
   notes: string | null;
   /** Optional: paths to diploma/certificate images (e.g. /images/diplomas/cred-1.jpg). Multiple images supported. */
   imageUrls?: string[];
+  /** Optional third-party verification (e.g. a credential evaluation service like WES) with a public badge/report link. */
+  verification?: { provider: string; url: string };
 }
 
 export interface Category {

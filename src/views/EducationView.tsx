@@ -69,6 +69,18 @@ function EducationCard({
             <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 leading-snug">{credential.title}</h3>
             <p className="text-sm font-medium text-cyan-700 dark:text-cyan-300 mt-0.5">{credential.institution}</p>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{metaLine}</p>
+            {credential.verification && (
+              <a
+                href={credential.verification.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={t('education.viewCredential')}
+                className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-teal-600 text-white hover:bg-teal-500 transition-colors"
+              >
+                <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                {t('education.verifiedBy', { provider: credential.verification.provider })}
+              </a>
+            )}
           </div>
           <div className="px-4 py-4 flex flex-col sm:flex-row gap-4">
             {hasImages && (

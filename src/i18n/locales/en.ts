@@ -42,6 +42,8 @@ export const en = {
     enlarge: 'Enlarge diploma',
     viewDiploma: 'View diploma',
     pages: { one: '{{count}} page', other: '{{count}} pages' },
+    verifiedBy: '{{provider}} Verified',
+    viewCredential: 'View credential',
   },
   certifications: {
     title: 'Certifications & Courses',

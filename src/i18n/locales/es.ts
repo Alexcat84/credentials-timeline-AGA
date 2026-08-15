@@ -44,6 +44,8 @@ export const es: Locale = {
     enlarge: 'Ampliar diploma',
     viewDiploma: 'Ver diploma',
     pages: { one: '{{count}} página', other: '{{count}} páginas' },
+    verifiedBy: 'Verificado por {{provider}}',
+    viewCredential: 'Ver credencial',
   },
   certifications: {
     title: 'Certificaciones y cursos',

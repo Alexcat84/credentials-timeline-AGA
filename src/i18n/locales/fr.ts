@@ -44,6 +44,8 @@ export const fr: Locale = {
     enlarge: 'Agrandir le diplôme',
     viewDiploma: 'Voir le diplôme',
     pages: { one: '{{count}} page', other: '{{count}} pages' },
+    verifiedBy: 'Vérifié par {{provider}}',
+    viewCredential: 'Voir le justificatif',
   },
   certifications: {
     title: 'Certifications et cours',
