@@ -33,7 +33,7 @@ export const fr: Locale = {
       diplomas: 'Diplômes',
       years: 'Années de formation',
       countries: 'Pays',
-      categories: 'Catégories',
+      categories: 'Domaines de spécialisation',
     },
   },
   education: {

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { Credential, Category } from '../types';
 import { useI18n, useDataLabel } from '../i18n';
+import { getCategoryEmoji } from '../categoryEmoji';
 import DiplomaLightbox from '../components/DiplomaLightbox';
 
 const FORMAL_EDUCATION = 'formal-education';
@@ -67,14 +68,18 @@ function CertCard({
         {credential.notes && <p className="text-xs text-ink-secondary mt-2 line-clamp-3">{credential.notes}</p>}
         {chips.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-3 pt-3 border-t border-stroke">
-            {chips.map((chip) => (
-              <span
-                key={chip.id}
-                className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30"
-              >
-                {chip.label}
-              </span>
-            ))}
+            {chips.map((chip) => {
+              const emoji = getCategoryEmoji(chip.id);
+              return (
+                <span
+                  key={chip.id}
+                  className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30"
+                >
+                  {emoji && <span aria-hidden>{emoji} </span>}
+                  {chip.label}
+                </span>
+              );
+            })}
           </div>
         )}
         {hasImages && (
@@ -144,6 +149,7 @@ export default function CertificationsView({ credentials, categories }: Certific
         {groups.map((group) => {
           const isOpen = expanded.has(group.cat.id);
           const label = dataLabel('categories', group.cat.id, group.cat.label);
+          const emoji = getCategoryEmoji(group.cat.id);
           return (
             <div key={group.cat.id}>
               <button
@@ -153,6 +159,7 @@ export default function CertificationsView({ credentials, categories }: Certific
                 className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-l-4 border-stroke border-l-accent-cyan bg-surface backdrop-blur-md shadow-soft hover:border-accent-cyan/40 transition-colors"
               >
                 <span className="flex items-center gap-2.5 min-w-0">
+                  {emoji && <span className="text-lg flex-shrink-0" aria-hidden>{emoji}</span>}
                   <span className="font-semibold text-ink text-sm sm:text-base truncate">{label}</span>
                   <span className="flex-shrink-0 px-2 py-0.5 rounded-full text-xs font-medium text-accent-cyan bg-accent-cyan/10">
                     {group.items.length}

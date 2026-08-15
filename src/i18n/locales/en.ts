@@ -31,7 +31,7 @@ export const en = {
       diplomas: 'Diplomas',
       years: 'Years of training',
       countries: 'Countries',
-      categories: 'Categories',
+      categories: 'Areas of specialization',
     },
   },
   education: {
