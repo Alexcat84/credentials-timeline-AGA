@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import LandingView from './views/LandingView';
+import SkillsView from './views/SkillsView';
 import EducationView from './views/EducationView';
 import CertificationsView from './views/CertificationsView';
 import ExperienceView from './views/ExperienceView';
 import ContactFloating from './components/ContactFloating';
 import LanguageSelector from './components/LanguageSelector';
-import type { CredentialsData, CategoriesData, MilestonesData, ExperienceData, Credential, Profile } from './types';
+import type { CredentialsData, CategoriesData, MilestonesData, ExperienceData, SkillsData, Credential, Profile } from './types';
 import { trackPageView } from './analytics';
 import { useI18n } from './i18n';
 
@@ -33,17 +34,18 @@ function mergeCredentials(base: CredentialsData | null, overlay: CredentialOverl
   };
 }
 
-type View = 'education' | 'certifications' | 'experience';
+type View = 'skills' | 'education' | 'certifications' | 'experience';
 
 function App() {
   const { t, lang } = useI18n();
   const [hasEntered, setHasEntered] = useState(false);
-  const [view, setView] = useState<View>('education');
+  const [view, setView] = useState<View>('skills');
   const [baseCredentials, setBaseCredentials] = useState<CredentialsData | null>(null);
   const [credentialOverlay, setCredentialOverlay] = useState<CredentialOverlay | null>(null);
   const [categoriesData, setCategoriesData] = useState<CategoriesData | null>(null);
   const [milestonesData, setMilestonesData] = useState<MilestonesData | null>(null);
   const [experienceData, setExperienceData] = useState<ExperienceData | null>(null);
+  const [skillsData, setSkillsData] = useState<SkillsData | null>(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -106,6 +108,25 @@ function App() {
 
   const hasExperience = (experienceData?.positions?.length ?? 0) > 0;
 
+  /** Skills are translated per language: load skills.<lang>.json, fall back to the English base. */
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`/data/skills.${lang}.json`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error('no localized file'))))
+      .catch(() => fetch('/data/skills.json').then((r) => (r.ok ? r.json() : { groups: [] })))
+      .then((data) => {
+        if (!cancelled) setSkillsData(data ?? { groups: [] });
+      })
+      .catch(() => {
+        if (!cancelled) setSkillsData({ groups: [] });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
+
+  const hasSkills = (skillsData?.groups?.length ?? 0) > 0;
+
   // GA4: virtual page view per section. Must run before any early return so hook count is stable.
   useEffect(() => {
     if (!credentialsData) return;
@@ -114,7 +135,9 @@ function App() {
         ? { name: 'Professional experience', path: '/experience' }
         : view === 'certifications'
           ? { name: 'Certifications', path: '/certifications' }
-          : { name: 'Education', path: '/education' };
+          : view === 'skills'
+            ? { name: 'Skills & Expertise', path: '/skills' }
+            : { name: 'Education', path: '/education' };
     trackPageView(section.name, section.path);
   }, [view, credentialsData]);
 
@@ -152,6 +175,9 @@ function App() {
   const navActive = 'text-accent-cyan bg-white/5 border-accent-cyan/45 shadow-[inset_0_-2px_0_#65ddff]';
   const navInactive = 'text-ink-secondary bg-surface-elevated/50 border-stroke hover:text-ink hover:border-accent-cyan/40 hover:bg-white/5';
 
+  const skillsIcon = (
+    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" /></svg>
+  );
   const educationIcon = (
     <svg className="w-4 h-4 flex-shrink-0 lg:w-4 lg:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z" /><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" /></svg>
   );
@@ -171,6 +197,12 @@ function App() {
           </h1>
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-2 xl:gap-2.5 flex-shrink-0">
+            {hasSkills && (
+              <button type="button" onClick={() => setView('skills')} className={`${navButtonBase} ${view === 'skills' ? navActive : navInactive}`}>
+                {skillsIcon}
+                {t('nav.skills')}
+              </button>
+            )}
             <button type="button" onClick={() => setView('education')} className={`${navButtonBase} ${view === 'education' ? navActive : navInactive}`}>
               {educationIcon}
               {t('nav.education')}
@@ -224,6 +256,12 @@ function App() {
               <LanguageSelector className="w-full justify-between" />
             </div>
             <nav className="flex flex-col gap-2">
+              {hasSkills && (
+                <button type="button" onClick={() => { setView('skills'); closeMobileNav(); }} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold min-h-[48px] touch-manipulation w-full border ${view === 'skills' ? 'text-accent-cyan bg-white/5 border-accent-cyan/45' : 'text-ink-secondary bg-surface-elevated/50 border-stroke active:bg-white/5'}`}>
+                  {skillsIcon}
+                  {t('nav.skills')}
+                </button>
+              )}
               <button type="button" onClick={() => { setView('education'); closeMobileNav(); }} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-sm font-semibold min-h-[48px] touch-manipulation w-full border ${view === 'education' ? 'text-accent-cyan bg-white/5 border-accent-cyan/45' : 'text-ink-secondary bg-surface-elevated/50 border-stroke active:bg-white/5'}`}>
                 {educationIcon}
                 {t('nav.education')}
@@ -246,6 +284,13 @@ function App() {
       <ContactFloating profile={credentialsData.profile} />
 
       <main className="w-full flex flex-col overflow-hidden flex-1 min-h-0">
+        {view === 'skills' && hasSkills && (
+          <div className="flex-1 min-h-0 overflow-auto">
+            <div className="max-w-7xl w-full mx-auto px-3 sm:px-4 py-4 sm:py-6">
+              <SkillsView groups={skillsData!.groups} />
+            </div>
+          </div>
+        )}
         {view === 'education' && (
           <div className="flex-1 min-h-0 overflow-auto">
             <EducationView

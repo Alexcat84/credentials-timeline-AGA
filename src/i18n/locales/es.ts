@@ -8,6 +8,7 @@ export const es: Locale = {
     language: 'Idioma',
   },
   nav: {
+    skills: 'Habilidades y Destrezas',
     education: 'Educación',
     diplomas: 'Certificaciones',
     experience: 'Experiencia profesional',
@@ -35,6 +36,13 @@ export const es: Locale = {
       countries: 'Países',
       categories: 'Áreas de especialización',
     },
+  },
+  skills: {
+    title: 'Habilidades y Destrezas',
+    subtitle: 'Lo que puedo hacer y aportar a tu organización — agrupado por área, desde la práctica.',
+    expandAll: 'Expandir todo',
+    collapseAll: 'Contraer todo',
+    count: '{{groups}} áreas · {{skills}} habilidades',
   },
   education: {
     title: 'Educación',

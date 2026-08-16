@@ -8,6 +8,7 @@ export const fr: Locale = {
     language: 'Langue',
   },
   nav: {
+    skills: 'Compétences et expertise',
     education: 'Formation',
     diplomas: 'Certifications',
     experience: 'Expérience professionnelle',
@@ -35,6 +36,13 @@ export const fr: Locale = {
       countries: 'Pays',
       categories: 'Domaines de spécialisation',
     },
+  },
+  skills: {
+    title: 'Compétences et expertise',
+    subtitle: 'Ce que je peux faire et apporter à votre organisation — regroupé par domaine, issu de la pratique.',
+    expandAll: 'Tout déplier',
+    collapseAll: 'Tout replier',
+    count: '{{groups}} domaines · {{skills}} compétences',
   },
   education: {
     title: 'Formation',

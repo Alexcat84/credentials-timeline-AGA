@@ -1,0 +1,102 @@
+{
+  "groups": [
+    {
+      "id": "quality-iso",
+      "title": "Qualité et normalisation (ISO)",
+      "basis": "Gestionnaire du système de management de la qualité, COTECNA (2021–2024)",
+      "skills": [
+        { "name": "Audit interne ISO 9001:2015", "detail": "Cycle annuel complet — planification, constats, clôture des actions correctives. Recertification sans aucune non-conformité." },
+        { "name": "Optimisation des procédures", "detail": "43 procédures modernisées ; contrôle documentaire sur une plateforme d'entreprise (QMS Network Workspace)." },
+        { "name": "Formation aux systèmes qualité", "detail": "Formation générale et d'auditeur interne, conçue et dispensée à toute l'organisation." },
+        { "name": "Évaluation des fournisseurs", "detail": "Processus annuel coordonné avec le siège (Genève) ; revue de direction." }
+      ]
+    },
+    {
+      "id": "safety-radiological",
+      "title": "Santé, sécurité au travail et radioprotection",
+      "basis": "Gestionnaire de site, COTECNA (2017–2024) et assistant d'ingénierie, RASA (2010–2013)",
+      "skills": [
+        { "name": "Radioprotection sur site", "detail": "Agent désigné (PCR) ; rotation des dosimètres et conformité quotidienne." },
+        { "name": "Sécurité industrielle opérationnelle", "detail": "Espaces confinés, travail en hauteur, permis de travail, analyse de sécurité au travail." },
+        { "name": "Intervention d'urgence", "detail": "Exécution des plans d'intervention d'urgence en milieu industriel." },
+        { "name": "Sauvetage aquatique (instructeur)", "detail": "Croix-Rouge salvadorienne ; sauvetage en cas d'inondation, TREPI niveau I." }
+      ]
+    },
+    {
+      "id": "inspection-ndt",
+      "title": "Inspection technique et essais non destructifs",
+      "basis": "Assistant d'ingénierie et d'inspection des équipements, RASA (2010–2013)",
+      "skills": [
+        { "name": "Essais non destructifs (END)", "detail": "Ressuage, magnétoscopie, thermographie infrarouge. Certifié niveau II. +20 % de fiabilité des équipements par an." },
+        { "name": "Supervision de construction industrielle", "detail": "Inspection, plans tels que construits et listes de matériaux selon les normes API." }
+      ]
+    },
+    {
+      "id": "electrical-electronics-smarthome",
+      "title": "Génie électrique, électronique et maison intelligente",
+      "basis": "RASA, formation technique-professionnelle et pratique personnelle",
+      "skills": [
+        { "name": "Dessin technique avec AutoCAD", "detail": "Plans électriques, P&ID, isométriques et structuraux ; applicable à tout projet technique." },
+        { "name": "Installation et diagnostic électrique", "detail": "Câblage, détection de pannes (mise à la terre, court-circuit, chute de tension) au multimètre et traceur de câbles ; mise à niveau de panneaux et remédiation du câblage en aluminium." },
+        { "name": "Programmation de microcontrôleurs", "detail": "Circuits fonctionnels ; certification 9,21/10." },
+        { "name": "Maison intelligente / IoT", "detail": "Conception, programmation et installation de systèmes centralisés, contrôlés par l'utilisateur, sans abonnement." }
+      ]
+    },
+    {
+      "id": "project-planning",
+      "title": "Planification et gestion de projets",
+      "basis": "RASA (2010–2013)",
+      "skills": [
+        { "name": "Planification technique de projets", "detail": "Échéancier, ressources et conformité réglementaire de bout en bout." },
+        { "name": "Microsoft Project", "detail": "Diagrammes de Gantt, gestion des ressources, suivi et rapports." }
+      ]
+    },
+    {
+      "id": "site-operations",
+      "title": "Gestion de site et des opérations",
+      "basis": "Opérateur → superviseur → gestionnaire de site, COTECNA (2013–2024)",
+      "skills": [
+        { "name": "Gestion de site et des opérations", "detail": "11 ans, d'opérateur à gestionnaire ; KPI d'entreprise supérieurs à 95 %." },
+        { "name": "Lancement de nouvelles opérations", "detail": "COTECNA Guatemala, opérationnel en 3 semaines." },
+        { "name": "Continuité des activités en crise", "detail": "Aucune interruption pendant la pandémie de COVID-19." },
+        { "name": "Systèmes de scanographie non intrusifs", "detail": "HCVM, HCVP, HCVL, HI-SCAN, SABRE 5000 ; maintenance niveau I, formateur de formateurs." },
+        { "name": "Gestion des équipes et des quarts", "detail": "Planification, discipline et continuité entre les quarts." }
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistique",
+      "basis": "Superviseur de site, COTECNA (2015–2017)",
+      "skills": [
+        { "name": "Coordination logistique", "detail": "Flux de conteneurs ; disponibilité des systèmes supérieure à 95 %." }
+      ]
+    },
+    {
+      "id": "construction-ici",
+      "title": "Construction (secteur ICI, Ontario)",
+      "basis": "Formation OGCA / Gold Seal (2025), en préparation du marché canadien",
+      "skills": [
+        { "name": "Compétences en construction ICI", "detail": "Communication, planification et résolution de conflits ; crédits Gold Seal (OGCA)." }
+      ]
+    },
+    {
+      "id": "leadership",
+      "title": "Compétences professionnelles et leadership",
+      "basis": "Gestionnaire de site et gestionnaire du SGC, COTECNA",
+      "skills": [
+        { "name": "Liaison avec les autorités", "detail": "Douanes, organismes gouvernementaux, siège international." },
+        { "name": "Formation de formateurs", "detail": "Présentations professionnelles et formation technique." },
+        { "name": "Leadership d'équipes internationales", "detail": "Équipes opérationnelles et qualité ; rapport direct à Genève." }
+      ]
+    },
+    {
+      "id": "information-technology",
+      "title": "Technologies de l'information",
+      "basis": "Appliquée dans tous les postes",
+      "skills": [
+        { "name": "Support technique", "detail": "Diagnostic et maintenance du matériel, des logiciels et des réseaux." },
+        { "name": "Bureautique appliquée", "detail": "Word, Excel, PowerPoint ; documentation et rapports opérationnels." }
+      ]
+    }
+  ]
+}

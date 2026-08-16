@@ -6,6 +6,7 @@ export const en = {
     language: 'Language',
   },
   nav: {
+    skills: 'Skills & Expertise',
     education: 'Education',
     diplomas: 'Certifications',
     experience: 'Professional experience',
@@ -33,6 +34,13 @@ export const en = {
       countries: 'Countries',
       categories: 'Areas of specialization',
     },
+  },
+  skills: {
+    title: 'Skills & Expertise',
+    subtitle: 'What I can do and bring to your organization — grouped by area, drawn from hands-on practice.',
+    expandAll: 'Expand all',
+    collapseAll: 'Collapse all',
+    count: '{{groups}} areas · {{skills}} skills',
   },
   education: {
     title: 'Education',

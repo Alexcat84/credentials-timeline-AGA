@@ -83,3 +83,22 @@ export interface ExperiencePosition {
 export interface ExperienceData {
   positions: ExperiencePosition[];
 }
+
+/** One practical skill: a short scannable label plus a scope/proof line (never a job-duty narrative). */
+export interface SkillItem {
+  name: string;
+  detail: string;
+}
+
+/** A competency domain grouping several skills, shown as one accordion entry. */
+export interface SkillGroup {
+  id: string;
+  title: string;
+  /** Optional small context line under the title (e.g. the role/period the skills are drawn from). */
+  basis?: string;
+  skills: SkillItem[];
+}
+
+export interface SkillsData {
+  groups: SkillGroup[];
+}

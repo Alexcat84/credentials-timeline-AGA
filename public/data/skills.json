@@ -1,0 +1,102 @@
+{
+  "groups": [
+    {
+      "id": "quality-iso",
+      "title": "Quality & ISO Standardization",
+      "basis": "Quality Management System Manager, COTECNA (2021–2024)",
+      "skills": [
+        { "name": "ISO 9001:2015 Internal Auditing", "detail": "Full annual cycle — planning, findings, corrective-action closure. Recertified with zero non-conformities." },
+        { "name": "Procedure Optimization", "detail": "43 procedures modernized; document control on a corporate platform (QMS Network Workspace)." },
+        { "name": "Quality Systems Training", "detail": "General and internal-auditor training, designed and delivered company-wide." },
+        { "name": "Supplier Evaluation", "detail": "Annual process coordinated with headquarters (Geneva); management review." }
+      ]
+    },
+    {
+      "id": "safety-radiological",
+      "title": "Safety, Occupational Health & Radiological Protection",
+      "basis": "Site Manager, COTECNA (2017–2024) & Engineering Assistant, RASA (2010–2013)",
+      "skills": [
+        { "name": "On-Site Radiological Protection", "detail": "Designated officer (PCR); dosimeter rotation and daily compliance." },
+        { "name": "Industrial Safety Operations", "detail": "Confined spaces, work-at-heights, work-permit systems, Safe Work Analysis." },
+        { "name": "Emergency Response", "detail": "Execution of emergency response plans in an industrial setting." },
+        { "name": "Water Rescue (Instructor)", "detail": "Salvadoran Red Cross; flood rescue, TREPI Level I." }
+      ]
+    },
+    {
+      "id": "inspection-ndt",
+      "title": "Technical Inspection & Non-Destructive Testing",
+      "basis": "Engineering & Equipment Inspection Assistant, RASA (2010–2013)",
+      "skills": [
+        { "name": "Non-Destructive Testing (NDT)", "detail": "Liquid penetrant, magnetic particle, infrared thermography. Level II certified. +20% equipment reliability per year." },
+        { "name": "Industrial Construction Supervision", "detail": "Inspection, as-built drawings and material lists under API standards." }
+      ]
+    },
+    {
+      "id": "electrical-electronics-smarthome",
+      "title": "Electrical Engineering, Electronics & Smart Home",
+      "basis": "RASA, vocational training & personal practice",
+      "skills": [
+        { "name": "AutoCAD Technical Drafting", "detail": "Electrical, P&ID, isometric and structural drawings; applicable to any technical project." },
+        { "name": "Electrical Installation & Diagnostics", "detail": "Wiring, fault detection (ground, short circuit, voltage drop) with multimeter and wire tracer; panel upgrades and aluminum-wiring remediation." },
+        { "name": "Microcontroller Programming", "detail": "Functional circuits; certified 9.21/10." },
+        { "name": "Smart Home / IoT", "detail": "Design, programming and installation of centralized, user-controlled systems, subscription-free." }
+      ]
+    },
+    {
+      "id": "project-planning",
+      "title": "Project Planning & Management",
+      "basis": "RASA (2010–2013)",
+      "skills": [
+        { "name": "Technical Project Planning", "detail": "Schedule, resources and regulatory compliance from start to finish." },
+        { "name": "Microsoft Project", "detail": "Gantt charts, resource management, tracking and reporting." }
+      ]
+    },
+    {
+      "id": "site-operations",
+      "title": "Site & Operations Management",
+      "basis": "Operator → Supervisor → Site Manager, COTECNA (2013–2024)",
+      "skills": [
+        { "name": "Site & Operations Management", "detail": "11 years, Operator to Manager; corporate KPIs above 95%." },
+        { "name": "New Operations Launch", "detail": "COTECNA Guatemala, operational within 3 weeks." },
+        { "name": "Business Continuity in Crisis", "detail": "Uninterrupted operations throughout the COVID-19 pandemic." },
+        { "name": "Non-Intrusive Scanning Systems", "detail": "HCVM, HCVP, HCVL, HI-SCAN, SABRE 5000; Level I maintenance, train-the-trainer certified." },
+        { "name": "Shift & Team Management", "detail": "Scheduling, discipline and continuity across shifts." }
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistics",
+      "basis": "Site Supervisor, COTECNA (2015–2017)",
+      "skills": [
+        { "name": "Logistics Coordination", "detail": "Container flow; system availability above 95%." }
+      ]
+    },
+    {
+      "id": "construction-ici",
+      "title": "Construction (ICI Sector)",
+      "basis": "OGCA / Gold Seal training (2025), preparing for the Canadian market",
+      "skills": [
+        { "name": "ICI Construction Skills", "detail": "Communication, planning and conflict resolution; Gold Seal credits (OGCA)." }
+      ]
+    },
+    {
+      "id": "leadership",
+      "title": "Leadership & Professional Skills",
+      "basis": "Site Manager & QMS Manager, COTECNA",
+      "skills": [
+        { "name": "Liaison with Authorities", "detail": "Customs, government entities, international headquarters." },
+        { "name": "Train-the-Trainer", "detail": "Professional presentations and technical training." },
+        { "name": "International Team Leadership", "detail": "Operations and quality teams; direct reporting to Geneva." }
+      ]
+    },
+    {
+      "id": "information-technology",
+      "title": "Information Technology",
+      "basis": "Applied across every position",
+      "skills": [
+        { "name": "Technical Support", "detail": "Diagnostics and maintenance of hardware, software and networks." },
+        { "name": "Applied Office Software", "detail": "Word, Excel, PowerPoint; operational documentation and reporting." }
+      ]
+    }
+  ]
+}
