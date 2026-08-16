@@ -46,7 +46,7 @@ export default function SkillsView({ groups }: SkillsViewProps) {
       <div className="flex flex-wrap items-end justify-between gap-3 mb-1.5">
         <div>
           <h2 className="text-lg sm:text-xl font-semibold text-ink">{t('skills.title')}</h2>
-          <p className="text-xs sm:text-sm text-ink-muted mt-0.5 max-w-[60ch]">{t('skills.subtitle')}</p>
+          <p className="text-xs sm:text-sm text-ink-muted mt-0.5 whitespace-nowrap">{t('skills.subtitle')}</p>
         </div>
         <button
           type="button"

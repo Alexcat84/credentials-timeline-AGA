@@ -39,7 +39,7 @@ export const fr: Locale = {
   },
   skills: {
     title: 'Compétences et expertise',
-    subtitle: 'Ce que je peux faire et apporter à votre organisation — regroupé par domaine, issu de la pratique.',
+    subtitle: "Ce que j'apporte à votre organisation.",
     expandAll: 'Tout déplier',
     collapseAll: 'Tout replier',
     count: '{{groups}} domaines · {{skills}} compétences',

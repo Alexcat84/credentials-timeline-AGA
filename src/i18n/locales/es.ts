@@ -39,7 +39,7 @@ export const es: Locale = {
   },
   skills: {
     title: 'Habilidades y Destrezas',
-    subtitle: 'Lo que puedo hacer y aportar a tu organización — agrupado por área, desde la práctica.',
+    subtitle: 'Lo que aporto a tu organización.',
     expandAll: 'Expandir todo',
     collapseAll: 'Contraer todo',
     count: '{{groups}} áreas · {{skills}} habilidades',

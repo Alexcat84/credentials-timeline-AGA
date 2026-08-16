@@ -37,7 +37,7 @@ export const en = {
   },
   skills: {
     title: 'Skills & Expertise',
-    subtitle: 'What I can do and bring to your organization — grouped by area, drawn from hands-on practice.',
+    subtitle: 'What I bring to your organization.',
     expandAll: 'Expand all',
     collapseAll: 'Collapse all',
     count: '{{groups}} areas · {{skills}} skills',
