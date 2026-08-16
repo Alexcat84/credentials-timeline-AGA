@@ -5,10 +5,10 @@
       "title": "Calidad y sistemas de normalización (ISO)",
       "basis": "Gerente del Sistema de Gestión de la Calidad, COTECNA (2021–2024)",
       "skills": [
-        { "name": "Auditoría interna ISO 9001:2015", "detail": "Ciclo anual completo: planificación, hallazgos, cierre de acciones correctivas. Recertificación con cero no conformidades." },
-        { "name": "Optimización de procedimientos", "detail": "43 procedimientos modernizados; control documental en plataforma corporativa (QMS Network Workspace)." },
-        { "name": "Capacitación en sistemas de calidad", "detail": "Formación general y de auditor interno, diseñada e impartida a toda la organización." },
-        { "name": "Evaluación de proveedores", "detail": "Proceso anual coordinado con casa matriz (Ginebra); revisión por la dirección." }
+        { "name": "Auditoría interna ISO 9001:2015", "detail": "Planificación, ejecución de hallazgos y cierre de acciones correctivas dentro de un sistema de gestión ISO 9001:2015." },
+        { "name": "Optimización de procedimientos", "detail": "Modernización y control documental de procedimientos operativos, basados en observación y análisis de procesos." },
+        { "name": "Capacitación en sistemas de calidad", "detail": "Diseño e impartición de capacitación en sistemas de calidad y formación de auditores internos." },
+        { "name": "Evaluación de proveedores", "detail": "Evaluación de proveedores y coordinación de revisiones por la dirección." }
       ]
     },
     {
@@ -16,10 +16,10 @@
       "title": "Seguridad, salud ocupacional y radioprotección",
       "basis": "Gerente de Sitio, COTECNA (2017–2024) y Asistente de Ingeniería, RASA (2010–2013)",
       "skills": [
-        { "name": "Protección radiológica en sitio", "detail": "Oficial designado (PCR); rotación de dosímetros y cumplimiento normativo diario." },
+        { "name": "Protección radiológica en sitio", "detail": "Gestión de protección radiológica como Oficial designado (PCR): rotación de dosímetros y cumplimiento normativo." },
         { "name": "Seguridad industrial operativa", "detail": "Espacios confinados, trabajo en altura, permisos de trabajo, Análisis de Trabajo Seguro." },
         { "name": "Respuesta a emergencias", "detail": "Ejecución de planes de emergencia en entorno industrial." },
-        { "name": "Rescate acuático (instructor)", "detail": "Cruz Roja Salvadoreña; rescate en inundaciones, TREPI Nivel I." }
+        { "name": "Rescate acuático (instructor)", "detail": "Instrucción de natación y rescate en aguas rápidas." }
       ]
     },
     {
@@ -27,8 +27,8 @@
       "title": "Inspección técnica y ensayos no destructivos",
       "basis": "Asistente de Ingeniería e Inspección de Equipos, RASA (2010–2013)",
       "skills": [
-        { "name": "Ensayos no destructivos (END)", "detail": "Líquidos penetrantes, partículas magnéticas, termografía infrarroja. Certificado Nivel II. +20% de fiabilidad de equipos por año." },
-        { "name": "Supervisión de construcción industrial", "detail": "Inspección, planos as-built y listas de materiales bajo normas API." }
+        { "name": "Ensayos no destructivos (END)", "detail": "Líquidos penetrantes, partículas magnéticas, termografía infrarroja. Certificación Nivel II." },
+        { "name": "Supervisión de construcción industrial", "detail": "Inspección, planos as-built y listas de materiales bajo normativas aplicables." }
       ]
     },
     {
@@ -37,9 +37,9 @@
       "basis": "RASA, formación técnica-vocacional y práctica personal",
       "skills": [
         { "name": "Dibujo técnico con AutoCAD", "detail": "Planos eléctricos, P&ID, isométricos y estructurales; aplicable a cualquier proyecto técnico." },
-        { "name": "Instalación y diagnóstico eléctrico", "detail": "Cableado, detección de fallas (tierra, cortocircuito, caída de voltaje) con multímetro y trazador de cables; actualización de paneles y remediación de aluminio." },
-        { "name": "Programación de microcontroladores", "detail": "Circuitos funcionales; certificación 9.21/10." },
-        { "name": "Smart home / IoT", "detail": "Diseño, programación e instalación de sistemas centralizados, controlados por el usuario, sin suscripciones." }
+        { "name": "Instalación y diagnóstico eléctrico", "detail": "Cableado e instalación de componentes eléctricos, detección de fallas (tierra, cortocircuito, caída de voltaje), actualización de paneles eléctricos." },
+        { "name": "Programación de microcontroladores", "detail": "Diseño y programación de circuitos con microcontroladores." },
+        { "name": "Smart home / IoT", "detail": "Diseño, programación e instalación de sistemas inteligentes, con integración centralizada y controlado por el usuario (sin suscripciones)." }
       ]
     },
     {
@@ -56,10 +56,10 @@
       "title": "Gestión de sitio y operaciones",
       "basis": "Operador → Supervisor → Gerente de Sitio, COTECNA (2013–2024)",
       "skills": [
-        { "name": "Gestión de sitio y operaciones", "detail": "11 años, de Operador a Gerente; KPIs corporativos superiores al 95%." },
-        { "name": "Apertura de nuevas operaciones", "detail": "COTECNA Guatemala, operativa en 3 semanas." },
-        { "name": "Continuidad operativa en crisis", "detail": "Sin interrupciones durante la pandemia de COVID-19." },
-        { "name": "Sistemas de escaneo no intrusivo", "detail": "HCVM, HCVP, HCVL, HI-SCAN, SABRE 5000; mantenimiento Nivel I, formador de formadores." },
+        { "name": "Liderazgo de operaciones de sitio", "detail": "Supervisión integral de sitio con enfoque en cumplimiento de indicadores clave de desempeño." },
+        { "name": "Apertura de nuevas operaciones", "detail": "Puesta en marcha de nuevas operaciones bajo plazos ajustados." },
+        { "name": "Continuidad operativa en crisis", "detail": "Mantenimiento de la continuidad operativa durante situaciones de crisis." },
+        { "name": "Sistemas de escaneo no intrusivo", "detail": "Operación y mantenimiento Nivel I de sistemas de inspección no intrusiva (HCVM, HCVP, HCVL, HI-SCAN, SABRE 5000); formación de operadores." },
         { "name": "Gestión de turnos y equipos", "detail": "Programación, disciplina y continuidad entre turnos." }
       ]
     },
@@ -68,7 +68,7 @@
       "title": "Logística",
       "basis": "Supervisor de Sitio, COTECNA (2015–2017)",
       "skills": [
-        { "name": "Coordinación logística", "detail": "Flujo de contenedores; disponibilidad de sistemas superior al 95%." }
+        { "name": "Coordinación logística", "detail": "Coordinación del flujo de contenedores en procesos de inspección y escaneo." }
       ]
     },
     {
@@ -76,7 +76,7 @@
       "title": "Construcción (sector ICI, Ontario)",
       "basis": "Formación OGCA / Gold Seal (2025), en preparación para el mercado canadiense",
       "skills": [
-        { "name": "Habilidades para construcción ICI", "detail": "Comunicación, planificación y resolución de conflictos; créditos Gold Seal (OGCA)." }
+        { "name": "Habilidades para construcción ICI", "detail": "Comunicación, planificación y resolución de conflictos en entornos de construcción." }
       ]
     },
     {
@@ -86,7 +86,7 @@
       "skills": [
         { "name": "Enlace con autoridades", "detail": "Aduanas, entidades de gobierno, casa matriz internacional." },
         { "name": "Formación de formadores", "detail": "Presentaciones profesionales y capacitación técnica." },
-        { "name": "Liderazgo internacional", "detail": "Equipos operativos y de calidad; reporte directo a Ginebra." }
+        { "name": "Liderazgo internacional", "detail": "Liderazgo de equipos operativos y de calidad en entornos corporativos internacionales." }
       ]
     },
     {
