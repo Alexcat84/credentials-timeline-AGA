@@ -16,6 +16,7 @@
     { "id": "electrical-and-electronics", "label": "Electrical & Electronics", "type": "topic" },
     { "id": "el-salvador", "label": "El Salvador", "type": "geographic" },
     { "id": "colombia", "label": "Colombia", "type": "geographic" },
-    { "id": "canada-ontario", "label": "Canada / Ontario", "type": "geographic" }
+    { "id": "canada-ontario", "label": "Canada / Ontario", "type": "geographic" },
+    { "id": "spain", "label": "Spain", "type": "geographic" }
   ]
 }

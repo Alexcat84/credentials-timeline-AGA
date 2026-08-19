@@ -15,12 +15,14 @@ const FLAG_SRC: Record<string, string> = {
   'el-salvador': '/flags/el-salvador.svg',
   colombia: '/flags/colombia.svg',
   'canada-ontario': '/flags/canada.svg',
+  spain: '/flags/spain.svg',
 };
 
 const FLAG_ALT: Record<string, string> = {
   'el-salvador': 'El Salvador',
   colombia: 'Colombia',
   'canada-ontario': 'Canada',
+  spain: 'Spain',
 };
 
 export function CountryFlag({ id, className = DEFAULT_CLASS }: { id: string } & FlagProps) {

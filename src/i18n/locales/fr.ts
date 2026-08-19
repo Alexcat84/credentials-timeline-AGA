@@ -99,6 +99,7 @@ export const fr: Locale = {
       'el-salvador': 'Salvador',
       colombia: 'Colombie',
       'canada-ontario': 'Canada / Ontario',
+      spain: 'Espagne',
     },
     milestones: {
       m0: 'Début des études',
